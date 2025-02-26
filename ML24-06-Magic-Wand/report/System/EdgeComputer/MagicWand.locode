@@ -1,0 +1,84 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {4.1}{\ignorespaces Simple example using of the builtin microphone of the Arduino Nano 33 BLE Sense}}{44}{code.caption.43}%
+\contentsline {code}{\numberline {4.2}{\ignorespaces Example of a BLE Battery Monitor using Arduino Nano 33 BLE Sense}}{45}{code.caption.44}%
+\contentsline {code}{\numberline {4.3}{\ignorespaces Example of interfacing MPU6050 with Arduino for motion data}}{51}{code.caption.60}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {5.1}{\ignorespaces Sample Code of IMU.readGyroscope()}}{63}{code.caption.75}%
+\contentsline {code}{\numberline {5.2}{\ignorespaces Sample Code of IMU.gyroscopeAvailable()}}{64}{code.caption.76}%
+\contentsline {code}{\numberline {5.3}{\ignorespaces Sample Code of IMU.gyroscopeSampleRate()}}{64}{code.caption.77}%
+\contentsline {code}{\numberline {5.4}{\ignorespaces Example code for reading accelerometer and gyroscope data from the LSM9DS1 IMU}}{66}{code.caption.78}%
+\contentsline {code}{\numberline {5.5}{\ignorespaces Example code for reading magnetometer data}}{70}{code.caption.80}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {8.1}{\ignorespaces Importing necessary libraries and modules.}}{118}{code.caption.135}%
+\contentsline {code}{\numberline {8.2}{\ignorespaces Loading and preparing the CIFAR-10 dataset.}}{118}{code.caption.136}%
+\contentsline {code}{\numberline {8.3}{\ignorespaces Preprocessing data: normalization, one-hot encoding, and splitting into training and validation sets}}{119}{code.caption.139}%
+\contentsline {code}{\numberline {8.4}{\ignorespaces Configuring image data generators for augmentation and fitting them on training and validation data}}{119}{code.caption.140}%
+\contentsline {code}{\numberline {8.5}{\ignorespaces Loading and visualizing the first nine images from the CIFAR-10 dataset}}{119}{code.caption.141}%
+\contentsline {code}{\numberline {8.6}{\ignorespaces Defining a Convolutional Neural Network (CNN) model using Keras}}{119}{code.caption.143}%
+\contentsline {code}{\numberline {8.7}{\ignorespaces Compiling the CNN model with specified loss function, optimizer, and metric}}{120}{code.caption.144}%
+\contentsline {code}{\numberline {8.8}{\ignorespaces Training the CNN model with augmented data using data generators}}{121}{code.caption.145}%
+\contentsline {code}{\numberline {8.9}{\ignorespaces Plotting the loss and accuracy curves}}{121}{code.caption.146}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {21.1}{\ignorespaces Example code demonstrating basic NumPy array operations}}{227}{code.caption.227}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {22.1}{\ignorespaces Columns of DataFrame}}{235}{code.caption.236}%
+\contentsline {code}{\numberline {22.2}{\ignorespaces Installing Pandas using terminal}}{236}{code.caption.237}%
+\contentsline {code}{\numberline {22.3}{\ignorespaces How to Import the package}}{237}{code.caption.248}%
+\contentsline {code}{\numberline {22.4}{\ignorespaces Viewing Data}}{238}{code.caption.250}%
+\contentsline {code}{\numberline {22.5}{\ignorespaces Boolean Indexing Example}}{239}{code.caption.259}%
+\contentsline {code}{\numberline {22.6}{\ignorespaces Setting Example}}{239}{code.caption.260}%
+\contentsline {code}{\numberline {22.7}{\ignorespaces Handling Missing Data}}{240}{code.caption.261}%
+\contentsline {code}{\numberline {22.8}{\ignorespaces Operations Example}}{240}{code.caption.262}%
+\contentsline {code}{\numberline {22.9}{\ignorespaces Merge Example}}{240}{code.caption.263}%
+\contentsline {code}{\numberline {22.10}{\ignorespaces Grouping Example}}{241}{code.caption.264}%
+\contentsline {code}{\numberline {22.11}{\ignorespaces Reshaping Example}}{241}{code.caption.265}%
+\contentsline {code}{\numberline {22.12}{\ignorespaces Reading CSV file }}{241}{code.caption.266}%
+\contentsline {code}{\numberline {22.13}{\ignorespaces Try Except Blocks}}{242}{code.caption.267}%
+\contentsline {code}{\numberline {22.14}{\ignorespaces Error Handling Functions}}{242}{code.caption.268}%
+\contentsline {code}{\numberline {22.15}{\ignorespaces Error Handling with DataFrame and Series}}{242}{code.caption.269}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

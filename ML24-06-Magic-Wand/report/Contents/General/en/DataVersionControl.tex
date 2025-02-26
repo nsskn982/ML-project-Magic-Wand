@@ -1,0 +1,74 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Sudeshna Nanda$
+% $Datum: 2025-01-14 $
+%$Pfad:Users/Documents/ML23-06-Magic-Wand-with-an-Arduino-Nano-33-BLE-sense/report/Contents/en/DataVersionControl.tex $
+% $Version: 1.0 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Data Version Control}
+
+Data Version Control (DVC) is an essential practice in managing data science, machine learning projects, and software development, especially when collaboration is involved. It extends version control systems to handle large data files, models, and experiments, ensuring reproducibility, collaboration efficiency, and resource management.
+
+Here are some reasons that we should have the data version control plan during the project:
+\begin{enumerate}
+	\item \textbf{Track Changes:}
+	Our source code, data changes over time. Tracking these changes allows you to revert to previous versions if needed and understand how your data evolved.
+	\item \textbf{Collaboration:}When working on projects with others, it's crucial to ensure everyone uses the same version of datasets and models. Version control helps synchronize data across teams.
+	\item \textbf{Experimentation:}Machine learning involves lots of experimentation. Tracking data versions alongside code changes helps in reproducing experiments accurately.
+\end{enumerate}
+
+\section{Plan}
+The first step is to finish the installation of GitHub among all the teammates and have the same version as our version control on the report, manual and even presentations mainly builds on Git's versioning capabilities. After completion of installation, we asked for professor to release the right for us to join the repository and initialize on our side about the project. To update our report and other documents, everyone would send a message in our communicating group first so other would not fetch and push new updates at that moment so crushing on the documents can also be prevented
+
+Secondly, for our different softwares that we used in the project, we have firstly aligned our software version among everyone to make sure all the results replicate under a same environment and prevent issues due to the version difference. All the software aligned versions are stated in the following table. 
+
+Thirdly, the data version control of data set is only done on one computer of our teammates. Therefore, every changes in our data set will stay in one computer to prevent the data or code corruption from the others. Moreover, our data set would save every week as a new version in the local computer so that we can track the code again in case there are issues generated in the new version. Our data model and data set can still step back to make sure they can run and get results properly. 
+
+\pagebreak
+
+{\begin{minipage}{\textwidth}
+		\begin{center}
+			\begin{tabular}{llm{100mm}} 
+				\textbf{\MapleCommand{Github Version}}  & Version 3.3.8 (x64) \\
+				\textbf{\MapleCommand{TexStudio Version}}  & TeXstudio 4.6.3\\
+				\textbf{\MapleCommand{Pycharm Version}}  & 2023.2.1\\
+				\textbf{\MapleCommand{Arduino IDE version}}  & Arduino IDE 2.2.1 \\
+				\textbf{\MapleCommand{Python Tensorflow}}  & 2.15.0 \\
+				\textbf{\MapleCommand{Numpy}}  & 1.23.5 \\
+				\textbf{\MapleCommand{pandas}}  & 1.5.3 \\
+				\textbf{\MapleCommand{matplotlib.pyplot}}  & 3.7.1\\
+				\textbf{\MapleCommand{pathlib}}  & 1.0.1\\
+				\textbf{\MapleCommand{shutil}}  & 3.10.12 Built in Python \\
+				\textbf{\MapleCommand{PIL}}  & 9.4.0 \\
+				\textbf{\MapleCommand{math}}  & 3.10.12 Built in Python \\
+				\textbf{\MapleCommand {glob}}  & 0.7 \\
+				\textbf{\MapleCommand{json}}  & 2.0.9 \\
+				\textbf{\MapleCommand{os}}  & 3.10.12 Built in Python \\	
+				\textbf{\MapleCommand{Arduino LSM9DS1 version}}  & 1.1.1 \\	
+				\textbf{\MapleCommand{Arduino Mbed OS Nano Boards Version}}  & 4.0.10 \\
+				\textbf{\MapleCommand{Arduino Tensorflow Lite Version}}  & 2.1.0\\
+			\end{tabular}
+			\captionof{table}{Software and Hardware Version Controls} %\cite{Ard:2021}}
+	\end{center}
+	\end{minipage}}
+	
+	\subsection{Installation}
+	Arduino IDE should be installed for every teammate. So a detail installation steps should be provided and extra libraries also includes in this explanation, especially the Tensorflow lite in the Arduino IDE. We would provided requirements of two operation systems that our teammates mainly utilize. The requirements of the Arduino IDE is as follow:
+	Version: Arduino IDE 2
+	Window System Requirements: Win 10 (64-bit) or newer
+	macOS: 10.14: “Mojave” or newer, 64-bit
+	
+	The files can be found in the Arduino official website - window version: \url{https://www.arduino.cc/en/software}
+	MacOS version: \url{https://www.arduino.cc/en/software}
+	we have also store the files in the cloud to resist from the lose in online. Here is the link: \url{https://drive.google.com/drive/folders/10TSlasawgUHUaGNCW2ls1JDevt0onTXi?usp=drive_link} 
+	Currently, we have uploaded the following files in the drive so that others can still perform the project properly. 
+	\begin{itemize}
+\item Window .exe file
+\item MacOS .dmg file
+\item Arduino Library - Arduino LSM9DS1
+\item Arduino Library - Tensorflow lite
+\end{itemize}
+The detailed installation steps can be found from the software section of Arduino IDE. The two boards can only be installed when you have Arduino IDE thus we do not include these files in the drive. \ref{Arduinoide}
+After that, the Arduino IDE should install the two boards, Tensorflow lite and LSM9DS1.

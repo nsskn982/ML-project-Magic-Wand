@@ -1,0 +1,520 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-18 11:15:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+
+
+\graphicspath{%
+	{../Images/},{../../Images/},{Images/},%
+	{../../../../General/},{../../../General/},{../../General/},%
+	{../../../../Aufgaben/},{../../../Aufgaben/},%
+	{../}}
+
+
+\definecolor{MapleColor}{rgb}{1,0.0,0.}
+\definecolor{PythonColor}{rgb}{0,0.5,1.}
+\definecolor{ShellColor}{rgb}{1,0,0.5}
+\definecolor{FileColor}{rgb}{0.5,0.5,1.}
+
+\definecolor{orange}{RGB}{255,200,0}
+\definecolor{LightBlue}{RGB}{173, 216, 250}
+\definecolor{Blue}{RGB}{50, 100, 250}
+\definecolor{BurntOrange}{RGB}{250,180,30}
+\definecolor{DarkGreen}{RGB}{50,150,50}
+\definecolor{White}{RGB}{255,255,255}
+\definecolor{Gray}{RGB}{128,128,128}
+\definecolor{LightGrey}{RGB}{220,220,220}
+\definecolor{VLightGrey}{RGB}{245,245,245}
+
+
+\newcommand{\MapleCommand}[1]{\textcolor{MapleColor}{\texttt{\justify#1}}}
+\newcommand{\PYTHON}[1]{\textcolor{PythonColor}{\texttt{\justify#1}}}
+\newcommand{\SHELL}[1]{\textcolor{ShellColor}{\texttt{\justify#1}}}
+\newcommand{\FILE}[1]{\textcolor{FileColor}{\texttt{\justify#1}}\index{\TRANS{Datei}{File}!#1}}
+\newcommand{\PATH}[1]{\textcolor{FileColor}{\texttt{\justify#1}}}
+
+\newcommand{\URL}[1]{\textcolor{blue}{\url{#1}}}
+\newcommand{\HREF}[2]{\textcolor{blue}{\href{#1}{#2}}}
+
+
+\newcommand{\QUELLE}{\textcolor{red}{hier Quelle finden}}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}} % linksbündig mit Breitenangabe
+
+\newcommand{\GRAFIK}{\textcolor{red}{Grafik einfügen}}
+
+\newcommand{\DEF}[1]{\fcolorbox{blue}{blue!10}{\begin{minipage}{\textwidth}\textbf{Definition.}#1\end{minipage}}}
+
+\newcommand{\BEISPIEL}[1]{\fcolorbox{blue}{blue!10}{\begin{minipage}{\textwidth}\textbf{Beispiel.}#1\end{minipage}}}
+
+\newcommand{\SATZ}[1]{\fcolorbox{blue}{blue!10}{\begin{minipage}{\textwidth}\textbf{Satz.}#1\end{minipage}}}
+
+\newcommand{\Bemerkung}[1]{\fcolorbox{blue}{blue!10}{\begin{minipage}{\textwidth}\textbf{Bemerkung.}#1\end{minipage}}}
+
+
+%Zahlenmengen
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Po}{\mathbb{P}}
+\newcommand{\Rp}[2]{\mathbb{R}^{[#1;\,#2]}} % Menge der auf [a,b]-periodischen Funktionrn
+%\DeclareMathOperator{\arg}{arg}
+\newcommand{\MyComplex}[1]{\mathbf{#1}}
+\newcommand{\Laplaceinv}[1]{#1}
+\newcommand{\Bez}{Bézier}
+\newcommand{\PH}{pythagoreische Hodographen \xspace}
+\newcommand{\PHd}{pythagoreischen Hodographen \xspace}
+
+
+\DeclareMathOperator{\Atan2}{Atan2}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\ReLU}{ReLU}
+
+\newcommand*\justify{%
+	\fontdimen2\font=0.4em% interword space
+	\fontdimen3\font=0.2em% interword stretch
+	\fontdimen4\font=0.1em% interword shrink
+	\fontdimen7\font=0.1em% extra space
+	\hyphenchar\font=`\-% allowing hyphenation
+}
+
+% Auswahl der Sprache
+% 1.Argument ist der Pfad ohne "en" oder "de"
+% 2.Argument ist der Dateiname
+\newcommand{\InputLanguage}[2]{
+    \ifdefined\isGerman
+    \input{../../#1de/#2}
+    \else
+    \ifdefined\isEnglish
+    \input{../../#1en/#2}
+    \else
+    \input{../../#1de/#2}
+    \fi
+    \fi
+}
+
+\newcommand{\TRANS}[2]{
+    \ifdefined\isGerman
+    #1%
+    \else
+    \ifdefined\isEnglish
+    #2%
+    \else
+    #1%
+    \fi
+    \fi
+}
+
+
+% muss für Akronyme \ac statt see verwendet werden.
+\newcommand{\Siehe}{
+    \ifdefined\isGerman
+    \emph{siehe}
+    \else
+    \ifdefined\isEnglish
+    \emph{see}
+    \else
+    \emph{siehe}
+    \fi
+    \fi
+}
+
+\renewcommand{\indexname}{
+	\ifdefined\isGerman
+	\emph{Stichwortverzeichnis}
+	\else
+	\ifdefined\isEnglish
+	\emph{Index}
+	\else
+	\emph{Stichwortverzeichnis}
+	\fi
+	\fi
+}
+
+
+%todo Die Kommandos sind für das Endprodukt zu entfernen. Die entsprechenden Stellen sind zu bearbeiten bzw. zu löschen
+\newcommand{\Mynote}[1]{\marginnote{\textcolor{red}{WS:#1}}}
+\newcommand{\Ausblenden}[1]{}
+\newcommand{\ToDo}[1]{\textcolor{red}{\section{ToDo} #1}}
+
+\newcommand{\GRAFIKEINFUEGEN}{\textcolor{red}%
+	{\bf Hier ist eine Grafik einzufügen}}
+\newcommand{\neu}{\textcolor{red}{Wort Einfügen}}
+\newcommand{\REFERENZ}{\textcolor{red}%
+	{\bf Referenz  einzufügen}}
+\newcommand{\EXAMPLE}{\textcolor{red}%
+	{\bf Beispiel einzufügen}}
+
+\newcommand{\trinom}[3]{\left(\begin{array}{c} #1\\#2\\#3 \\ \end{array}\right)}
+
+
+\newcommand{\textdirectcurrent}{%
+	\settowidth{\dimen0}{$=$}%
+	\vbox to .85ex {\offinterlineskip
+		\hbox to \dimen0{\leaders\hrule\hfill}
+		\vskip.35ex
+		\hbox to \dimen0{%
+			\leaders\hrule\hskip.2\dimen0\hfill
+			\leaders\hrule\hskip.2\dimen0\hfill
+			\leaders\hrule\hskip.2\dimen0
+		}
+		\vfill
+	}%
+}
+\newcommand{\mathdirectcurrent}{\mathrel{\textdirectcurrent}}
+
+\newlist{notes}{enumerate}{1}
+\setlist[notes]{label=Note: ,leftmargin=*}
+
+% Kommandos für In-Line Code
+\newcommand{\COMMAND}[1]{\lstinline[language=MyBash, style=inlinestyle]{#1}}
+\newcommand{\mytt}[1]{\texttt{\footnotesize #1}}
+\newcommand{\python}[1]{\lstinline[language=MyPython, style=inlinestyle]{#1}}
+\newcommand{\twod}[2]{
+	\ensuremath{{#1} \times {#2}}}
+\newcommand{\threed}[3]{
+	\ensuremath{{#1} \times {#2} \times {#3}}}
+
+% Fett-geschriebene Tabellenberschriften
+\renewcommand\theadfont{\bfseries}
+
+
+\newcommand{\us}{\si{\micro\second}}
+\newcommand{\usn}[1]{\SI{#1}{\micro\second}}
+\renewcommand{\textapprox}{\raisebox{0.5ex}{\texttildelow}}
+
+
+
+% Fehlerzähler
+\setul{0.5ex}{0.3ex}
+\setulcolor{red}
+\newcounter{fehlernummer}
+\setcounter{fehlernummer}{11}
+\newcommand{\FEHLER}[1]{\ul{#1}\stepcounter{fehlernummer}\textsuperscript{\textcolor{red}{\arabic{fehlernummer}}}}
+%\renewcommand{\FEHLER}[1]{\ul{#1}\stepcounter{fehlernummer}\marginnote{\textcolor{red}{\arabic{fehlernummer}}}} geht leider nicht
+%\renewcommand{\FEHLER}[1]{\ul{#1}\stepcounter{fehlernummer}\footnote{\textcolor{red}{\arabic{fehlernummer}.Fehler}}} geht leider nicht
+
+
+\newcounter{FortlaufendeNummer}
+\setcounter{FortlaufendeNummer}{1}
+\newcounter{LetztesKapitel}
+\setcounter{LetztesKapitel}{-1}
+
+\newcounter{BeamerChapter}
+\setcounter{BeamerChapter}{1}
+
+
+\newcommand{\GRAPHICSC}[3]{\begin{center}
+		\includegraphics[scale=#1]{#3}
+\end{center}}
+
+\newcommand{\GRAPHICS}[3]{\includegraphics[scale=#1]{#3}}
+
+\newcommand{\FONO}{   
+	%\ifthenelse{\value{chapter} > \value{LetztesKapitel}}%
+	%{%
+		%\setcounter{LetztesKapitel}{\value{chapter}}%
+		%\setcounter{FortlaufendeNummer}{1}%
+		%}%
+	%\arabic{chapter}.\arabic{FortlaufendeNummer}.%
+	%\stepcounter{FortlaufendeNummer}%
+}
+
+\newcommand{\FONOBEAMER}{%
+	\ifthenelse{\value{BeamerChapter}>0}%
+	{%
+		\ifthenelse{\value{BeamerChapter}>\value{LetztesKapitel}}%
+		{%
+			\setcounter{LetztesKapitel}{\value{BeamerChapter}}%
+			\setcounter{FortlaufendeNummer}{1}%
+		}%
+		\hbox{}\arabic{BeamerChapter}.\arabic{FortlaufendeNummer}.\stepcounter{FortlaufendeNummer}%
+	}%
+	\hbox{}%
+} 
+
+
+\newcommand{\FONOBEAMERSTEP}{%
+	\ifthenelse{\value{BeamerChapter}>0}%
+	{%
+		\ifthenelse{\value{BeamerChapter}>\value{LetztesKapitel}}%
+		{%
+			\setcounter{LetztesKapitel}{\value{BeamerChapter}}%
+			\setcounter{FortlaufendeNummer}{1}%
+		}%
+		\stepcounter{FortlaufendeNummer}%
+	}%
+	\hbox{}%
+	\bigskip
+} 
+
+\newcommand{\FONOBEAMERSTAY}{   
+	\ifthenelse{\value{BeamerChapter}>\value{LetztesKapitel}}
+	{
+		\setcounter{LetztesKapitel}{\value{BeamerChapter}}
+		\setcounter{FortlaufendeNummer}{1}
+	}
+	\hbox{}\arabic{BeamerChapter}.\arabic{FortlaufendeNummer}.} 
+
+
+% \FONOBEAMERSTEP
+% \SATZNAME{}{}
+% \SATZ{}
+% \SATZNAMES{}{}
+% \SATZS{}
+% \STANDARD{}{}
+% \STANDARDN{}{}  handout:0
+% \STANDARDV{}{}  verbatim
+% \DEF{}
+% \DEFNAME{}{}
+% \DEFS{}
+% \DEFNAMES{}{}
+% \BEMERKUNG{}
+% \BEMERKUNGNAME{}{}
+% \BEMERKUNGNAMES{}{}
+% \BEISPIELNAME{}{}
+% \BEISPIELNAMES{}{}
+% \BEISPIEL{}
+% \BEISPIELS{}
+
+
+
+\newcommand{\Def}[1]
+{
+	\definecolor{shadecolor}{rgb}{0.98, 0.91, 0.71}
+	
+	\begin{snugshade*}
+		\textbf{\FONOBEAMER  Definition.} #1
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+\newcommand{\DefN}[2]
+{
+	\definecolor{shadecolor}{rgb}{0.98, 0.91, 0.71}
+	
+	\begin{snugshade*}
+		\textbf{ \FONOBEAMER Definition #1.}  #2
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+
+\newcommand{\Satz}[1]
+{
+	\definecolor{shadecolor}{rgb}{0.74, 0.83, 0.9}
+	
+	\begin{snugshade*}
+		\textbf{\FONOBEAMER  Satz.} #1
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+\newcommand{\SatzN}[2]
+{
+	\definecolor{shadecolor}{rgb}{0.74, 0.83, 0.9}
+	
+	\begin{snugshade*}
+		\textbf{ \FONOBEAMER Satz #1.}  #2
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+
+\newcommand{\BemerkungN}[2]
+{
+	\definecolor{shadecolor}{rgb}{0.66, 0.89, 0.63} %Lavendel
+	
+	\begin{snugshade*}
+		\textbf{ \FONOBEAMER Bemerkung #1.}  #2
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+
+\newcommand{\Beispiel}[1]
+{
+	\definecolor{shadecolor}{rgb}{0.9, 0.9, 0.98} 
+	
+	\begin{snugshade*}
+		\textbf{\FONOBEAMER  Beispiel.} #1
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+\newcommand{\BeispielN}[2]
+{
+	\definecolor{shadecolor}{rgb}{0.9, 0.9, 0.98} 
+	
+	\begin{snugshade*}
+		\textbf{ \FONOBEAMER Beispiel #1.}  #2
+	\end{snugshade*}
+	
+	\bigskip
+}
+
+
+\newcommand\pythonstyle{
+	\lstset{ 
+		backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+		basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+		breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+		breaklines=true,                 % sets automatic line breaking
+		captionpos=b,                    % sets the caption-position to bottom
+		commentstyle=\color{mygreen},    % comment style
+		deletekeywords={...},            % if you want to delete keywords from the given language
+		escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+		extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+		firstnumber=1000,                % start line enumeration with line 1000
+		frame=single,	                   % adds a frame around the code
+		keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+		keywordstyle=\color{blue},       % keyword style
+		language=Python,                 % the language of the code
+		morekeywords={*,...},            % if you want to add more keywords to the set
+		numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+		numbersep=5pt,                   % how far the line-numbers are from the code
+		numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+		rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+		showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+		showstringspaces=false,          % underline spaces within strings only
+		showtabs=false,                  % show tabs within strings adding particular underscores
+		stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+		stringstyle=\color{mymauve},     % string literal style
+		tabsize=2,	                     % sets default tabsize to 2 spaces
+		title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+	} 
+}
+
+\lstset{language=Python}
+
+% Python environment
+\lstnewenvironment{Python}[1][]
+{
+	\pythonstyle
+	\lstset{#1}
+}
+{}
+
+%Python for external files
+\newcommand\pythonexternal[2][]{{
+		\pythonstyle
+		\lstinputlisting[#1]{#2}}}
+
+%Python for external files
+\newcommand\PythonExternalO[1]{
+    \arduinostyle
+    \lstinputlisting[language=C++]{#1}}
+
+
+%   Arduino-Programs
+\newcommand\arduinostyle{
+    \lstset{ 
+        backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+        basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+        breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+        breaklines=true,                 % sets automatic line breaking
+        captionpos=b,                    % sets the caption-position to bottom
+        commentstyle=\color{mygreen},    % comment style
+        deletekeywords={...},            % if you want to delete keywords from the given language
+        escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+        extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+        firstnumber=1000,                % start line enumeration with line 1000
+        frame=single,	                   % adds a frame around the code
+        keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+        keywordstyle=\color{blue},       % keyword style
+        language=C++,                    % the language of the code
+        morekeywords={*,...},            % if you want to add more keywords to the set
+        numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+        numbersep=5pt,                   % how far the line-numbers are from the code
+        numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+        rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+        showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+        showstringspaces=false,          % underline spaces within strings only
+        showtabs=false,                  % show tabs within strings adding particular underscores
+        stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+        stringstyle=\color{mymauve},     % string literal style
+        tabsize=2,	                     % sets default tabsize to 2 spaces
+        title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+    } 
+}
+
+\lstset{language=C++}
+
+% Ardunio environment
+\lstnewenvironment{Arduino}[1][]
+{
+    \arduinostyle
+    \lstset{#1}
+}
+{}
+
+%Arduino for external files
+\newcommand\ArduinoExternal[2]{{
+        \arduinostyle
+        \lstinputlisting[#1]{#2}}}
+
+%Arduino for external files
+\newcommand\ArduinoExternalO[1]{
+        \arduinostyle
+        \lstinputlisting[language=C++]{#1}}
+
+
+
+\setlength{\parindent}{0pt}
+
+
+
+
+\definecolor{uuuuuu}{rgb}{0.26666666666666666,0.2666666666666666,0.26666666666666666}
+\definecolor{qqqqff}{rgb}{0.,0.,1.}
+\definecolor{MapleColor}{rgb}{1,0.5,0.}
+\definecolor{PythonColor}{rgb}{0,0.5,1.}
+\definecolor{ShellColor}{rgb}{1,0,0.5}
+\definecolor{FileColor}{rgb}{0.5,0.5,1.}
+
+\definecolor{LightGoldenrod}{rgb}{0.8,.9,0.3} 
+\definecolor{AliceBlue}{rgb}{0.5,.8,1}
+\definecolor{LightGrey}{rgb}{0.9,0.9,0.9} 
+\definecolor{Beige}{rgb}{0.9,0.5,0.0} 
+\definecolor{Gelb}{rgb}{0.999,0.999,0.0} 
+
+
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\definecolor{frenchblue}{rgb}{0.0, 0.45, 0.73}
+\definecolor{greenblue}{rgb}{0.0, 0.25, 0.3}
+\definecolor{darkcyan}{rgb}{0.0, 0.55, 0.55}
+\definecolor{bondiblue}{rgb}{0.0, 0.58, 0.71}
+\definecolor{grayleft}{rgb}{0.1, 0.1, 0.1}
+\definecolor{grayright}{rgb}{0.2, 0.2, 0.2}
+\definecolor{graycircle}{rgb}{0.3, 0.3, 0.3}
+\definecolor{graylight}{rgb}{0.8, 0.8, 0.8}
+\definecolor{greenenglish}{rgb}{0.0, 0.5, 0.0}
+\definecolor{darkpastelgreen}{rgb}{0.01, 0.75, 0.24}
+\definecolor{copper}{rgb}{0.72, 0.45, 0.2}
+\definecolor{greenyellow}{rgb}{0.68, 1.0, 0.18}
+\definecolor{fuchsia}{rgb}{1.0, 0.0, 1.0}
+\definecolor{silver}{rgb}{0.75, 0.75, 0.75}
+\definecolor{deepskyblue}{rgb}{0.0, 0.75, 1.0}
+
+
+\newcommand{\GND}{\cellcolor{black}\textcolor{white}{GND}}
+\newcommand{\Vf}{\cellcolor{red}\textcolor{black}{5V}}
+\newcommand{\Vd}{\cellcolor{red}\textcolor{black}{3.3V}}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\newcolumntype{a}{>{\columncolor{LightCyan}}c}
+
+\DeclareCaptionType{code}[Listing][\TRANS{Liste des Listings}{List of Listings}] 

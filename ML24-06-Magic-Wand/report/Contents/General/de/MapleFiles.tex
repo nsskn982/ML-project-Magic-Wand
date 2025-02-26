@@ -1,0 +1,796 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-07-24 09:05:07Z $
+% $Pfad: GDV/Vortraege/latex - Ausarbeitung/Kapitel/MapleDateien.tex $
+% $Version: 4732 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\VERSION{$ $Pfad: GDV/Vortraege/latex - Ausarbeitung/Kapitel/MapleDateien.tex $ $}{$ $Version: 4732 $ $}
+
+
+\chapter{Maple-Dateien}
+
+\cite{Wat:2017a,Wat:2017b,Wat:2017c,Wat:2017d,Wat:2017e,Wat:2017f}
+
+\section{Geometrien mit Maple}
+
+Die vorgestellten Algorithmen können gut mit Hilfe von Geometrien dargestellt werden. Dabei können zwei Aspekte untersucht werden. Einerseits ist der Aufwand für eine Umsetzung, die Rechengenauigkeit und die Stabilität eines Algorithmus interessant; andererseits sollen die Verfahren hinsichtlich ihres Nutzens bewertet und verglichen werden. Hierzu wurden Module für das Formelmanipulationssystem Maple \cite{Wat:2017a} entwickelt. 
+
+Maple bietet die Umgebung, Algorithmen einfach und schnell zu implementieren. Darüber hinaus ist die grafische Darstellung mit einfachen Mitteln möglich. Allerdings ist eine einfache Arbeitsmappe 
+von Maple nicht für sehr große Software-Projekte ausgelegt. Hier muss auf die Möglichkeit der Erstellung und Nutzung von Bibliotheken zurückgegriffen werden. Einerseits bietet Maple die Möglichkeit, eigene Bibliotheken, so genannte Module, zu erstellen. Auf diese Weise bleibt man innerhalb der Umgebung und der Syntax von Maple. Dieser Weg wird hier weiter verfolgt. Eine weitere Möglichkeit ist die Verwendung von Bibliotheken, die mittels einer höheren Programmiersprache, z.B. C++, erstellt wurde, den so genannten DLLs.
+
+Im weiteren wird die Erstellung und Verwendung einer Testumgebung mit Hilfe von Module beschrieben. Zunächst werden die Geometrielemente beschrieben, die in verschiedenen Module abgelegt sind, und deren Verwendung. Damit eigene Erweiterungen und Ergänzungen möglich sind, wird dann der Aufbau und die Verwendung eines Moduls in Maple erläutert.
+
+
+
+\section{Verwendete Geometrieelemente}
+
+Da es sich um eine Testumgebung für die vorgestellten Algorithmen, werden auch nur Geometrien verwendet, die beschrieben wurden.
+
+\begin{itemize}
+	\item Punkte (\MapleCommand{MPoint})
+	\item Strecken (\MapleCommand{MLine})
+	\item Kreisbögen (\MapleCommand{MArc})
+  \item Bézier-Kurven (\MapleCommand{Bezier})
+	\item Polygonzüge (\MapleCommand{MPolygon})
+	\item Geometrieliste (\MapleCommand{MGeoList})
+	\item Hermite-Probleme (\MapleCommand{MHermiteProblem})
+	\item Symmetrische Hermite-Probleme (\MapleCommand{MHermiteProblemSym})
+\end{itemize}
+
+Für jedes Geometrieelement wurde ein entsprechendes Modul angelegt, dessen Name in der obigen Liste angegeben ist. Die Auflistung, welche Funktionen zur Verfügung stehen, wird in einem weiteren  Abschnitt dargestellt.
+
+Bei der Umsetzung eines solchen Projekts wird schnell deutlich, dass bei einer Verwendung von mehreren Geometrieelementen ein klare Datenstruktur und ein wohldefinierter Zugriff auf die Daten unerlässlich ist. Zum Beispiel bei der Darstellung von Geraden ist die Entscheidung zu treffen, ob die Darstellung Punkt-Richtung oder mittels zweier Punkte erfolgen soll. Die Auswahl erfolgt im Allgemeinen in Abhängigkeit des Anwendungsfalls. Hier wird der Weg beschritten, dass aufgrund eines wohldefinierten Zugriffs auf die Daten die Verwendung beider Darstellungen möglich ist.
+
+\section{Aufbau der Datenstruktur}
+
+Die Idee ist, eine möglichst einheitliche und einfache Datenstruktur zu verwenden. Maple bietet zwar die Möglichkeit, Objekte zu definieren. Allerdings ist die Verwendung innerhalb einer prozeduralen Umgebung schwierig. Daher werden alle Daten grundsätzlich als Listen dargestellt. Das erste Listenelement enthält dabei stets eine Kennung des Elements \ref{ListeKennung}. Dann folgen die Daten, die wiederum Geometrieelemente sein können. Es ist zu beachten, dass der direkte Zugriff auf die Daten nicht unterbunden werden kann; hier ist der Anwender in der Pflicht.
+
+\bigskip
+
+Der Zugriff auf die Daten soll ausschließlich über Prozeduren eines Moduls erfolgen. Im folgenden ist beispielhaft die Datenstruktur für Punkte zu sehen:
+
+\medskip
+
+\MapleCommand{[MVPOINT,[x,y]]}
+
+\medskip
+
+Die Erstellung eines Punkts erfolgt dann über eine Prozedur \MapleCommand{New}:
+
+\medskip
+
+\MapleCommand{NeuerPunkt := MPoint:-New(10,15);}
+
+\medskip
+
+Beim Aufruf in der Testdatei wird dann folgendes ausgegeben:
+ 
+\medskip
+
+\MapleCommand{TestPO := ["Point",[10,15]]}
+
+\medskip
+
+Diese Datenstrukturen werden für die Berechnung der Geometrien verwendet. Mit ihnen wird in Funktionen bzw. Prozeduren gearbeitet. Anders als Variablen werden die Datenstrukturen und Prozeduren hier global und nicht lokal definiert. Unter dem Befehl \MapleCommand{export} werden die Prozeduren zu Beginn des Moduls deklariert und sind so auch außerhalb des Moduls verwendbar. Soll beispielsweise eine Datenstruktur aus \MapleCommand{MPoint} in einem anderen Modul oder außerhalb der Module  verwendet werden wird sie wie folgt aufgerufen:
+
+\medskip
+
+\MapleCommand{P0 := MPoint:-New(x,y);} 
+
+\medskip
+
+Zusätzlich zu den Modulen für die Geometrien gibt es ein Modul (MConstant) zum Speichern von Konstanten und Namen. Dort ist für \MapleCommand{MVPOINT} z.B.  \glqq Point \grqq \, gespeichert oder z.B. eine Konstante für den Vergleich auf Null für reelle Zahlen.
+
+
+Zuletzt gibt es die Testdatei, welche kein Modul ist, in der die Module geladen, aufgerufen und in ihrer Funktion getestet werden. Zu dieser Datei später im Punkt \glqq 1.4 Maple Testdatei \grqq \, mehr.
+
+
+\section{Struktur eines Moduls}
+
+In dem folgenden Abschnitt geht es um den Zweck von Modulen und deren Struktur eingegangen. \medskip
+
+Es geht in dem Projekt darum die oben genannten Geometrien in einer Datenstruktur zu erfassen und sie in Maple darzustellen. Für die letztendliche Darstellung sind die Berechnungen und Formeln, die verwendet werden müssen, allerdings hinderlich. Module eignen sich sehr gut dafür die Berechnungen, die in Funktionen erfolgen, zusammenzufassen und zu verstecken. So kann in Maple auf die wichtigen Funktionen zugegriffen werden, ohne dass man sieht, was in diesen steht. \medskip
+
+Beispiel:
+
+Die Funktion \MapleCommand{Angle} aus dem Modul \MapleCommand{MPoint}: Funktion zur Berechnung eines Winkels zwischen Ortsvektor und x-Achse:
+
+\begin{alltt}
+\MapleCommand{
+
+Angle := proc(P)
+    local alpha, x, y;
+    x := GetX(P);
+    y := GetY(P);
+    alpha := 0;
+    if abs(x) < 0.00001 
+        then
+            alpha := 3*Pi/2;
+        else
+            alpha := Pi/2;
+        end if;
+    else
+        alpha := arctan(y/x);
+        if x < 0 
+        then
+            alpha := alpha + Pi;
+        else 
+            if y < 0
+            then
+                alpha := alpha + 2*Pi;
+            end if;
+        end if;
+    end if;
+    return factor(alpha);
+end proc;
+}
+\end{alltt}
+
+Diese Funktion ist lang, stellt aber nur einen kleinen Teil des Programms für die Darstellung dar, um die es geht. Deshalb steht sie in dem Modul und kann so extern mit einem einzigen Befehl aufgerufen werden: 
+
+\medskip
+
+\MapleCommand{Winkel := MPoint:-Angle(P)}
+
+\bigskip
+
+Im Folgenden Abschnitt wird die Struktur eines Moduls beschrieben. Da Maple hier sehr vielfältige  Möglichkeiten bietet, findet eine Beschränkung statt. Es wird nur die Struktur der verwendeten Module, hier anhand des Moduls\MapleCommand{MPoint}, beschrieben. Für tiefergehende Möglichkeiten wird hier auf das Handbuch von Maple \cite{Wat:2017a} verwiesen.
+
+\bigskip
+
+\underline{Struktur:}
+
+\bigskip
+
+Das Modul muss zunächst gestartet werden. Dies erfolgt mit dem Namen (hier immer ein großes M und die Geometrie) des Moduls und dem folgenden Befehl:
+
+\medskip
+
+
+\MapleCommand{MPoint := module()}
+
+\medskip
+
+Danach müssen, ähnlich wie in Prozeduren, die Variablen und Funktionen definiert werden. Dabei kann man entweder lokal oder global deklarieren. Werden die Variablen oder Prozeduren nur in dem Modul gebraucht und verändert, erfolgt die Deklaration mit dem Befehl \MapleCommand{local}  wie folgt:
+
+\medskip
+
+\begin{alltt}
+  \MapleCommand{local  Variablennamen, mit, Komma, getrennt;}
+\end{alltt}
+\medskip
+
+Sollen die Variablen oder Prozeduren auch außerhalb des Moduls verwendbar sein, wird mit \MapleCommand{export} dies definiert:
+
+
+\medskip
+
+\MapleCommand{export Funktionsnamen, mit, Komma, getrennt;}
+
+\medskip
+
+
+Daraufhin folgt die Angabe der Optionen:
+
+\MapleCommand{option package;},
+
+die Beschreibung des Moduls:
+
+\MapleCommand{description \grqq Selbstgewählte Modulbeschreibung z.B. Modul für Punkte \grqq ;}
+
+und die Initialisierung des Moduls:
+
+
+\begin{alltt}
+\MapleCommand{
+  ModuleLoad := proc
+     MVPOINT:=MConstant:-GetPoint();
+     print("Modul MPoint ist geladen"); 
+  end proc;}
+\end{alltt} 
+
+Ab hier wird programmiert wie sonst in Maple auch. Man verwendet die vorher definierten Prozedur- und Variablennamen und programmiert mit Befehlen die man außerhalb eines Moduls in Maple auch verwendet. Wichtig zu wissen ist, dass bei Modulen jede Funktion ständig abgerufen werden kann, die Reihenfolge der Funktionen also keine Rolle spielt. 
+
+\medskip
+
+Um zuletzt das Modul zu beenden, nutzt man den folgenden Befehl:
+
+\medskip
+
+\MapleCommand{end module;} 
+
+\subsection{Genereller Aufbau eines Moduls}
+
+Zusammenfassend haben die Module also folgendes Gerüst:
+ 
+\begin{alltt} 
+ \MapleCommand{Modulname := module()}
+ 	
+     \MapleCommand{local Namen, mit, Komma, getrennt;}
+ 		
+     \MapleCommand{export Namen, mit, Komma, getrennt;}
+ 		
+     \MapleCommand{global Namen, mit, Komma, getrennt;}\footnote{möglich, aber in den Modulen nicht verwendet}
+ 	           
+     \MapleCommand{option package;}
+ 		
+     \MapleCommand{description "Selbstgewählte Modulbeschreibung";}
+
+    
+     \MapleCommand{ModuleLoad := proc()}\footnote{Beispiel \MapleCommand{MPoint}}
+         \MapleCommand{MVPOINT:=MConstant:-GetPoint();}
+         \MapleCommand{print("Modul MPoint ist geladen");}
+     \MapleCommand{end proc;}
+ 		
+ 	\MapleCommand{Procedure1 := proc (Übergabeparameter)}
+         \MapleCommand{inhalt;}
+     \MapleCommand{end proc;}
+
+     \MapleCommand{Procedure2 := proc (Übergabeparameter)}
+         \MapleCommand{inhalt;}
+     \MapleCommand{end proc;}
+
+		
+     \MapleCommand{...}
+		
+ \MapleCommand{end module;}
+ 		
+\end{alltt}
+
+
+\newpage
+\subsection{Sicherung eines Moduls}
+
+Die Verwaltung von Module wird von Maple automatisch durchgeführt. Da aber die Module weitergegeben werden und einzeln zu bearbeiten sind, müssen einige  Einstellungen vorgenommen werden. Daher wird bei jeder Maple-Datei des Projekts folgender Präfix verwendet:
+
+1 \MapleCommand{restart;}
+
+2 \MapleCommand{with(LibraryTools);}
+
+3 \MapleCommand{lib := "C:/FH/Tools/Maple/MyLibs/Blending.mla";}
+
+4 \MapleCommand{march('open', lib);}
+
+5 \MapleCommand{ThisModule := 'MArc';}
+
+
+Die 1.Zeile initialisiert das System. Die nächsten 3 Zeile ermöglichen das Arbeiten mit Archiven. In der zweiten Zeile werden die Werkzeuge geladen, so dass die Variable \MapleCommand{lib} belegt werden kann. Alle Module werden in einem Archiv abgelegt; in diesem Beispiel ist es die Datei \MapleCommand{Blending.mla} im Verzeichnis \MapleCommand{C:/FH/Tools/Maple/MyLibs/}. Das Kommando \MapleCommand{ThisModule := 'MArc';} enthält den Namen des aktuellen Moduls. 
+
+\bigskip
+
+Ein Modul wird dann mittels des Befehls \MapleCommand{savelib('ModuleName')} gespeichert. Es wird dann eine Datei \MapleCommand{ModuleName.mla} angelegt. Je nach Konfiguration von Maple ist der eingestellte Pfad, wo die Datei automatisch angelegt wird, nicht beschreibbar. Dann kann man das System so konfigurieren, dass die mla-Datei im aktuellen Verzeichnis oder in einem Verzeichnis der eigenen Wahl abgelegt wird. 
+
+\bigskip
+
+Falls der obige Vorspann für eine Maple-Datei verwendet wird, genügt zum Speichern des Moduls
+
+\MapleCommand{savelib(ThisModule, lib);}
+
+
+\subsection{Verwendung eines Moduls}
+
+
+Ein Modul, das abgespeichert wurde, kann nun in anderen Maple-Worksheets verwendet werden. Dazu wird der Befehl
+
+\MapleCommand{with(ModuleName)}
+
+verwendet. Falls man einen speziellen Pfad verwendet hat, so kann Maple die Datei \MapleCommand{ModuleName.mla} nicht finden. Dann muss der Pfad bekannt gemacht werden, z.B.:
+
+\MapleCommand{savelibname := "c:/Maple/MyLibs";", savelibname;}
+
+Nun kann man auf die Prozeduren des Moduls zugegriffen werden. Eine Übersicht über alle exportierten Prozeduren wird durch den Befehl
+
+\MapleCommand{Describe(ModuleName)}
+
+angezeigt. Dabei wird eine List der Namen inklusiver der Namen der Übergabeparameter dargestellt. Falls eine Prozedur mit der Feld \MapleCommand{description} ausgestattet ist, so wird dieser Text zusätzlich wiedergegeben.
+
+
+\subsection{Erstellung eines Maple-Moduls}
+
+Die Erstellung eines eigenen Moduls ist schnellt erledigt, falls man den obigen Rahmen verwendet. Allerdings sollte man vorher einige Überlegungen anstellen und einen Standard pflegen. 
+
+\bigskip
+
+Bevor ein eigenes Modul erstellt wird, sollte das Datenmodell und die zugehörigen Prozeduren erarbeitet sein. Ein Programmablaufplan leistet hier gute Dienste. Die zentrale Aufgabe des Moduls ist in der Regel schnell ermittelt. Zusätzlich sollten aber folgende Regeln eingehalten werden.
+
+\bigskip
+
+\textbf{Regel 1} Grundsätzlich erhält sowohl das Modul als auch jede Prozedur eine Beschreibung. Diese beschränkt sich nicht auf das optionale Argument \MapleCommand{description}, sonder wird jeder Prozedur vorangestellt. Die Beschreibung enthält grundsätzlich die Beschreibung der Aufgabe. Dabei werden auch die Voraussetzung genannt bzw. eine Fehlerbhandlung beschrieben. Dann folgt die Beschreibung aller Eingabeparameter, deren Funktion und deren Datenstruktur. Der Rückgabewert wird anschließend beschrieben.
+
+\bigskip
+
+\textbf{Regel 2} Jedes Modul erhält eine Prozedur \MapleCommand{Version()}, die die aktuelle Versionsnummer zurückliefert.
+
+
+\bigskip
+
+\textbf{Regel 3} Daten sind nicht global. Um auf Daten zugreifen zu können, werden Proceduren \MapleCommand{Set*} und \MapleCommand{Get*} zur Verfügung gestellt. Auch innerhalb der Prozeduren eines Moduls werden diese Prozeduren verwendet.
+
+\bigskip
+
+\textbf{Regel 4} Für jede Prozedur wird mindestens eine Testfunktion geschrieben. Anhand der Testfunktion kann die Verwendung und ggfs. Besonderheiten dargestellt werden.
+
+\section{Funktionen der Module}
+
+Im folgendem werden die einzelnen Module aufgeführt. Die Datenstruktur jedes Moduls und alle Funktionen mit zugehöriger Aufgabe werden genannt.
+
+\subsection{Modul \MapleCommand{MPoint}}
+
+\MapleCommand{MPoint} ist ein Modul für Punkte und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für einen Punkt ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVPOINT, [x,y]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name "Point" und die Elemente sind die x- und die y-Koordinate für einen Punkt. Es wird hier kein Unterschied zwischen Punkt und Vektor gemacht. Ein Punkt kann auch als Vektor vom Koordinatenursprung zum Punkt gesehen werden. 
+
+Über die Get-Funktionen \MapleCommand{GetX} und \MapleCommand{GetY} kann man die Koordinaten des Punktes erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Punkten/Vektoren dann gerechnet werden.
+
+\bigskip
+
+\noindent
+\begin{tabular}{llp{90mm}}
+	  \multicolumn{3}{l}{\large \textbf{\MapleCommand{MPoint}}}  \\ \hline
+	 E & \textbf{\MapleCommand{New}}  & Datenstruktur für einen Punkt \\
+ 	 E & \textbf{\MapleCommand{GetX}} & Lesen der x-Koordinate \\
+	 E & \textbf{\MapleCommand{GetY}} & Lesen der y-Koordinate \\
+	 E & \textbf{\MapleCommand{Angle}} & Berechnung des Winkels zwischen x-Achse und dem Punkt \\
+	 E & \textbf{\MapleCommand{Add}} & Errechnet eine Linearkombination zweier Punkte/Vektoren \\
+	 E & \textbf{\MapleCommand{Sub}} & Errechnet die Differenz zweier Punkte/Vektoren\\
+	 E & \textbf{\MapleCommand{Cos}} & Errechnet den Cosinus zwischen zwei Vektoren\\
+	 E & \textbf{\MapleCommand{Sin}} & Errechnet den Sinus zwischen zwei Vektoren\\
+	 E & \textbf{\MapleCommand{Scale}} & Skaliert einen Vektor mit einem Faktor \\
+	 E & \textbf{\MapleCommand{Perp}} &  Errechnet einen Vektor, der orthogonal zum angegebenen Vektor ist \\
+	 L & \textbf{\MapleCommand{IllustrateXY}}  & Plot Funktion zur Darstellung eines blauen Punktes \\
+	 E & \textbf{\MapleCommand{Illustrate}}  & Darstellung eines blauen Punktes \\
+	 E & \textbf{\MapleCommand{Plot}}  & Darstellung eines grünen Punktes \\
+	 E & \textbf{\MapleCommand{Plot2D}}  & Darstellung eines Punktes mit eigenen Optionen \\
+	 E & \textbf{\MapleCommand{Length}}  & Errechnet den Abstand des Punktes zum Koordinatenursprung  \\
+	 E & \textbf{\MapleCommand{Uniform}}  & Normiert den Vektor auf die Länge 1 \\
+	 E & \textbf{\MapleCommand{LinetoVector}}  & Errechnet Vektor aus einer Strecke \\
+	 E & \textbf{\MapleCommand{Distance}}  & Errechnet den Abstand zwischen zwei Punkten \\
+	  \end{tabular}\\\\
+  
+  \bigskip
+  
+
+
+\subsection{Modul \MapleCommand{MLine}}
+  
+\MapleCommand{MLine} ist ein Modul für Strecken und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für eine Strecke ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVLINE, [P0,P1]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name \glqq Line\grqq{} und die Elemente sind der Start- und der Endpunkt für eine Strecke.
+
+Die Datenstruktur \MapleCommand{NewPointVerctor} ist ebenfalls eine Datenstruktur für eine Strecke, allerdings wird die Strecke hier über einen Startpunkt und einen Richtungsvektor definiert.
+
+Über die Get-Funktionen \MapleCommand{StartPoint} und \MapleCommand{EndPoint} kann man Start- und Endpunkt der Strecke erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Strecken dann gerechnet werden.
+  
+  \bigskip
+  
+\noindent  
+\begin{tabular}{llp{80mm}}
+  	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MLine}}}  \\ \hline
+  E	& \textbf{\MapleCommand{New}}  & Datenstruktur für eine Strecke (Zwei-Punkt-Form) \\
+  E	& \textbf{\MapleCommand{NewPointVector}}  & Schaffung einer Strecke (Punkt-Richtungs-Form) \\
+  E	& \textbf{\MapleCommand{StartPoint}}  & Lesen des Startpunktes \\
+  E	& \textbf{\MapleCommand{EndPoint}}  & Lesen des Endpunktes \\
+  E	& \textbf{\MapleCommand{Position}}  & Errechnen eines Punktes der auf der Strecke liegt \\
+  E	& \textbf{\MapleCommand{Plot2D}}  & Darstellung eines Teils der Strecke ausgehend vom Startpunkt \\
+  E	& \textbf{\MapleCommand{Plot2DTangent}}  & Darstellung eines Punktes mit Tangente \\
+  E	& \textbf{\MapleCommand{Plot2DTangentArrow}}  & Darstellung eines Punktes mit Tangente (als Pfeil)\\
+  E	& \textbf{\MapleCommand{LineLine}}  &  Errechnung des Schnittpunktes zweier Geraden\\
+  E	& \textbf{\MapleCommand{AngleLineLine }}  & Errechnung des Winkels zwischen  zwei Geraden
+   \end{tabular}\\\\
+
+\subsection{Modul \MapleCommand{MArc}}
+
+\MapleCommand{MArc} ist ein Modul für Kreisbögen und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für einen Kreisbogen ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVARC, [mx,my,r,phi,alpha]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name "Arc" und die Elemente sind die x- und y-Koordinate für den Mittelpunkt, der Radius, Der Startwinkel und die Winkeländerung für einen Kreisbogen.
+
+Über die Get-Funktionen \MapleCommand{GetM}, \MapleCommand{GetMX}, \MapleCommand{GetMY}, \MapleCommand{GetR}, \MapleCommand{GetPhi}, und \MapleCommand{GetAlpha} kann man die Daten für einen Kreisbogen erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Kreisbögen dann gerechnet werden.
+
+\bigskip
+
+\noindent
+\begin{tabular}{llp{90mm}}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{ MArc}}}  \\ \hline
+	E & \textbf{\MapleCommand{New}}  & Datenstruktur für einen Kreisbogen \\
+	E & \textbf{\MapleCommand{GetMX}}  & Lesen der x-Koordinate des Mittelpunktes\\
+	E & \textbf{\MapleCommand{GetMY}}  & Lesen der y-Koordinate des Mittelpunktes \\
+	E & \textbf{\MapleCommand{GetR}}  & Lesen des Radius \\
+	E & \textbf{\MapleCommand{GetPhi}} & Lesen des Startwinkels \\
+	E & \textbf{\MapleCommand{GetAlpha}}  & Lesen der Winkeländerung \\
+	E & \textbf{\MapleCommand{GetM}}  & Lesen des Mittelpunktes \\
+	E & \textbf{\MapleCommand{Position}}  & Errechnung eines Punktes auf dem Kreisbogen  \\
+	E & \textbf{\MapleCommand{Plot2D}}  & Darstellung eines Teils des Kreisbogens ausgehend vom Startwinkel \\
+	E & \textbf{\MapleCommand{Blend}}  & Errechnung eines Kreisbogens aus einem symmetrischen Hermite-Problem \\
+	\end{tabular}\\\\
+
+
+\subsection{Modul \MapleCommand{MBezier}}
+
+Die Datenstruktur \MapleCommand{New} für ein Polygon ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVBEZIER, [PointList]]}
+
+
+Innerhalb des Modules \MapleCommand{MBezier} existieren die in folgender Tabelle aufgeführten Prozeduren.
+
+\medskip
+
+\noindent
+\begin{tabular}{llp{75mm}}
+  \multicolumn{3}{l}{\large \textbf{\MapleCommand{MBezier}}}  \\ \hline
+  E & \textbf{\MapleCommand{New}}&Manuelle Eingabe von Kontrollpunkten für eine Bézier-Kurve\\
+  E & \textbf{\MapleCommand{Version}} & Ausgabe der Verions \\
+  E & \textbf{\MapleCommand{BlendCurvature}}&Bestimmung von Kontrollpunkten aus symmetrischen Hermite-Problem\\
+  E & \textbf{\MapleCommand{BlendCurvatureEpsilon}}&Bestimmung von Kontrollpunkten aus symmetrischen Hermite-Problem mit vorgegebenen Fehler\\
+  E & \textbf{\MapleCommand{Position}}& Position auf der Bézier-Kurve\\
+  E & \textbf{\MapleCommand{GetTheta}}&Lesen des Winkels\\
+  E & \textbf{\MapleCommand{GetEpsilon}}&Lesen des Toleranz\\
+  E & \textbf{\MapleCommand{GetControlPoint}}&Lesen der Kontrollpunkte\\
+  E & \textbf{\MapleCommand{Plot2D}}&Darstellung der Bézier-Kurve\\
+  E& \textbf{\MapleCommand{PlotControlPoints}}&Darstellung aller Kontrollpunkte\\
+\end{tabular}
+
+\bigskip
+
+
+\subsection{Modul \MapleCommand{MPolygon}}
+
+\MapleCommand{MPolygon} ist ein Modul für Polygonzüge und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für ein Polygon ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVPOLYGON, [PointList]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name "Polygon" und die Elemente sind beliebig viele Punkte.
+
+Über die Get-Funktionen \MapleCommand{GetPoint} und \MapleCommand{GetN} kann man die Anzahl der Punkte und die Punkte selbst erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Punkten bzw. dem Polygonzug dann gerechnet werden.
+
+\bigskip
+
+
+\noindent
+\begin{tabular}{llp{90mm}}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MPolygon}}}  \\ \hline
+	E & \textbf{\MapleCommand{New}}  & Datenstruktur für eine Punkteliste \\
+	E & \textbf{\MapleCommand{GetPoint}}  & Lesen des i-ten Punktes aus der Punkteliste\\
+	E & \textbf{\MapleCommand{GetN}}  & Bestimmung der Anzahl der Punkte in der Punkteliste\\
+	E & \textbf{\MapleCommand{Length}}  & Bestimmung der euklidischen Länge des Polygonzuges\\
+	E & \textbf{\MapleCommand{Position}}  & Berechnung eines Punktes auf dem Polygonzug\\
+	E & \textbf{\MapleCommand{Tangents}}  & Berechnung der Tangenten\\
+	L & \textbf{\MapleCommand{Plot2DAll}}  & Plotliste aller Punkte\\
+	E & \textbf{\MapleCommand{Plot2D}}  & Darstellung aller Punkte als Polygonzug\\
+	E & \textbf{\MapleCommand{Plot2DTangent}}  & Darstellung des Polygonzuges mit Tangenten\\
+	E & \textbf{\MapleCommand{PlotPoints}}  & Darstellung aller Punkte\\
+\end{tabular}\\\\
+
+\subsection{Modul \MapleCommand{MGeoList}}
+
+%todo MBiArc muss noch im Modul zugefügt werden
+
+\MapleCommand{MGeoList} ist ein Modul für eine Geometrieliste und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für eine Geometrieliste ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVGEOLIST, []]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name \glqq GeoList\grqq{} und die Elemente sind beliebig viele einzelne Geometrien.
+
+Über die Get-Funktionen \MapleCommand{GeoGeo} und \MapleCommand{GetN} kann man das i-te Element der Liste und die Anzahl der Elemente in der Liste erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Geometrien bzw. der Liste dann gerechnet werden. In den Funktionen \MapleCommand{Length}, \MapleCommand{Plot2DAll}, \MapleCommand{Plot2D} und \MapleCommand{Position} werden die Funktionen in sich selber aufgerufen. Dies ist möglich da die Funktionen unabhängig voneinander funktionieren.
+
+\bigskip
+
+\noindent
+\begin{tabular}{llp{8cm}}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MGeoList}}}  \\ \hline
+	E & \textbf{\MapleCommand{New}}  & Datenstruktur für eine Geometrieliste\\
+	E & \textbf{\MapleCommand{Append}}  & Anfügen eines Geometrieelements in die Datenstruktur\\
+	E & \textbf{\MapleCommand{Prepend}}  & Einfügen eines Geometrieelements als erstes Element der Liste\\
+	E & \textbf{\MapleCommand{Replace}}  & Ersetzen eines Geometrieelements durch ein Anderes\\
+	E & \textbf{\MapleCommand{GetN}}  & Bestimmung der Anzahl der Geometrieelemente in der Liste\\
+	E & \textbf{\MapleCommand{GeoGeo}}  & Lesen des i-ten Geometrieelements\\
+	E & \textbf{\MapleCommand{Length}}  & Errechnet die euklidische Länge der Geometrieelemente\\
+	E & \textbf{\MapleCommand{Position}}  & Berechnung eines Punktes auf der Geometrie \\
+	L & \textbf{\MapleCommand{Plot2DAll}}  & Plot Funktion für die Darstellung der Geometrieelemente\\
+	E & \textbf{\MapleCommand{Plot2D}}  & Darstellung eines Teils der Geometrieliste ausgehend vom  ersten Element\\
+\end{tabular}\\\\
+
+\subsection{Modul \MapleCommand{MHermiteProblem}}
+
+\MapleCommand{MHermiteProblem} ist ein Modul für Hermite-Probleme und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für eine Strecke ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+\MapleCommand{[MVHERMITEPROBLEM, [P0,T0n,P1,T1n]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name \glqq HermiteProb\grqq{} und die Elemente sind zwei Punkte mit zugehörigen Tangenten (Strecken).
+
+Über die Get-Funktionen \MapleCommand{StartPoint}, \MapleCommand{EndPoint}, \MapleCommand{StartTangent} und \MapleCommand{EndTangent} kann man die Punkte und ihre Tangenten erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Daten für das Hermite-Problem dann gerechnet werden.
+
+\bigskip
+
+\noindent
+\begin{tabular}{lll}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MHermiteProblem}}}  \\ \hline
+	E & \textbf{\MapleCommand{New}}  & Datenstruktur für ein Hermite-Problem\\
+	E & \textbf{\MapleCommand{StartPoint}}  & Lesen des Startpunktes\\
+	E & \textbf{\MapleCommand{EndPoint}}  & Lesen des Endpunktes\\
+	E & \textbf{\MapleCommand{StartTangent}}  & Lesen der Starttangente\\
+	E & \textbf{\MapleCommand{EndTangent}}  & Lesen der Endtangente\\
+	E & \textbf{\MapleCommand{Plot2D}}  & Darstellung des Hermite Problems\\
+\end{tabular}\\\\
+
+\subsection{Modul \MapleCommand{MHermiteProblemSym}}
+
+\MapleCommand{MHermiteProblemSym} ist ein Modul für symmetrische Hermite-Probleme und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für ein symmetrisches Hermite-Problem ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVHERMITEPROBLEMSYM, [P0,T0n,P1,T1n,S,L]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name \glqq SymHermiteProb\grqq{} und die Elemente sind zwei Punkte mit zugehörigen Tangenten, ihr Schnittpunkt, und der Abstand der Punkte zum Schnittpunkt.
+
+Über die Get-Funktionen \MapleCommand{StartPoint}, \MapleCommand{EndPoint}, \MapleCommand{StartTangent}, \MapleCommand{EndTangent}, \MapleCommand{CrossPoint} und \MapleCommand{ParameterL} kann man die Daten erfassen und in anderen Funktionen verwenden. Über die anderen Funktionen kann mit den Daten für das symmetrische Hermite-Problem dann gerechnet werden.
+
+\bigskip
+
+\noindent
+\begin{tabular}{llp{80mm}}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MHermiteProblemSym}}}  \\ \hline
+	E & \textbf{\MapleCommand{New}}  & Datenstruktur für ein Symmetrisches Hermite-Problem\\
+	E & \textbf{\MapleCommand{StartPoint}}  & Lesen des Startpunktes\\
+	E & \textbf{\MapleCommand{EndPoint}}  & Lesen des Endpunktes\\
+	E & \textbf{\MapleCommand{StartTangent}}  & Lesen der Starttangente\\
+	E & \textbf{\MapleCommand{EndTangent}}  & Lesen der Endtangente\\
+	E & \textbf{\MapleCommand{ParameterL}}  & Lesen des Abstandes\\
+	E & \textbf{\MapleCommand{CrossPoint}}  & Lesen des Schnittpunktes\\
+	E & \textbf{\MapleCommand{Plot2D}}  & Darstellung des symmetrischen Hermite Problems\\
+	E & \textbf{\MapleCommand{Create}}  & Erzeugung eines Sym. Hermite-Problems durch 3 Punkte\\
+	E & \textbf{\MapleCommand{BlendArc}}  & Verrundung des Eckpunktes durch einen Kreisbogen\\
+\end{tabular}
+
+\subsection{Modul \MapleCommand{MConstant}}
+
+\MapleCommand{MConstant} ist ein Modul zum Speichern von festen Konstanten und Namen zur Kennung der Datenstrukturen. In der lokal deklarierten Funktionen, beginnend mit CV, werden die Konstanten zur Deklaration der verschiedenen Geometrien definiert. Dies sind Namen zur Erkennung der Geometrieelemente in der Testdatei. In den global deklarierten Funktionen, beginnend mit Get, erfolgt die Rückgabe der Namen zur Kennung der Geometrieelemente.
+
+\bigskip
+
+
+\noindent
+\begin{tabular}{llp{80mm}}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MConstant}}}  \\ \hline
+    L & \textbf{\MapleCommand{NULLEPS}}  & Konstante zum Vergleich auf Null\\
+	L & \textbf{\MapleCommand{CVPOINT}}  & Konstante für Geometrieelemente: Point\\
+	L & \textbf{\MapleCommand{CVLINE}}  & Konstante für Geometrieelemente: Line\\
+	L & \textbf{\MapleCommand{CVARC}}  & Konstante für Geometrieelemente: Arc\\
+	L & \textbf{\MapleCommand{CVPOLYGON}}  & Konstante für Geometrieelemente: Polygon\\
+	L & \textbf{\MapleCommand{CVGEOLIST}}  & Konstante für Geometrieelemente: GeoList\\
+	L & \textbf{\MapleCommand{CVHERMITEPROBLEM}}  & Konstante für Geometrieelemente: HermiteProb\\
+	L & \textbf{\MapleCommand{CVHERMITEPROBLEMSYMMETRIC}}  & Konst. für Geometrieelemente: SymHermiteProb\\
+	L & \textbf{\MapleCommand{CVBIARC}}  & Konst. für Geometrieelemente: Biarc\\
+	E & \textbf{\MapleCommand{GetNullEps}}  & Rückgabe des Nullvergleichs\\
+	E & \textbf{\MapleCommand{GetPoint}}  & Kennung für Punkte\\
+	E & \textbf{\MapleCommand{GetLine}}  & Kennung für Strecken \\
+	E & \textbf{\MapleCommand{GetArc}}  & Kennung für Kreisbögen\\
+	E & \textbf{\MapleCommand{GetPolygon}}  & Kennung für Polygone\\
+	E & \textbf{\MapleCommand{GetGeoList}}  & Kennung für Geometrielisten \\
+	E & \textbf{\MapleCommand{GetHermiteProblemSymmetric}}  & Kennung für symmetrische Hermite-Probleme\\
+	E & \textbf{\MapleCommand{GetHermiteProblem}}  & Kennung für Hermite-Probleme\\
+	E & \textbf{\MapleCommand{GetBiarc}}  & Kennung für Biarcs\\
+\end{tabular}\\\\
+
+\subsection{Modul \MapleCommand{MGeneralMath}}
+
+\MapleCommand{MGeneralMath} ist ein Modul für allgemeine mathematische Funktionen und arbeitet mit den Datenstrukturen und Prozeduren.
+
+
+\bigskip
+
+\noindent
+\begin{tabular}{llp{85mm}}
+	\multicolumn{3}{l}{\large \textbf{\MapleCommand{MGeneralMath}}}  \\ \hline
+	E & \textbf{\MapleCommand{MPoint}}  & Datenstruktur für einen Punkt\\
+	E & \textbf{\MapleCommand{MPointX}}  & Lesen der x-Koordinate für einen Punkt\\
+	E & \textbf{\MapleCommand{MPointY}}  & Lesen der y-Koordinate für einen Punkt\\
+	L & \textbf{\MapleCommand{MPointIllustrateXY}}  & Plotstruktur für einen blauen Punkt\\
+	E & \textbf{\MapleCommand{MPointIllustrate}}  & Darstellung eines blauen Punktes\\
+	E & \textbf{\MapleCommand{MPointPlot}}  & Darstellung eines grünen Punktes\\
+	E & \textbf{\MapleCommand{MLine}}  & Datenstruktur für eine Strecke\\
+	E & \textbf{\MapleCommand{MLineStartPoint}}  & Lesen des Startpunktes für eine Strecke\\
+	E & \textbf{\MapleCommand{MLineEndPoint}}  & Lesen des Endpunktes für eine Strecke\\
+	E & \textbf{\MapleCommand{MPointOnLine}}  & Berechnung eines Punktes auf der Strecke\\
+	E & \textbf{\MapleCommand{MLinePlot2D}}  & Darstellung des Teils einer Strecke beginnend beim Startpunkt\\
+    E & \textbf{\MapleCommand{MLineLine}}  & Errechnen des Schnittpunktes zweier Strecken\\
+\end{tabular}
+
+
+
+\subsection{Modul \MapleCommand{Biarc}}
+
+\subsubsection{Datenstruktur}
+
+Voraussetzungen und Festlegungen:
+
+Der Biarc soll ein dafür verwendet werden ein Hermite-Problem zu lösen. Ein Hermite Problem ist wie folgt definiert:
+
+Gegeben seien zwei Punkte $P_0$ und $P_1$ mit zugehörigen normierten Tangenten $\vec{t}_0$ und $\vec{t}_1$. Der Biarc muss die Punkte so verbinden, dass die Tangenten des Start- und des Endpunktes des Biarcs mit den Tangenten des Hermites-Problems übereinstimmen.
+
+
+Datenstruktur:
+
+Die Datenstruktur \MapleCommand{New} für einen Biarc muss zwei Kreisbögen enthalten.
+
+Benötigt wird also die Datenstruktur für einen Kreisbogen: \MapleCommand{MArc:-New}
+
+Diese enthält wiederum die Koordinaten für den Mittelpunkt, den Radius, den Startwinkel und die Winkeländerung.
+
+\subsection{Modul \MapleCommand{MBiarc}}
+
+\MapleCommand{MBiarc} ist ein Modul für Biarcs und arbeitet mit einer Datenstruktur und mit Prozeduren/Funktionen. Die Datenstruktur \MapleCommand{New} für einen Biarc ist eine Liste, die wie folgt aufgebaut ist:
+
+\medskip
+
+\MapleCommand{[MVBIARC, [Arc0, Arc1]]}
+
+\medskip
+
+Ihr erstes Element ist ein Name zur Kennung des Moduls. Ihr zweites Element ist erneut eine Liste in der sich die Elemente der Geometrie befinden. In diesem Fall ist der Name \glqq Biarc\grqq{} und die Elemente sind zwei Kreisbögen.
+
+Über die Get-Funktionen \MapleCommand{GetArc0} und  \MapleCommand{GetArc1} kann man die beiden Kreisbögen für den Biarc erfassen. Mit den unten aufgeführten Funktionen kann man die Daten für den Biarc errechnen. 
+
+\noindent
+\begin{tabular}{llp{90mm}}
+  \multicolumn{3}{l}{\large \textbf{\MapleCommand{MBiarc}}}  \\ \hline
+  E & \textbf{\MapleCommand{New}}  & Datenstruktur für einen Biarc\\
+  E & \textbf{\MapleCommand{GetArc0}}  & Lesen des ersten Kreisbogens\\
+  E & \textbf{\MapleCommand{GetArc1}}  & Lesen des zweiten Kreisbogens\\
+  E & \textbf{\MapleCommand{Circle}}  & Berechnung des Kreises $K_J$ aus den Daten des Hermite-Problems\\
+  E & \textbf{\MapleCommand{Plot2DCircle}}  & Darstellung des Kreises $K_J$ \\
+  E & \textbf{\MapleCommand{angle}}  & Errechnet den Winkel vom Kreismittelpunkt zu Punkten auf dem Kreis \\
+  E & \textbf{\MapleCommand{Plot2D}}  & Darstellung des Biarcs\\
+  E & \textbf{\MapleCommand{ConnectionPoint}}  & Errechnung des VerbindungsPunktes J (Equal Chord)\\
+  E & \textbf{\MapleCommand{TangentTj}}  & Errechnen der Tangente an J\\
+  E & \textbf{\MapleCommand{Tangent Biarc}}  & Drehung von Tj für den Biarc\\
+  E & \textbf{\MapleCommand{BiarcCenter}}  & Errechnen der Mittelpunkte der Kreisbögen des Biarcs\\
+  E & \textbf{\MapleCommand{Biarc}}  & Errechnen des Biarcs\\
+  E & \textbf{\MapleCommand{Position}}  & Ermitteln eines Punktes auf dem Biarc\\
+  E & \textbf{\MapleCommand{Blend}}  & Errechnen des Biarcs nur aus dem Hermite-Problem\\
+\end{tabular}
+
+
+
+\section{Programmablaufplan}
+
+\subsection{Gesamauf}
+
+\tikzstyle{decision} = [diamond, draw, fill=blue!20,
+    text width=4.5em, text badly centered, node distance=2.5cm, inner sep=0pt]
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,
+    text width=6em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{storage} = [rectangle, draw, fill=blue!20,
+    text width=6em, text centered,  minimum height=4em]
+\tikzstyle{line} = [draw, very thick, color=black!50, -latex']
+\tikzstyle{cloud} = [draw, ellipse,fill=red!20, node distance=2.5cm,
+    minimum height=2em]
+%\tikzstyle{input} = [trapezium, trapezium left angle=70, trapezium right angle=110,minimum height=4em,text centered, draw=black, fill=blue!20, minimum width=0pt] 
+\tikzstyle{input} = [draw,trapezium, trapezium left angle=70,trapezium right angle=110,text width=18mm,inner ysep=17pt,align=center,fill=blue!20]
+%\tikzstyle{predefinedprocess} = [rectangle split, rectangle split horizontal,rectangle split parts=3,draw, fill=blue!20,
+%    text width=6em, text centered,  minimum height=4em]
+\tikzstyle{terminator} = [rounded rectangle, draw, fill=blue!20,
+    text width=6em, text centered, minimum height=4em]
+
+\tikzstyle{list} = [tape, tape bend top=none, base]
+
+%\node at (0,-2)[draw,rectangle split, rectangle split horizontal,rectangle split parts=3,minimum height=1cm] {\nodepart{two}\shortstack{Predefined\\Process}}
+
+
+\begin{center}
+
+\begin{figure}
+\begin{tikzpicture}[scale=2, node distance = 3cm, auto,font={\sffamily \small}]
+    % Place nodes
+    \node [predefined process] (init) {Initialisierung};
+    \node [input, below of=init,node distance=25mm] (eingabe) {\shortstack{Eingangsdaten\\ $P_0$, $\vec{t}_0$, $P_1$, $\vec{t}_1$}};
+    \node [cloud, left of=eingabe] (datei) {Datei};
+    \node [decision, below of=eingabe,node distance=30mm] (decide) {Überprüfung der Eingangsdaten};
+    \node [predefined process, below of=decide, node distance=3cm] (blend) {Berechnung der Verrundungskurve};
+    \node [block, below of=blend] (result) {Ausgabe};
+   \node [block, right of=blend, node distance=30mm] (error) {Fehlerausgabe};
+    % Draw edges
+    \path [line] (init) -- (eingabe);
+    \path [line] (eingabe) -- (decide);
+   \path [line] (decide) -| node [near start, color=black] {nein} (error);
+    \path [line] (decide) -- node [near start, color=black] {ja}(blend);
+    \path [line,dashed] (datei) -- (eingabe);
+    \path [line] (blend) -- (result);
+    \path [line] (error) |- (result);
+\end{tikzpicture}
+  \caption{Programmablaufplan \glqq Eckenverrrundung\grqq}
+ 
+\end{figure}
+\end{center}
+
+\subsection{Verrundung der Kurve}
+
+
+\begin{center}
+	\begin{figure}
+\begin{tikzpicture}[scale=2, node distance = 20mm, auto,font={\sffamily \small}]
+    % Place nodes
+    \node [input, below of=init,node distance=25mm] (eingabe) {\shortstack{Eingangsdaten\\ $P_0$, $\vec{t}_0$, $P_1$, $\vec{t}_1$}};
+    \node [decision, below of=eingabe,node distance=30mm] (decide) {Kurventype};
+    \node [below of = decide] (blank) { };    
+    \node [predefined process, right of=blank, node distance=30mm] (arc) {\shortstack{Verrundungs-\\kurve:\\ Arc}};
+    \node [left of = arc,node distance=13mm] (arcl) {};    
+    \node [right of = arc,node distance=13mm] (arcr) {};    
+    \node [predefined process, below of=arc] (biarc) {\shortstack{Verrundungs-\\kurve:\\ Biarc}};
+    \node [left of = biarc,node distance=13mm] (biarcl) {};    
+    \node [right of = biarc,node distance=13mm] (biarcr) {};    
+    \node [predefined process, below of=biarc] (clothoid) {\shortstack{Verrundungs-\\kurve:\\ Klothoid}};
+    \node [left of = clothoid,node distance=13mm] (clothoidl) {};    
+    \node [right of = clothoid,node distance=13mm] (clothoidr) {};    
+    \node [predefined process, below of=clothoid] (phcurve) {\shortstack{Verrundungs-\\kurve:\\ PH-Kurve}};
+    \node [left of = phcurve,node distance=13mm] (phcurvel) {};    
+    \node [right of = phcurve,node distance=13mm] (phcurver) {};    
+    \node [predefined process, below of=phcurve] (hermite) {\shortstack{Verrundungs-\\kurve:\\ Hermite-Kurve}};
+    \node [left of = hermite,node distance=13mm] (hermitel) {};    
+    \node [right of = hermite,node distance=13mm] (hermiter) {};    
+    \node [predefined process, below of=hermite] (blendtype) {\shortstack{Verrundungs-\\kurve:\\ \ldots}};
+    \node [left of = blendtype,node distance=13mm] (blendtypel) {};    
+    \node [right of = blendtype,node distance=13mm] (blendtyper) {};    
+       
+    \node [right of=blendtype] (blank2) { };    
+       
+    \node [block, below of=blank2] (result) {Ausgabe};
+    \node [block, right of=result,node distance=30mm] (error) {Fehlerausgabe};
+    \node [terminator, below of=result] (end) {Ende};    % Draw edges
+    \path [line] (eingabe) -- (decide);
+   \path [line] (decide) -| node [near start, color=black] {nicht definiert} (error);
+    \path [line] (decide) |- node [near start, color=black] {<type>}(arcl);
+    \path [line,] (decide) |- (biarcl);
+    \path [line] (decide) |- (clothoidl);
+    \path [line] (decide) |- (phcurvel);
+    \path [line] (decide) |- (hermitel);
+    \path [line] (decide) |- (blendtypel);
+    \path [line] (result) -- (end);
+    \path [line] (error) |- (end);
+    \path [line] (arcr) -| (result);
+    \path [line] (biarcr) -| (result);
+    \path [line] (clothoidr) -| (result);
+    \path [line] (phcurver) -| (result);
+    \path [line] (hermiter) -| (result);
+    \path [line] (blendtyper) -| (result);
+\end{tikzpicture}
+
+  \caption{Programmablaufplan \glqq Auswal der Verrundungsstrategien\grqq}
+
+\end{figure}
+\end{center}

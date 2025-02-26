@@ -1,0 +1,93 @@
+% !TeX document-id = {fe1f9a5d-9972-4d34-a1ec-65a66cf43fb4}
+%%%%%%
+%
+% $Autor: Sudeshna Nanda $
+% $Datum: 2024-10-18 $
+% $Version: 1 $
+% $Pfad: $Pfad: ML23-06-Magic-Wand-with-an-Arduino-Nano-33-BLE-sense/manual/MagicWandManual.tex $
+%
+% !TeX encoding = utf8
+% !TeX root = CornerBlending
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%
+
+
+\documentclass[12pt,a4paper]{scrbook}
+
+% Auswahl der Sprache
+% Die nicht gewünschte Sprache muss auskommentiert werden:
+%\def\isGerman{1}
+\def\isEnglish{1}
+%\usepackage{acro}
+\usepackage{tikz}
+\usetikzlibrary{3d,shadows}
+
+\include{General/Packages}
+\include{General/commands}
+\include{General/tikzdefs}
+
+%\input{General/acronyms}
+\input{General/Hyphenations}%
+
+\addbibresource{../Documents/literature.bib}
+\addbibresource{../Documents/MyLiterature.bib}
+
+\begin{document}
+ 
+
+\InputLanguage{Contents/}{Titlepage} 
+\newpage
+
+\pagenumbering{roman}
+
+\tableofcontents
+\cleardoublepage
+
+\addcontentsline{toc}{chapter}{\TRANS{Abbildungsverzeichnis}{List of figures}}
+\listoffigures
+\cleardoublepage
+
+\addcontentsline{toc}{chapter}{\TRANS{Tabellenverzeichnis}{List of tables}}
+\listoftables
+\cleardoublepage
+
+\chapter*{\TRANS{Abkürzungen}{Acronyms}}
+\addcontentsline{toc}{chapter}{\TRANS{Abkürzungen}{Acronyms}}
+
+\cleardoublepage
+
+\pagenumbering{arabic}
+
+\InputLanguage{Contents/}{Welcome}
+
+\InputLanguage{Contents/}{SafetyInstructions}
+
+\InputLanguage{Contents/}{Overview}
+
+\InputLanguage{Contents/}{GetStarted}
+
+\InputLanguage{Contents/}{ProductMainFunctions}
+
+\InputLanguage{Contents/}{UsingMagicWand}
+
+\InputLanguage{Contents/}{SystemRequirements}
+
+\InputLanguage{Contents/}{Troubleshooting}
+
+\InputLanguage{Contents/}{Warranty}
+
+\InputLanguage{Contents/}{FAQ}
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{\TRANS{Literaturverzeichnis}{Bibliography}}
+\printbibliography
+
+
+\cleardoublepage
+
+%\renewcommand{\indexname}{\TRANS{Stichwortverzeichnis}{Index}}
+%\addcontentsline{toc}{chapter}{\TRANS{Stichwortverzeichnis}{Index}}
+%\printindex
+
+\end{document}

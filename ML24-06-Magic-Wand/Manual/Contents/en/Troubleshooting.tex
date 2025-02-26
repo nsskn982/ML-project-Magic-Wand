@@ -1,0 +1,71 @@
+%%%%%%
+%
+% $Autor: Sudeshna Nanda $
+% $Datum: 2024-10-20 $
+% $Pfad: ML23-06-Magic-Wand-with-an-Arduino-Nano-33-BLE-sense/manual/Contents/en/Troubleshooting.tex $
+% $Version: 1 $
+%
+%%%%%%
+
+
+
+\chapter{Troubleshooting and Maintenance}
+
+\section{Troubleshooting}
+
+If the Magic Wand seems to have a problem, first review this list of possible problems and solutions.
+If none of these troubleshooting tips apply, please visit \url{www.magic-wand.com} and click on Support.
+
+%Problem & Check the following 
+%Cannot turn on & Make sure that the AC 
+%No Led green light when connect & C2 
+
+\subsection{The Magic Wand can't turn on(i.e. Power LED or Orange Programmable LED are not working)}
+
+\subsubsection{Common Issues}
+
+\begin{itemize}
+	\item Ensure you have FULLY inserted the USB cables.
+	\item Check you have a COMMON GROUND where required.
+	\item Where possible use USB 2.0 ports or a USB 2.0 POWERED HUB to rule out USB 3.0 issues.
+	\item Try other computers where possible.
+	\item Try other USB leads where possible.
+	\item You may not have the correct driver installed. CH340/341 12 or CP2102 9 or FT232 VCP Drivers - FTDI 11
+	\item There may be a problem with the board check or remove your wiring first.
+	\item Remove any items connected to pins 0 and 1.
+\end{itemize}
+
+\subsubsection{Computer Related}
+
+\begin{itemize}
+	\item Close any other serial programs before opening the IDE.
+	Ensure you turn off any additional security / antivirus just to test.
+	\item There may be a problem with the PC try RESTARTING it.
+	\item You select the wrong COM port.
+	\item Avoid cloud/network based installations where possible OR ensure your Network/Cloud software is RUNNING.
+	\item Clear your browsers CACHE.
+	\item Close the IDE before using any other serial programs.
+	Preferably install IDE’s as ADMINISTRATOR or your OS equivalent
+\end{itemize}
+	
+\subsection{I am not getting the gesture which I waved}
+	\begin{itemize}
+		\item \textbf{Review Technique:} Revisit the gesture instructions to confirm you are performing the movements correctly.
+		\item \textbf{Clear Space:} Make sure you have ample space around you, free from obstructions that could interfere with gesture detection.
+		\item \textbf{Re-hold} Hold the wand in a manner properly. If the gesture still cannot detect, please contact the authorised dealers or service centres for further assistance. 
+	\end{itemize}
+	
+\subsection{Is it wireless, Can I connect it with Bluetooth?}
+	It can be connected with the Bluetooth, but as there is no inbuilt battery it should be powered by connecting it with the Micro-B USB cable to the computer.
+	
+\subsection{How to turn on/turn off the magic wand?}
+	The board is powered via USB connector. Once turned on, Power green LED lights up. Removing the cable from the USB port can turn off the Magic Wand. 
+
+\section{Maintenance}
+
+\subsection{Caring for the Magic Wand}
+
+	\begin{itemize}
+		\item Do not spray water or any liquid directly onto the board. Any liquid that goes into the product may cause a failure, fire, or electric shock.
+		\item To clean the wand, gently wipe away smudges and fingerprints on the stick with a micro-fiber cloth. Clean the body of the wand only with a micro-fiber cloth dampened with a small amount of water. After that, remove the moisture with a dry cloth. While cleaning, do not apply strong force to the board because it can damage the board. Only the wand body can be cleaned, not the board. Never use flammable liquids (benzene, thinner, etc.) or a cleaning agent. For stubborn smudges, spray a small amount of water on a micro-fiber cloth, and then use the cloth to wipe away the smudges.
+	\end{itemize}

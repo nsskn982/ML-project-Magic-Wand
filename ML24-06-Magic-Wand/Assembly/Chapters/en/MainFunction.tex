@@ -1,0 +1,192 @@
+%%%%%%%%%%%%
+%
+% $Autor: Adhiraj Walse $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: MainFunction.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = manual 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Main Function}
+This document provides a detailed guide to the manufacturing and assembly of a Magic Wand using the Arduino Nano 33 BLE Sense. The project leverages the onboard IMU (Inertial Measurement Unit) and machine learning to detect motion gestures, which can be mapped to different magical spells or actions.
+
+The Main Functions of the Assembly and Manufacturing Process for the Magic Wand.
+
+
+\section{Structural Design and Fabrication}
+\subsection{Wand Body Design}
+\begin{itemize}
+	\item Use CAD software (Fusion 360, SolidWorks, Tinkercad) for modeling.
+	\item Design includes:
+	\begin{itemize}
+		\item Hollow tube to house components.
+		\item Openings for LEDs, buttons, and charging ports.
+		\item Secure space for wiring and batteries.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Material Selection}
+\begin{itemize}
+	\item \textbf{3D Printing}: PLA or ABS plastic for lightweight, durable structure.
+	\item \textbf{Woodworking}: Carved wooden body for an authentic look.
+	\item \textbf{Acrylic/PVC}: Tubes for a transparent or modern design.
+\end{itemize}
+
+\subsection{Fabrication Process}
+\begin{itemize}
+	\item 3D print in two halves for easy component integration.
+	\item If using wood, drill a hollow channel for internal components.
+	\item Sand and smooth edges for comfort and aesthetics.
+\end{itemize}
+
+\section{Component Integration and Circuit Assembly}
+\subsection{Electronic Components}
+\begin{itemize}
+	\item \textbf{Microcontroller}: Arduino Nano 33 BLE Sense.
+	\item \textbf{Motion Sensor}: Built-in LSM9DS1 (9-axis IMU).
+	\item \textbf{Power Source}: Li-Po battery (3.7V, 500mAh+) or AAA with step-up converter.
+	\item \textbf{Lighting}: WS2812 (Neopixel) LED strip or single RGB LED.
+	\item \textbf{Switch/Button}: Tactile push-button or capacitive touch sensor.
+	\item \textbf{Vibration Motor (Optional)}: For haptic feedback.
+\end{itemize}
+
+\subsection{Circuit Assembly}
+\begin{itemize}
+	\item Wire the LED strip to the Arduino (D6 for data, 5V power, GND).
+	\item Connect the button to a digital input pin with a pull-up resistor.
+	\item Integrate the power supply (Li-Po with charging module or step-up circuit).
+	\item Solder and insulate connections with heat shrink tubing.
+\end{itemize}
+
+\section{Software and Functional Testing}
+\subsection{Code Upload and Gesture Recognition}
+Upload firmware to Arduino using the Arduino IDE. The IMU reads motion data and triggers LED effects.
+
+\begin{lstlisting}[
+	language=C++, 
+	basicstyle=\ttfamily\footnotesize, 
+	frame=single, 
+	numbers=left, 
+	numberstyle=\tiny\color{gray}, 
+	keywordstyle=\bfseries\color{blue}, 
+	stringstyle=\color{red}, 
+	commentstyle=\color{green}, 
+	tabsize=4, 
+	breaklines=true, 
+	caption=Gesture Detection Code, 
+	captionpos=b, 
+	label=lst:gesture_detection
+	]
+	#include <Arduino_LSM9DS1.h>
+	
+	void setup() {
+		Serial.begin(115200);
+		if (!IMU.begin()) {
+			Serial.println("IMU initialization failed!");
+			while (1);
+		}
+	}
+	
+	void loop() {
+		float ax, ay, az;
+		if (IMU.accelerationAvailable()) {
+			IMU.readAcceleration(ax, ay, az);
+			if (ax > 1.5) {
+				Serial.println("Right Swipe Detected!");
+			}
+		}
+		delay(100);
+	}
+\end{lstlisting}
+
+Reference to the code: See Listing~\ref{lst:gesture_detection}.
+
+\subsection{LED Control}
+Different spells are represented by different colors.
+
+\begin{lstlisting}[
+	language=C++, 
+	basicstyle=\ttfamily\footnotesize, 
+	frame=single, 
+	numbers=left, 
+	numberstyle=\tiny\color{gray}, 
+	keywordstyle=\bfseries\color{blue}, 
+	stringstyle=\color{red}, 
+	commentstyle=\color{green}, 
+	tabsize=4, 
+	breaklines=true, 
+	caption=LED Animation Code, 
+	captionpos=b, 
+	label=lst:led_animation
+	]
+	#include <Adafruit_NeoPixel.h>
+	
+	#define LED_PIN 6
+	#define NUM_LEDS 5
+	
+	Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
+	
+	void setup() {
+		strip.begin();
+		strip.show();
+	}
+	
+	void loop() {
+		strip.fill(strip.Color(255, 0, 0), 0, NUM_LEDS);
+		strip.show();
+		delay(500);
+		
+		strip.fill(strip.Color(0, 0, 255), 0, NUM_LEDS);
+		strip.show();
+		delay(500);
+	}
+\end{lstlisting}
+
+Reference to the code: See Listing~\ref{lst:led_animation}.
+
+\subsection{Debugging and Optimization}
+\begin{itemize}
+	\item Use Serial Monitor to check real-time IMU data.
+	\item Adjust motion detection thresholds.
+	\item Optimize LED animations for smooth transitions.
+\end{itemize}
+
+\section{Final Assembly and Enclosure Sealing}
+\subsection{Component Placement}
+\begin{itemize}
+	\item Insert Arduino and battery securely into the wand body.
+	\item Align buttons and LEDs with pre-cut openings.
+	\item Neatly route wires to prevent obstruction.
+\end{itemize}
+
+\subsection{Securing Components}
+\begin{itemize}
+	\item Use hot glue, foam padding, or brackets to hold parts.
+	\item Ensure easy battery access for charging or replacement.
+\end{itemize}
+
+\subsection{Sealing the Wand}
+\begin{itemize}
+	\item Attach final cap using screws, magnets, or snap-fit design.
+	\item Glue wooden or acrylic parts carefully for a secure fit.
+\end{itemize}
+
+\section{Aesthetic Finishing and Quality Control}
+\subsection{Painting and Decoration}
+\begin{itemize}
+	\item Apply wood stain, metallic paint, or matte finish.
+	\item Use engravings, decals, or resin casting for aesthetics.
+	\item Wrap handle in leather or grip tape for better handling.
+\end{itemize}
+
+\subsection{Quality Checks}
+\begin{itemize}
+	\item Verify gesture recognition accuracy.
+	\item Test LED animations and haptic feedback.
+	\item Check battery life and power efficiency.
+	\item Perform durability tests.
+\end{itemize}

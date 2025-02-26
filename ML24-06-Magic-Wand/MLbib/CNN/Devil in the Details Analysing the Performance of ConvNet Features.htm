@@ -1,0 +1,1390 @@
+﻿<!DOCTYPE HTML>
+<!-- saved from url=(0074)https://www.slideshare.net/KenChatfield/chatfield14-devil -->
+<!DOCTYPE html PUBLIC "" ""><HTML lang="en"><HEAD prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# 2490221586: http://ogp.me/ns/fb/2490221586#"><META 
+content="IE=11.0000" http-equiv="X-UA-Compatible">
+     
+<META charset="utf-8">     
+<META name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no"> 
+    
+<META name="include_mode" content="async">     <!-- SL:start:notranslate -->     
+<TITLE>Devil in the Details: Analysing the Performance of ConvNet 
+Features</TITLE>     
+<META name="description" content="Presentation to accompany paper: http://www.robots.ox.ac.uk/~vgg/research/deep_eval/"> 
+    <!-- SL:end:notranslate -->     
+<META name="robots" content="index">     
+<META id="globalTrackingUrl" content="https://www.linkedin.com/li/track">        
+ <!-- SL:start:notranslate -->      
+<META http-equiv="x-dns-prefetch-control" content="on">   
+<META name="thumbnail" content="https://cdn.slidesharecdn.com/ss_thumbnails/chatfield14-devil-150604135047-lva1-app6892-thumbnail.jpg?cb=1433425924"> 
+  <!-- SL:end:notranslate -->   
+<META name="ss-i18n-translations" content='{"lynda.domain":"lynda","lynda.premium_video":"PREMIUM VIDEO","lynda.tld":".com","right_rail.recommended":"Recommended","views.other":"views","share":"Share","select":"Select","selected":"Selected","clipping.select_clipboard_modal.select_another_clipboard":"Select another clipboard","clipping.select_clipboard_modal.select_new_clipboard":"Select a new clipboard","clipping.toast.change_clipboard":"Change clipboard","clipping.toast.share_clip":"Share clip","clipping.toast.close":"Close","li_connect.slideshare_added":"Your SlideShare was successfully added to your LinkedIn profile.","li_connect.login.no_match":"Login does not match, please try again.","ajax_signup.login.download":"Login to SlideShare to download\u2026","ajax_signup.login.addcontact":"Login to SlideShare to follow\u2026","ajax_signup.login.favorite":"Login to SlideShare to like\u2026","ajax_signup.login.comments":"Login to SlideShare to post a comment\u2026","ajax_signup.login.AddToCommunity":"Login to SlideShare to add this document to a group/event\u2026","ajax_signup.login.follow":"Login to SlideShare to follow this user\u2026","ajax_signup.login.business":"Login to SlideShare to continue\u2026","ajax_signup.login.upload":"Login to SlideShare to start uploading\u2026","ajax_signup.login.contest":"Login to SlideShare to vote\u2026","ajax_signup.login.rsvp":"Login to SlideShare to join this meeting\u2026","ajax_signup.login.user":"Login to SlideShare to register the username\u2026","ajax_signup.login.zipcast":"Login to SlideShare to schedule a meeting\u2026","ajax_signup.login.create":"Login to SlideShare to start creating\u2026","ajax_signup.login.clip":"Login to SlideShare. Don\u2019t lose your clips!","ajax_signup.signup.download":"Signup for SlideShare to download\u2026","ajax_signup.signup.addcontact":"Signup for SlideShare to follow\u2026","ajax_signup.signup.favorite":"Signup for SlideShare to like\u2026","ajax_signup.signup.comments":"Signup for SlideShare to post a comment\u2026","ajax_signup.signup.AddToCommunity":"Signup for SlideShare to add this document to a group/event\u2026","ajax_signup.signup.follow":"Signup for SlideShare to follow this user\u2026","ajax_signup.signup.business":"Signup for SlideShare to continue\u2026","ajax_signup.signup.upload":"Signup for SlideShare to start uploading\u2026","ajax_signup.signup.contest":"Signup for SlideShare to vote\u2026","ajax_signup.signup.rsvp":"Signup for SlideShare to join this meeting\u2026","ajax_signup.signup.user":"Signup for SlideShare to register the username\u2026","ajax_signup.signup.zipcast":"Signup for SlideShare to schedule a meeting\u2026","ajax_signup.signup.create":"Signup for SlideShare to start creating\u2026","ajax_signup.signup.clip":"Signup for SlideShare. Don\u2019t lose your clips!","ajax_signup.connect":"connect","ajax_signup.signup_for_ss":"Signup for SlideShare","ajax_signup.login_to_ss":"Login to SlideShare","clipping.filmstrip.message":"Top clipped slide","slideview.comments_loggedin.delete_comment.title":"Are you sure you want to delete this comment?","slideview.comments_loggedin.spam_comment.title":"Are you sure you want to mark this comment as spam?","slideview.comments_loggedin.block_user.title":"Are you sure you want to block this user?","slideview.comments_loggedin.block_user.success":"The user is blocked!","slideview.comments_loggedin.block_user.failure":"Oops! Something went wrong. Please try again after sometime.","slideview.comments_loggedin.organization":"at {:organization}","slideview.comments_loggedin.timestamp":"less than a second ago","slideview.comments_loggedin.commenting.failure":"Hey something went wrong :-(\nCould you try again?","slideshow.foundation_slideview.likes_count":"{:count,number} {:count,choice,singular#Like|plural#Likes}","action-bar.like.why_not_share":"Like this? Why not share?","slideshow.foundation_slideview.like":"Like","action-bar.unlike.text":"Unlike","youtube_embed_block.header":"YouTube videos are no longer supported on SlideShare","youtube_embed_block.link_to_original":"View original on YouTube","youtube_embed_block.help_text":"Learn why"}'>   
+<META name="ss-i18n-translations" content='{"ssplayer.event_manager.playershare.share_slideshare":"Share SlideShare","profile.edit_marketing_settings.saved":"Saved","slideshow.foundation_slideview.loading":"Loading\u2026","clip.slideview.share_message":"Share Slide {0,number} from {1,text}","clip.slideview.success_toast.message":"Slide {0,number} clipped to: \u003Cbr /\u003E {1,anchor,text#{2,text}}","clip.clips.error_clipping":"Error while clipping.","clip.clips.error_fetching_clipboards":"Error fetching clipboards.","clip.clips.error_creating_clipboard":"Error creating a clipboard.","clip.clips.error_adding_to_clipboard":"Error adding to clipboard."}'> 
+    <LINK href="https://public.slidesharecdn.com/favicon.ico?d8e2a4ed15" rel="shortcut icon"> 
+    <LINK title="RSS" href="https://www.slideshare.net/rss/latest" rel="alternate" 
+type="application/rss+xml">     <LINK title="SlideShare Search" href="/opensearch.xml" 
+rel="search" type="application/opensearchdescription+xml">     <LINK href="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/app_critical.css" 
+rel="stylesheet" type="text/css" media="screen">     <!--[if IE 9]><link href="https://public.slidesharecdn.com/ss_foundation/stylesheets/ie9_nav_bar_fix.css?8fb8af5274" media="screen" rel="stylesheet" type="text/css" /><![endif]--> 
+    <LINK href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+rel="alternate" hreflang="en"> <LINK href="https://es.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+rel="alternate" hreflang="es"> <LINK href="https://fr.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+rel="alternate" hreflang="fr"> <LINK href="https://de.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+rel="alternate" hreflang="de"> <LINK href="https://pt.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+rel="alternate" hreflang="pt"> <LINK href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+rel="alternate" hreflang="x-default">       
+<META name="robots" content="index">   <LINK href="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/slideview_critical.css" 
+rel="stylesheet" type="text/css" media="screen">     <LINK href="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/combined_presentation.css" 
+rel="stylesheet" type="text/css" media="screen">     <LINK href="//www.slideshare.net" 
+rel="dns-prefetch">     <LINK href="//public.slidesharecdn.com" rel="dns-prefetch"> 
+    <LINK href="//image.slidesharecdn.com" rel="dns-prefetch">     <LINK href="//cdn.slidesharecdn.com" 
+rel="dns-prefetch">     <LINK href="//www.linkedin.com" rel="dns-prefetch">     
+<SCRIPT type="text/javascript">
+      // Inlining Modernizr
+      window.Modernizr=function(a,b,c){function d(a){t.cssText=a}function e(a,b){return d(x.join(a+";")+(b||""))}function f(a,b){return typeof a===b}function g(a,b){return!!~(""+a).indexOf(b)}function h(a,b){for(var d in a){var e=a[d];if(!g(e,"-")&&t[e]!==c)return"pfx"==b?e:!0}return!1}function i(a,b,d){for(var e in a){var g=b[a[e]];if(g!==c)return d===!1?a[e]:f(g,"function")?g.bind(d||b):g}return!1}function j(a,b,c){var d=a.charAt(0).toUpperCase()+a.slice(1),e=(a+" "+z.join(d+" ")+d).split(" ");return f(b,"string")||f(b,"undefined")?h(e,b):(e=(a+" "+A.join(d+" ")+d).split(" "),i(e,b,c))}function k(){o.input=function(c){for(var d=0,e=c.length;e>d;d++)E[c[d]]=!!(c[d]in u);return E.list&&(E.list=!(!b.createElement("datalist")||!a.HTMLDataListElement)),E}("autocomplete autofocus list placeholder max min multiple pattern required step".split(" ")),o.inputtypes=function(a){for(var d,e,f,g=0,h=a.length;h>g;g++)u.setAttribute("type",e=a[g]),d="text"!==u.type,d&&(u.value=v,u.style.cssText="position:absolute;visibility:hidden;",/^range$/.test(e)&&u.style.WebkitAppearance!==c?(q.appendChild(u),f=b.defaultView,d=f.getComputedStyle&&"textfield"!==f.getComputedStyle(u,null).WebkitAppearance&&0!==u.offsetHeight,q.removeChild(u)):/^(search|tel)$/.test(e)||(d=/^(url|email)$/.test(e)?u.checkValidity&&u.checkValidity()===!1:u.value!=v)),D[a[g]]=!!d;return D}("search tel url email datetime date month week time datetime-local number range color".split(" "))}var l,m,n="2.8.2",o={},p=!0,q=b.documentElement,r="modernizr",s=b.createElement(r),t=s.style,u=b.createElement("input"),v=":)",w={}.toString,x=" -webkit- -moz- -o- -ms- ".split(" "),y="Webkit Moz O ms",z=y.split(" "),A=y.toLowerCase().split(" "),B={svg:"http://www.w3.org/2000/svg"},C={},D={},E={},F=[],G=F.slice,H=function(a,c,d,e){var f,g,h,i,j=b.createElement("div"),k=b.body,l=k||b.createElement("body");if(parseInt(d,10))for(;d--;)h=b.createElement("div"),h.id=e?e[d]:r+(d+1),j.appendChild(h);return f=["&#173;",'<style id="s',r,'">',a,"</style>"].join(""),j.id=r,(k?j:l).innerHTML+=f,l.appendChild(j),k||(l.style.background="",l.style.overflow="hidden",i=q.style.overflow,q.style.overflow="hidden",q.appendChild(l)),g=c(j,a),k?j.parentNode.removeChild(j):(l.parentNode.removeChild(l),q.style.overflow=i),!!g},I=function(b){var c=a.matchMedia||a.msMatchMedia;if(c)return c(b)&&c(b).matches||!1;var d;return H("@media "+b+" { #"+r+" { position: absolute; } }",function(b){d="absolute"==(a.getComputedStyle?getComputedStyle(b,null):b.currentStyle).position}),d},J=function(){function a(a,e){e=e||b.createElement(d[a]||"div"),a="on"+a;var g=a in e;return g||(e.setAttribute||(e=b.createElement("div")),e.setAttribute&&e.removeAttribute&&(e.setAttribute(a,""),g=f(e[a],"function"),f(e[a],"undefined")||(e[a]=c),e.removeAttribute(a))),e=null,g}var d={select:"input",change:"input",submit:"form",reset:"form",error:"img",load:"img",abort:"img"};return a}(),K={}.hasOwnProperty;m=f(K,"undefined")||f(K.call,"undefined")?function(a,b){return b in a&&f(a.constructor.prototype[b],"undefined")}:function(a,b){return K.call(a,b)},Function.prototype.bind||(Function.prototype.bind=function(a){var b=this;if("function"!=typeof b)throw new TypeError;var c=G.call(arguments,1),d=function(){if(this instanceof d){var e=function(){};e.prototype=b.prototype;var f=new e,g=b.apply(f,c.concat(G.call(arguments)));return Object(g)===g?g:f}return b.apply(a,c.concat(G.call(arguments)))};return d}),C.flexbox=function(){return j("flexWrap")},C.flexboxlegacy=function(){return j("boxDirection")},C.canvas=function(){var a=b.createElement("canvas");return!(!a.getContext||!a.getContext("2d"))},C.canvastext=function(){return!(!o.canvas||!f(b.createElement("canvas").getContext("2d").fillText,"function"))},C.webgl=function(){return!!a.WebGLRenderingContext},C.touch=function(){var c;return"ontouchstart"in a||a.DocumentTouch&&b instanceof DocumentTouch?c=!0:H(["@media (",x.join("touch-enabled),("),r,")","{#modernizr{top:9px;position:absolute}}"].join(""),function(a){c=9===a.offsetTop}),c},C.geolocation=function(){return"geolocation"in navigator},C.postmessage=function(){return!!a.postMessage},C.websqldatabase=function(){return!!a.openDatabase},C.indexedDB=function(){return!!j("indexedDB",a)},C.hashchange=function(){return J("hashchange",a)&&(b.documentMode===c||b.documentMode>7)},C.history=function(){return!(!a.history||!history.pushState)},C.draganddrop=function(){var a=b.createElement("div");return"draggable"in a||"ondragstart"in a&&"ondrop"in a},C.websockets=function(){return"WebSocket"in a||"MozWebSocket"in a},C.rgba=function(){return d("background-color:rgba(150,255,150,.5)"),g(t.backgroundColor,"rgba")},C.hsla=function(){return d("background-color:hsla(120,40%,100%,.5)"),g(t.backgroundColor,"rgba")||g(t.backgroundColor,"hsla")},C.multiplebgs=function(){return d("background:url(https://),url(https://),red url(https://)"),/(url\s*\(.*?){3}/.test(t.background)},C.backgroundsize=function(){return j("backgroundSize")},C.borderimage=function(){return j("borderImage")},C.borderradius=function(){return j("borderRadius")},C.boxshadow=function(){return j("boxShadow")},C.textshadow=function(){return""===b.createElement("div").style.textShadow},C.opacity=function(){return e("opacity:.55"),/^0.55$/.test(t.opacity)},C.cssanimations=function(){return j("animationName")},C.csscolumns=function(){return j("columnCount")},C.cssgradients=function(){var a="background-image:",b="gradient(linear,left top,right bottom,from(#9f9),to(white));",c="linear-gradient(left top,#9f9, white);";return d((a+"-webkit- ".split(" ").join(b+a)+x.join(c+a)).slice(0,-a.length)),g(t.backgroundImage,"gradient")},C.cssreflections=function(){return j("boxReflect")},C.csstransforms=function(){return!!j("transform")},C.csstransforms3d=function(){var a=!!j("perspective");return a&&"webkitPerspective"in q.style&&H("@media (transform-3d),(-webkit-transform-3d){#modernizr{left:9px;position:absolute;height:3px;}}",function(b){a=9===b.offsetLeft&&3===b.offsetHeight}),a},C.csstransitions=function(){return j("transition")},C.fontface=function(){var a;return H('@font-face {font-family:"font";src:url("https://")}',function(c,d){var e=b.getElementById("smodernizr"),f=e.sheet||e.styleSheet,g=f?f.cssRules&&f.cssRules[0]?f.cssRules[0].cssText:f.cssText||"":"";a=/src/i.test(g)&&0===g.indexOf(d.split(" ")[0])}),a},C.generatedcontent=function(){var a;return H(["#",r,"{font:0/0 a}#",r,':after{content:"',v,'";visibility:hidden;font:3px/1 a}'].join(""),function(b){a=b.offsetHeight>=3}),a},C.video=function(){var a=b.createElement("video"),c=!1;try{(c=!!a.canPlayType)&&(c=new Boolean(c),c.ogg=a.canPlayType('video/ogg; codecs="theora"').replace(/^no$/,""),c.h264=a.canPlayType('video/mp4; codecs="avc1.42E01E"').replace(/^no$/,""),c.webm=a.canPlayType('video/webm; codecs="vp8, vorbis"').replace(/^no$/,""))}catch(d){}return c},C.audio=function(){var a=b.createElement("audio"),c=!1;try{(c=!!a.canPlayType)&&(c=new Boolean(c),c.ogg=a.canPlayType('audio/ogg; codecs="vorbis"').replace(/^no$/,""),c.mp3=a.canPlayType("audio/mpeg;").replace(/^no$/,""),c.wav=a.canPlayType('audio/wav; codecs="1"').replace(/^no$/,""),c.m4a=(a.canPlayType("audio/x-m4a;")||a.canPlayType("audio/aac;")).replace(/^no$/,""))}catch(d){}return c},C.localstorage=function(){try{return localStorage.setItem(r,r),localStorage.removeItem(r),!0}catch(a){return!1}},C.sessionstorage=function(){try{return sessionStorage.setItem(r,r),sessionStorage.removeItem(r),!0}catch(a){return!1}},C.webworkers=function(){return!!a.Worker},C.applicationcache=function(){return!!a.applicationCache},C.svg=function(){return!!b.createElementNS&&!!b.createElementNS(B.svg,"svg").createSVGRect},C.inlinesvg=function(){var a=b.createElement("div");return a.innerHTML="<svg/>",(a.firstChild&&a.firstChild.namespaceURI)==B.svg},C.smil=function(){return!!b.createElementNS&&/SVGAnimate/.test(w.call(b.createElementNS(B.svg,"animate")))},C.svgclippaths=function(){return!!b.createElementNS&&/SVGClipPath/.test(w.call(b.createElementNS(B.svg,"clipPath")))};for(var L in C)m(C,L)&&(l=L.toLowerCase(),o[l]=C[L](),F.push((o[l]?"":"no-")+l));return o.input||k(),o.addTest=function(a,b){if("object"==typeof a)for(var d in a)m(a,d)&&o.addTest(d,a[d]);else{if(a=a.toLowerCase(),o[a]!==c)return o;b="function"==typeof b?b():b,"undefined"!=typeof p&&p&&(q.className+=" "+(b?"":"no-")+a),o[a]=b}return o},d(""),s=u=null,function(a,b){function c(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function d(){var a=s.elements;return"string"==typeof a?a.split(" "):a}function e(a){var b=r[a[p]];return b||(b={},q++,a[p]=q,r[q]=b),b}function f(a,c,d){if(c||(c=b),k)return c.createElement(a);d||(d=e(c));var f;return f=d.cache[a]?d.cache[a].cloneNode():o.test(a)?(d.cache[a]=d.createElem(a)).cloneNode():d.createElem(a),!f.canHaveChildren||n.test(a)||f.tagUrn?f:d.frag.appendChild(f)}function g(a,c){if(a||(a=b),k)return a.createDocumentFragment();c=c||e(a);for(var f=c.frag.cloneNode(),g=0,h=d(),i=h.length;i>g;g++)f.createElement(h[g]);return f}function h(a,b){b.cache||(b.cache={},b.createElem=a.createElement,b.createFrag=a.createDocumentFragment,b.frag=b.createFrag()),a.createElement=function(c){return s.shivMethods?f(c,a,b):b.createElem(c)},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+d().join().replace(/[\w\-]+/g,function(a){return b.createElem(a),b.frag.createElement(a),'c("'+a+'")'})+");return n}")(s,b.frag)}function i(a){a||(a=b);var d=e(a);return!s.shivCSS||j||d.hasCSS||(d.hasCSS=!!c(a,"article,aside,dialog,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}mark{background:#FF0;color:#000}template{display:none}")),k||h(a,d),a}var j,k,l="3.7.0",m=a.html5||{},n=/^<|^(?:button|map|select|textarea|object|iframe|option|optgroup)$/i,o=/^(?:a|b|code|div|fieldset|h1|h2|h3|h4|h5|h6|i|label|li|ol|p|q|span|strong|style|table|tbody|td|th|tr|ul)$/i,p="_html5shiv",q=0,r={};!function(){try{var a=b.createElement("a");a.innerHTML="<xyz></xyz>",j="hidden"in a,k=1==a.childNodes.length||function(){b.createElement("a");var a=b.createDocumentFragment();return"undefined"==typeof a.cloneNode||"undefined"==typeof a.createDocumentFragment||"undefined"==typeof a.createElement}()}catch(c){j=!0,k=!0}}();var s={elements:m.elements||"abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video",version:l,shivCSS:m.shivCSS!==!1,supportsUnknownElements:k,shivMethods:m.shivMethods!==!1,type:"default",shivDocument:i,createElement:f,createDocumentFragment:g};a.html5=s,i(b)}(this,b),o._version=n,o._prefixes=x,o._domPrefixes=A,o._cssomPrefixes=z,o.mq=I,o.hasEvent=J,o.testProp=function(a){return h([a])},o.testAllProps=j,o.testStyles=H,o.prefixed=function(a,b,c){return b?j(a,b,c):j(a,"pfx")},q.className=q.className.replace(/(^|\s)no-js(\s|$)/,"$1$2")+(p?" js "+F.join(" "):""),o}(this,this.document);
+
+      // GA Segmentation
+      window._gaq = window._gaq || []; _gaq.push(['_setAccount', 'UA-2330466-1']);_gaq.push(['_setDomainName', '.slideshare.net']);_gaq.push(['_addIgnoredRef', 'slideshare.net']);_gaq.push(['_setCustomVar', 1, 'member_type', 'LOGGEDOUT', 1]);
+        _gaq.push(['_trackPageview']);
+
+      // Comscore
+      var _comscore = _comscore || [];
+      _comscore.push({ c1: "2", c2: "6402952" });
+
+      // Slideshare object
+      var slideshare_object = {
+        user: {"userGroup":"non-member","login":"guest","id":null,"loggedin":false,"name":null,"is_valid_fbuser":false,"fb_userid":null,"is_pro":"false","su":false,"is_test_user":false,"has_uploads":null,"is_li_connected":false,"is_li_auto_created_user":false,"show_li_connect_cta":false,"has_privacy_enabled":null,"li_tracking_url":"https://www.linkedin.com/li/track"},
+        timer: { start: (new Date()).getTime(), end: '', execTime: '' },
+        top_nav: { get_url: "/top_nav"},
+        dev: false,
+        init: [],
+        feature_flag: [],
+        is_mobile: "",
+        deploy_environment: "production",
+        rum_pagekey: "desktop_slideview_loggedout",
+        is_ssl: true
+      };
+    </SCRIPT>
+     
+<META name="ss-svg-icons" content="https://public.slidesharecdn.com/images/artdeco/icons.svg?b5af75c98a"> 
+    
+<SCRIPT src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/combined_experiments.js" type="text/javascript"></SCRIPT>
+     <!-- RUM javascript --> 
+<SCRIPT>
+// <![CDATA[
+  (function() {
+    window.slideshare_object = window.slideshare_object || {};
+    slideshare_object.rum = {
+      beacon_url: 'https://www.linkedin.com/lite/rum-track',
+      report: {},
+      fire: function() {}
+    };
+  }());
+// ]]>
+</SCRIPT>
+   
+<SCRIPT>
+  // <![CDATA[
+    (function() {
+      var load_js_async = function(url) {
+        var script_tag = document.createElement('script');
+        script_tag.type = "text/javascript";
+        script_tag.async = true;
+        script_tag.src = url;
+        document.getElementsByTagName("script")[0].parentNode.appendChild(script_tag);
+      };
+      load_js_async("https://public.slidesharecdn.com/javascripts/rum_new/combined_base.js?826af57281");
+    })();
+  // ]]>
+  </SCRIPT>
+ <!-- RUM javascript ends -->       <LINK href="//js.bizographics.com" rel="dns-prefetch"> 
+  
+<SCRIPT id="adQueue" type="text/javascript"><!--
+ if(!slideshare_object.delayedLIAd){ slideshare_object._adQueue = []; } 
+//--></SCRIPT>
+   
+<SCRIPT id="ga-init" type="text/javascript">
+  // <![CDATA[
+    // Setting custom variable [slot = 3, scope = 3(page level)] for tracking source (related, search etc) of pageview
+    window._gaq.push(['_setCustomVar', 3, 'source', 'next_slideshow', 3]);
+    window._gaq.push(['_trackEvent', 'bigfoot_slideview', 'pageload', slideshare_object.gam_cat_name, undefined, true]);
+
+  // ]]>
+    <!--
+ slideshare_object.deploy_environment = 'production'; 
+//-->
+  </SCRIPT>
+     <LINK href="https://www.slideshare.net/KenChatfield/chatfield14-devil" rel="canonical"> 
+  <LINK title="Slideshow json oEmbed Profile" href="https://www.slideshare.net/api/oembed/2?format=json&amp;url=http://www.slideshare.net/KenChatfield/chatfield14-devil" 
+rel="alternate" type="application/json+oembed">   <LINK title="Slideshow xml oEmbed Profile" 
+href="https://www.slideshare.net/api/oembed/2?format=xml&amp;url=http://www.slideshare.net/KenChatfield/chatfield14-devil" 
+rel="alternate" type="text/xml+oembed">   <LINK href="https://www.slideshare.net/mobile/KenChatfield/chatfield14-devil" 
+rel="alternate" media="handheld">     <LINK href="android-app://net.slideshare.mobile/slideshare-app/ss/48991374" 
+rel="alternate">     <LINK href="ios-app://917418728/slideshare-app/ss/48991374" 
+rel="alternate">   
+<META name="apple-itunes-app" content="app-id=917418728, affiliate-data=ct=smart_banner&amp;pt=10746, app-argument=slideshare-app://ss/48991374"> 
+  <LINK href="/manifest.json" rel="manifest">   <!-- fb open graph meta tags --> 
+    
+<META name="fb_app_id" class="fb_og_meta" content="2490221586" property="fb:app_id"> 
+    
+<META name="og_type" class="fb_og_meta" content="slideshare:presentation" 
+property="og:type">     
+<META name="og_url" class="fb_og_meta" content="https://www.slideshare.net/KenChatfield/chatfield14-devil" 
+property="og:url">     
+<META name="og_image" class="fb_og_meta" content="https://cdn.slidesharecdn.com/ss_thumbnails/chatfield14-devil-150604135047-lva1-app6892-thumbnail-4.jpg?cb=1433425924" 
+property="og:image">     <!-- SL:start:notranslate -->     
+<META name="og_title" class="fb_og_meta" content="Devil in the Details: Analysing the Performance of ConvNet Features" 
+property="og:title">     
+<META name="og_description" class="fb_og_meta" content="Presentation to accompany paper: http://www.robots.ox.ac.uk/~vgg/research/deep_eval/" 
+property="og:description">     <!-- SL:end:notranslate -->     
+<META name="slideshow_published_time" class="fb_og_meta" content="2015-06-04T13:50:47Z" 
+property="slideshare:published">     
+<META name="slideshow_author" class="fb_og_meta" content="https://www.slideshare.net/KenChatfield" 
+property="slideshare:author">     
+<META name="slideshow_view_count" class="fb_og_meta" content="1405" property="slideshare:view_count"> 
+    
+<META name="slideshow_embed_count" class="fb_og_meta" content="20" property="slideshare:embed_count"> 
+    
+<META name="slideshow_comment_count" class="fb_og_meta" content="0" property="slideshare:comment_count"> 
+    
+<META name="slideshow_download_count" class="fb_og_meta" content="49" property="slideshare:download_count"> 
+    
+<META name="slideshow_created_at" class="fb_og_meta" content="2015-06-04 13:50:47 UTC" 
+property="slideshare:created_at">     
+<META name="slideshow_updated_at" class="fb_og_meta" content="2015-06-04 13:52:04 UTC" 
+property="slideshare:updated_at">     
+<META name="slideshow_featured_on" class="fb_og_meta" content="" property="slideshare:featured_on"> 
+    
+<META name="slideshow_favorites_count" class="fb_og_meta" content="1" property="slideshare:favorites_count"> 
+    
+<META name="slideshow_category" class="fb_og_meta" content="Technology" 
+property="slideshare:category">   <!-- SL:start:notranslate -->     
+<META name="twitter:card" value="player">     
+<META name="twitter:site" value="@slideshare">     
+<META name="twitter:player" class="twitter_player" value="https://www.slideshare.net/slideshow/embed_code/key/vl1KS7sk5hFC2V"> 
+    
+<META name="twitter:player:width" value="342">     
+<META name="twitter:player:height" value="291">     
+<META name="twitter:title" class="twitter_title" value="Devil in the Details: Analysing the Performance of ConvNet Features"> 
+    
+<META name="twitter:image" class="twitter_image" value="https://cdn.slidesharecdn.com/ss_thumbnails/chatfield14-devil-150604135047-lva1-app6892-thumbnail-4.jpg?cb=1433425924"> 
+    
+<META name="twitter:app:name:googleplay" content="SlideShare Android">     
+<META name="twitter:app:id:googleplay" content="net.slideshare.mobile">     
+<META name="twitter:app:url:googleplay" content="https://www.slideshare.net/KenChatfield/chatfield14-devil"> 
+    
+<META name="twitter:app:name:iphone" content="SlideShare iOS">     
+<META name="twitter:app:id:iphone" content="917418728">     
+<META name="twitter:app:url:iphone" content="slideshare-app://ss/48991374">     
+<META name="twitter:app:name:ipad" content="SlideShare iOS">     
+<META name="twitter:app:id:ipad" content="917418728">     
+<META name="twitter:app:url:ipad" content="slideshare-app://ss/48991374">   
+<META content="slideshare-app://ss/48991374" property="al:android:url">   
+<META content="SlideShare Android" property="al:android:app_name">   
+<META content="net.slideshare.mobile" property="al:android:package">   
+<META content="slideshare-app://ss/48991374" property="al:ios:url">   
+<META content="917418728" property="al:ios:app_store_id">   
+<META content="SlideShare iOS" property="al:ios:app_name">   <!-- SL:end:notranslate --> 
+  
+<META name="GENERATOR" content="MSHTML 11.00.10570.1001"></HEAD>   
+<BODY class="   locale-en" id="pagekey-slideshare_desktop_slideview_loggedout"><!-- TOS update banner --> 
+      
+<DIV class="j-tos-update-banner tos-update-banner" 
+style="display: none;"><BUTTON 
+class="j-tos-close tos-close fa fa-times-circle"></BUTTON>   
+<DIV class="text-div">
+<P class="j-mobile-text mobile-text" style="display: none;">      Slideshare 
+uses cookies to improve functionality and performance, and to provide you with 
+relevant advertising. If you continue browsing the site, you agree to the use of 
+cookies on this website. See our <A href="http://www.linkedin.com/legal/user-agreement" 
+target="_blank">User Agreement</A> and <A href="http://www.linkedin.com/legal/privacy-policy" 
+target="_blank">Privacy Policy</A>.     </P>
+<P class="j-desktop-text desktop-text" style="display: none;">      Slideshare 
+uses cookies to improve functionality and performance, and to provide you with 
+relevant advertising. If you continue browsing the site, you agree to the use of 
+cookies on this website. See our <A href="http://www.linkedin.com/legal/privacy-policy" 
+target="_blank">Privacy Policy</A> and <A href="http://www.linkedin.com/legal/user-agreement" 
+target="_blank">User Agreement</A> for details.     </P></DIV></DIV>
+<DIV class="contain-to-grid fixed" id="main-nav">
+<DIV class="icon-bar four-up hide-for-medium-up icon-bar-custom"><A class="item" 
+aria-labelledby="#home" href="https://www.slideshare.net/"><I class="icon-slideshare-logo"></I><LABEL 
+id="home">SlideShare</LABEL></A><A class="item" aria-labelledby="#explore" href="https://www.slideshare.net/explore"><I 
+class="fa fa-compass"></I><LABEL id="explore">Explore</LABEL></A><A class="item j-open-mobile-search" 
+aria-labelledby="#search"><I class="fa fa-search"></I><LABEL 
+id="search">Search</LABEL></A><A class="item" aria-labelledby="#you" href="https://www.slideshare.net/login"><I 
+class="fa fa-user"></I><LABEL id="you">You</LABEL></A></DIV><NAV class="top-bar visible-for-medium-up" 
+data-topbar="">
+<UL class="title-area">
+  <LI class="name"><A href="https://www.slideshare.net/"><IMG id="main-navbar-logo" 
+  alt="LinkedIn SlideShare" src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/SS_Logo_White_Large.png"> 
+                </A>             </LI></UL><SECTION class="top-bar-section">
+<UL class="right upload-create button-group">
+  <LI class="has-form upload-create"><A class="button radius secondary" href="https://www.slideshare.net/upload">Upload</A> 
+                </LI>
+  <LI><A class="void_fancybox void_redirect_link" id="login" href="https://www.slideshare.net/login">Login</A></LI>
+  <LI><A title="Signup now for a SlideShare account" class="void_fancybox void_redirect_link" 
+  id="signup" href="https://www.slideshare.net/w/signup">Signup</A></LI></UL>      
+       
+<UL class="left">
+  <LI class="divider"></LI>
+  <LI class="has-form" id="nav-search">
+  <FORM id="nav-search-form" action="/search/slideshow" method="get">
+  <DIV class="input-box"><INPUT name="searchfrom" type="hidden" value="header">  
+                     
+<INPUT name="q" id="nav-search-query" aria-label="Search" type="text" placeholder="Search" value="" autocomplete="off"><BUTTON 
+  class="button expand" type="submit"><I class="fa fa-search" 
+  aria-hidden="true"></I>                       <SPAN 
+  class="visually-hidden">Submit Search</SPAN>                     </BUTTON>     
+                  
+  <UL class="search-suggestions dropdown f-dropdown medium" style="display: none;"></UL></DIV></FORM></LI></UL> 
+          </SECTION></NAV>
+<DIV class="visible-for-medium-up sub-navbar">
+<DIV class="row">
+<DIV class="container">
+<UL class="sub-nav-cats left">
+  <LI class="sub-nav-cat"><STRONG><A class="sub-nav-link" href="https://www.slideshare.net/" 
+  rel="nofollow" data-ga-label="Home" data-ga-cat="sub_nav_cat" data-ga-action="click">Home</A> 
+                    </STRONG>                 </LI>
+  <LI class="sub-nav-cat"><STRONG><A class="sub-nav-link" href="https://www.slideshare.net/explore" 
+  rel="nofollow" data-ga-label="Explore" data-ga-cat="sub_nav_cat" 
+  data-ga-action="click">Explore</A>                   </STRONG>                 
+  </LI></UL>
+<UL class="sub-nav-cats right show-for-large-up sub-nav-link-ctas">
+  <LI class="sub-nav-cat"><STRONG><A title="Learn and improve presentation skills with expert-led courses and videos" 
+  class="sub-nav-link" href="https://www.linkedin.com/learning/topics/presentations?trk=slideshare_subnav_learning&amp;entityType=COURSE&amp;sortBy=RECENCY" 
+  data-ga-label="Presentation Courses" data-ga-cat="sub_nav_cat" data-ga-action="click">Presentation 
+  Courses</A>                     </STRONG>                   </LI>
+  <LI class="sub-nav-cat"><STRONG><A title="Learn PowerPoint online with expert-taught courses, videos, tutorials" 
+  class="sub-nav-link" href="https://www.linkedin.com/learning/topics/powerpoint?trk=slideshare_subnav_learning&amp;entityType=COURSE&amp;sortBy=RECENCY" 
+  data-ga-label="PowerPoint Courses" data-ga-cat="sub_nav_cat" data-ga-action="click">PowerPoint 
+  Courses</A>                     </STRONG>                   </LI>
+  <LI class="sub-nav-cat-divider"></LI>                 
+  <LI class="sub-nav-cat sub-nav-lil">                  by <A title="Online Courses to Learn Business, Technology &amp; Creative Skills" 
+  class="sub-nav-link lil-link" href="https://www.linkedin.com/learning?trk=slideshare_subnav_learning" 
+  data-ga-label="by LinkedIn Learning" data-ga-cat="sub_nav_cat" data-ga-action="click">LinkedIn 
+  Learning</A>                 </LI></UL></DIV></DIV></DIV></DIV>
+<DIV class="wrapper">
+<DIV id="main-nav-mobile-search">
+<FORM name="mobile-search" action="/search/slideshow" method="get">
+<DIV 
+class="input-box"><INPUT name="q" type="text" placeholder="Search" value="" autocomplete="off"><A 
+class="button expand"><I class="search-icon fa fa-search"></I>                 
+<I class="search-spinner fa fa-spinner fa-spin"></I>               </A>          
+   </DIV></FORM></DIV>
+<DIV class="alert-box success text-center hide" 
+id="slideview-report-notice"><SPAN>Successfully reported this slideshow.</SPAN>  
+ </DIV><IFRAME class="notify" id="download" src="about:blank" style="display: none;"></IFRAME> 
+<DIV class="alert-box success radius&#10;downloading-alert" id="j-downloading-alert" 
+data-alert=""><SPAN class="copy-in-aria-label" aria-label="Your SlideShare is downloading."></SPAN> 
+  <A class="close copy-in-aria-label" aria-label="×" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#"></A> 
+</DIV>
+<DIV class="j-lms-notice-wrapper lms-notice-wrapper hide">
+<DIV class="row">
+<DIV class="j-lms-notice lms-notice">
+<DIV class="lms-notice-info-icon fa fa-info-circle"></DIV>
+<DIV class="j-lms-notice-close lms-notice-close fa fa-times"></DIV>
+<DIV class="lms-notice-text">        We use your LinkedIn profile and activity 
+data to personalize ads and to show you more relevant ads. <A title="Your LinkedIn ad preferences" 
+class="lms-notice-link" href="https://www.linkedin.com/psettings/privacy" 
+target="_blank">You can change your ad preferences anytime.</A>       
+</DIV></DIV></DIV></DIV>
+<DIV id="slideview-container">
+<DIV class="slideview-header-container row">
+<DIV class="columns">
+<DIV></DIV></DIV></DIV>
+<DIV class="row">
+<DIV class="small-12 large-8 columns" id="main-panel">
+<DIV class="sectionElements">
+<DIV class="j-clips-toolbar clips-toolbar ">
+<DIV class="clips-progress progress"><SPAN class="j-clips-meter clip-meter meter" 
+style="width: 0%;"></SPAN></DIV>
+<DIV class="j-clips-info clips-info"><SPAN class="j-clips-count clips-count copy-in-aria-label" 
+aria-label="0"></SPAN>     <SPAN class="j-clips-count-text clips-count-text notranslate copy-in-aria-label"></SPAN> 
+  </DIV></DIV>
+<DIV class="playerWrapper">
+<DIV><!-- For slideview page , combined js for player is now combined with slideview javascripts for logged out users--> 
+<DIV class="player lightPlayer fluidImage presentation_player" 
+id="svPlayerId"><SPAN class="j-fullscreen-title-banner fullscreen-title-banner" 
+style="display: none;">    Devil in the Details: Analysing the Performance of 
+ConvNet Features   </SPAN>   
+<DIV class="stage valign-first-slide">
+<DIV class="player-cta-container">
+<DIV class="clip-button-top"><A class="j-clips-button clip-button player-cta visible " 
+id="clips-button-top" style="display: none;" href="https://www.slideshare.net/signup?login_source=slideview.clip.like&amp;from=clip&amp;layout=foundation&amp;from_source=" 
+rel="nofollow" data-reveal-id="login_modal">
+<DIV class="container clearfix">
+<DIV class="svg-icon" aria-hidden="true"><svg 
+xmlns="http://www.w3.org/2000/svg"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#clipboard-add-icon" data-size="small" /></svg></DIV><SPAN title="Clip to save this slide for later" 
+class="clip-button-text-clip notranslate copy-in-aria-label" aria-label="Clip slide"></SPAN> 
+    </DIV></A> </DIV></DIV><A class="exit-fullscreen j-exit-fullscreen" style="display: none;"><I 
+class="fa fa-compress fa-2x"></I>     </A>     
+<DIV class="slide_container"><SECTION class="slide show" itemprop="image" 
+data-index="1"><IMG class="slide_image" alt="Devil in the Details:&#10;Analysing the Performance&#10;of ConvNet Features&#10;Ken Chatﬁeld - University of Oxford&#10;May 2015&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/devil-in-the-details-analysing-the-performance-of-convnet-features-1-638.jpg" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-1-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-1-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-1-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="2"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="The Devil is still in the Details&#10;2011 2014&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-2-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-2-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-2-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="3"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="• This work is about comparing the latest ConvNet&#10;based feature representations on common ground&#10;• We compare both differe..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-3-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-3-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-3-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="4"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Performance Evolution over VOC2007&#10;BOW&#10;32K&#10;–&#10;IFV-BL&#10;327K&#10;–&#10;IFV&#10;84K&#10;–&#10;IFV&#10;84K&#10;f s&#10;DeCAF&#10;4K&#10;t t&#10;CNN-F&#10;4K&#10;f s&#10;CNN-M 2K&#10;2K&#10;f s..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-4-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-4-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-4-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="5"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Evaluation Setup&#10;SVM Classiﬁer&#10;train&#10;test&#10;training set&#10;test set&#10;Evaluate using&#10;mAP, accuracy etc.&#10;classiﬁer output&#10;Pre-tra..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-5-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-5-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-5-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="6"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Outline&#10;1&#10;2&#10;3&#10;4&#10;Different pre-trained networks&#10;Data augmentation (for both CNN and IFV)&#10;Dataset ﬁne-tuning&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-6-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-6-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-6-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="7"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="• CNN-F Network&#10;• CNN-M Network&#10;• CNN-S Network&#10;• VGG Very Deep Network&#10;Network Architectures&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-7-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-7-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-7-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="8"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Network Architectures&#10;CNN-F Network&#10;Similar to Krizhevsky et al. (ILSVRC-2012 winner)&#10;conv3&#10;256x3x3&#10;stride&#10;1&#10;conv4&#10;512x3x3..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-8-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-8-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-8-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="9"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Network Architectures&#10;CNN-M Network&#10;Similar to Zeiler &amp; Fergus (ILSVRC-2013 winner)&#10;conv3&#10;512x3x3&#10;stride&#10;1&#10;conv4&#10;512x3x3&#10;c..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-9-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-9-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-9-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="10"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Network Architectures&#10;CNN-S Network&#10;Similar to Overfeat ‘accurate’ network (ICLR 2014)&#10;conv3&#10;512x3x3&#10;stride&#10;1&#10;conv4&#10;512x3x..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-10-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-10-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-10-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="11"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Network Architectures&#10;VGG Very Deep Network&#10;Simonyan &amp; Zisserman (ICLR 2015)&#10;conv1a&#10;64x3x3&#10;stride&#10;1&#10;fc6&#10;d.o.&#10;4096-D&#10;fc7&#10;d...." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-11-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-11-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-11-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="12"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Pre-trained networks&#10;mAP(VOC07)&#10;70&#10;75&#10;80&#10;85&#10;90&#10;Decaf CNN-F CNN-M CNN-S VGG-VD&#10;89.3&#10;79.7479.89&#10;77.38&#10;73.41&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-12-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-12-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-12-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="13"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Outline&#10;1&#10;2&#10;3&#10;4&#10;Different pre-trained networks&#10;Data augmentation (for both CNN and IFV)&#10;Dataset ﬁne-tuning&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-13-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-13-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-13-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="14"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Data Augmentation&#10;Given pre-trained ConvNet, augmentation applied at test time&#10;CNN Feature&#10;Extractor&#10;Pre-trained Network&#10;a..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-14-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-14-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-14-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="15"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Data Augmentation&#10;a. No augmentation (= 1 image)&#10;b. Flip augmentation (= 2 images)&#10;c. Crop+Flip augmentation (= 10 images)..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-15-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-15-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-15-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="16"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Data Augmentation&#10;mAP(VOC07)&#10;60&#10;65&#10;70&#10;75&#10;80&#10;IFV CNN-M&#10;79.89&#10;67.17&#10;79.44&#10;66.68&#10;76.99&#10;64.35&#10;76.97&#10;64.36&#10;None&#10;Flip&#10;Crop+Flip ..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-16-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-16-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-16-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="17"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Scale Augmentation&#10;+ ﬂips&#10;224x224&#10;[Smin, Smax] = [256, 512]&#10;+ ﬂips&#10;224x224&#10;256512&#10;Q = {Smin, 0.5(Smin + Smax), Smax}&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-17-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-17-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-17-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="18"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Fully Convolutional Net&#10;Sermanet et al. 2014 (Overfeat)&#10;• Convert ﬁnal fc layers to convolutional layers&#10;• Output is then ..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-18-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-18-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-18-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="19"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Outline&#10;1&#10;2&#10;3&#10;4&#10;Different pre-trained networks&#10;Data augmentation (for both CNN and IFV)&#10;Dataset ﬁne-tuning&#10; " 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-19-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-19-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-19-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="20"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Fine Tuning&#10;conv3&#10;512x3x3&#10;conv4&#10;512x3x3&#10;conv2&#10;256x5x5&#10;conv1&#10;96x7x7&#10;conv5&#10;512x3x3&#10;fc6&#10;d.o.&#10;4096-D&#10;fc7&#10;d.o.&#10;4096-D&#10;ILSVRC&#10;so..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-20-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-20-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-20-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="21"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Fine Tuning&#10;conv3&#10;512x3x3&#10;conv4&#10;512x3x3&#10;conv2&#10;256x5x5&#10;conv1&#10;96x7x7&#10;conv5&#10;512x3x3&#10;fc6&#10;d.o.&#10;4096-D&#10;fc7&#10;d.o.&#10;4096-D&#10;VO&#10;C&#10;07&#10;S..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-21-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-21-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-21-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="22"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Fine Tuning&#10;mAP(VOC07)&#10;79&#10;80&#10;81&#10;82&#10;83&#10;No TN TN-RNK TN-RNK&#10;82.4&#10;82.2&#10;79.7&#10;• TN-CLS – classiﬁcation loss max{ 0, 1 - ywT&#10;φ( ..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-22-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-22-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-22-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="23"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Comparison with State of the Art&#10;VOC2007 VOC2012ILSVRC-2012&#10;CNN-M 2048&#10;CNN-S&#10;CNN-S TUNE-RNK&#10;13.5&#10;13.1&#10;13.1&#10;80.1&#10;79.7&#10;82.4&#10;..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-23-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-23-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-23-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="24"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="If you get the details right, a relatively simple ConvNet-&#10;based pipeline can outperform much more complex&#10;architectures&#10;•..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-24-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-24-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-24-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="25"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="• Presented here was just a subset of the full results&#10;from the paper&#10;• Check out the paper for full results on:&#10;• VOC 200..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-25-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-25-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-25-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="26"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="• Caffe-compatible CNN models can be&#10;downloaded from the Caffe Model Zoo: https://&#10;github.com/BVLC/caffe/wiki/Model-Zoo&#10;• ..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-26-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-26-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-26-320.jpg?cb=1433425924"> 
+            </SECTION><SECTION class="slide" data-index="27"><I class="fa fa-spinner fa-spin"></I> 
+                <IMG class="slide_image" alt="Related Publications&#10;“Return of the Devil in the Details: Delving Deep into Convolutional Nets” &#10;BMVC 2014 Ken Chatﬁeld, K..." 
+src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/KenChatfield.htm" 
+data-full="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-27-1024.jpg?cb=1433425924" 
+data-normal="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-27-638.jpg?cb=1433425924" 
+data-small="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-27-320.jpg?cb=1433425924"> 
+            </SECTION>
+<DIV class="j-next-container next-container">
+<DIV class="content-container">
+<DIV class="next-slideshow-wrapper">
+<DIV class="j-next-slideshow next-slideshow">
+<DIV class="title-container"><SPAN class="title-text">Upcoming SlideShare</SPAN> 
+                </DIV>
+<DIV class="j-next-url info">
+<DIV class="thumb-container"><IMG class="j-next-thumb thumb">                   
+</DIV>
+<DIV class="text-container"><SPAN 
+class="j-next-title next-title"></SPAN></DIV></DIV></DIV>
+<DIV class="next-timer">Loading in …<SPAN 
+class="j-timer-count timer-count">5</SPAN></DIV>
+<DIV class="j-next-cancel next-cancel">×</DIV></DIV></DIV></DIV></DIV></DIV><!-- end stage --> 
+  
+<DIV class="toolbar_wrapper j-player-toolbar">
+<DIV class="toolbar normal"><!-- using div.bar-[top, bottom]-margin to fix toolbar spacing with a taller progressbar (improve slide scrubbing UX) --> 
+<DIV class="j-progress-bar progress-bar-wrapper">
+<DIV class="progress-bar-spacing"></DIV>
+<DIV tabindex="0" class="buffered-bar"></DIV>
+<DIV class="j-slides-loaded-bar progress-bar"></DIV>
+<DIV class="j-progress-tooltip progress-tooltip" style="display: none;">
+<DIV class="j-tooltip-content progress-tooltip-wrapper"><IMG class="j-tooltip-thumb tooltip-thumb" 
+onerror="this.src=''" slide-thumb-27="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-27-320.jpg?cb=1433425924" 
+slide-thumb-26="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-26-320.jpg?cb=1433425924" 
+slide-thumb-25="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-25-320.jpg?cb=1433425924" 
+slide-thumb-24="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-24-320.jpg?cb=1433425924" 
+slide-thumb-23="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-23-320.jpg?cb=1433425924" 
+slide-thumb-22="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-22-320.jpg?cb=1433425924" 
+slide-thumb-21="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-21-320.jpg?cb=1433425924" 
+slide-thumb-20="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-20-320.jpg?cb=1433425924" 
+slide-thumb-19="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-19-320.jpg?cb=1433425924" 
+slide-thumb-18="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-18-320.jpg?cb=1433425924" 
+slide-thumb-17="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-17-320.jpg?cb=1433425924" 
+slide-thumb-16="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-16-320.jpg?cb=1433425924" 
+slide-thumb-15="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-15-320.jpg?cb=1433425924" 
+slide-thumb-14="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-14-320.jpg?cb=1433425924" 
+slide-thumb-13="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-13-320.jpg?cb=1433425924" 
+slide-thumb-12="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-12-320.jpg?cb=1433425924" 
+slide-thumb-11="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-11-320.jpg?cb=1433425924" 
+slide-thumb-10="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-10-320.jpg?cb=1433425924" 
+slide-thumb-9="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-9-320.jpg?cb=1433425924" 
+slide-thumb-8="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-8-320.jpg?cb=1433425924" 
+slide-thumb-7="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-7-320.jpg?cb=1433425924" 
+slide-thumb-6="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-6-320.jpg?cb=1433425924" 
+slide-thumb-5="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-5-320.jpg?cb=1433425924" 
+slide-thumb-4="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-4-320.jpg?cb=1433425924" 
+slide-thumb-3="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-3-320.jpg?cb=1433425924" 
+slide-thumb-2="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-2-320.jpg?cb=1433425924" 
+slide-thumb-1="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/85/devil-in-the-details-analysing-the-performance-of-convnet-features-1-320.jpg?cb=1433425924"> 
+      <SPAN class="j-slidecount-label slidecount-label">1</SPAN>     </DIV>
+<DIV class="progress-tooltip-caret"></DIV></DIV></DIV>
+<DIV class="progress-bar-spacing"></DIV>
+<DIV class="j-tools bot-actions"></DIV><!-- .bot-actions -->   
+<DIV class="j-tools bot-actions"><A title="Save this presentation" class="j-tooltip j-download action-download has-tip" 
+aria-haspopup="true" style="display: none;" href="https://www.slideshare.net/login?from_source=%2FKenChatfield%2Fchatfield14-devil%3Ffrom_action%3Dsave&amp;from=download&amp;layout=foundation" 
+data-placement="top" data-target="#login_modal" data-tooltip=""><I class="fa fa-download fa-lg" 
+style="margin-top: 1px;"></I>     </A>   </DIV>
+<DIV class="nav"><BUTTON title="Previous Slide" id="btnPrevious" aria-label="Previous Slide">
+<DIV class="j-prev-btn arrow-left disabled"></DIV></BUTTON>     <LABEL class="goToSlideLabel"><SPAN 
+class="j-current-slide" id="current-slide">1</SPAN> of <SPAN class="j-total-slides" 
+id="total-slides">27</SPAN>     </LABEL><BUTTON title="Next Slide" id="btnNext" 
+aria-label="Next Slide">
+<DIV class="j-next-btn arrow-right"></DIV></BUTTON>   </DIV>
+<DIV class="navActions"><BUTTON title="View Fullscreen" class="j-tooltip btnFullScreen" 
+id="btnFullScreen" aria-label="View Fullscreen"><SPAN class="fa fa-stack"><I 
+class="fa fa-expand fa-stack-1x" aria-hidden="true"></I>       </SPAN>     
+</BUTTON>     <BUTTON title="Exit Fullscreen" class="j-tooltip btnLeaveFullScreen" 
+id="btnLeaveFullScreen" aria-label="Exit Fullscreen"><SPAN class="fa-stack"><I 
+class="fa fa-compress fa-stack-1x" aria-hidden="true"></I>       </SPAN>     
+</BUTTON> </DIV></DIV></DIV>
+<DIV tabindex="-1" class="success-toast-wrapper hide"></DIV>
+<DIV class="image_maps"></DIV></DIV>
+<DIV id="j-lead-form-placeholder" style="display: none;"></DIV></DIV></DIV>
+<DIV id="lastScreen" style="display: none;">
+<DIV class="lastScreen">
+<DIV class="jsplLastScreenOverlay j-last-screen-overlay"></DIV>
+<DIV class="pro-overlay j-lastscreen">
+<DIV class="proSharingText">Like this presentation? Why not share!</DIV>
+<UL class="lastActions j-last-screen-actions">
+  <LI class="share-cta j-share-cta lastscreen-share-cta"><A 
+  class="share-btn"><SPAN class="lastScreen-sprite"></SPAN>Share</A></LI>       
+  <LI class="email-cta j-email-cta"><A class="email-btn"><SPAN class="lastScreen-sprite"></SPAN>Email</A></LI> 
+        
+  <LI class="replay last"><A title="View again" class="replay-btn lastScreenReplay j-tooltip j-last-screen-replay" 
+  data-original-title="View again"><SPAN 
+  class="lastScreen-sprite">&nbsp;</SPAN></A></LI>       
+  <LI class="close-btn lastScreen-sprite j-lastscreen-close"><A>&nbsp;</A></LI>  
+     </UL>
+<DIV class="related-presentations j-lastscreen-related">
+<UL class="presentation-list">
+  <LI><A title="Deep Learning Class #2 - Deep learn..." href="https://public.slidesharecdn.com/holbertonschool/deep-learning-class-2-by-louis-monier"><IMG 
+  class="j-thumbnail" alt="Deep Learning Class #2 - Deep learn..." 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/deeplearningclass2-louismonier-160501185826-thumbnail.jpg?cb=1462253453"> 
+             <SPAN class="presentation-meta"><SPAN class="title">Deep Learning 
+  Class #2 - Deep learn...</SPAN><SPAN class="author">by&nbsp;Holberton 
+  School</SPAN><SPAN class="view-count">1494&nbsp;views</SPAN></SPAN>          
+  </A></LI>
+  <LI><A title="Deep Learning behind Prisma" href="https://public.slidesharecdn.com/lostleaves/deep-learning-behind-prisma-66647472"><IMG 
+  class="j-thumbnail" alt="Deep Learning behind Prisma" data-original="//cdn.slidesharecdn.com/ss_thumbnails/styletemp-161002182243-thumbnail.jpg?cb=1475432629"> 
+             <SPAN class="presentation-meta"><SPAN class="title">Deep Learning 
+  behind Prisma</SPAN><SPAN class="author">by&nbsp;lostleaves</SPAN><SPAN class="view-count">4337&nbsp;views</SPAN></SPAN> 
+           </A></LI>
+  <LI><A title="Deep Learning for Computer Vision -..." href="https://public.slidesharecdn.com/AlexConway2/deep-learning-for-computer-vision-executiveml"><IMG 
+  class="j-thumbnail" alt="Deep Learning for Computer Vision -..." 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/dl4cvexemlslides-170921121930-thumbnail.jpg?cb=1505996419"> 
+             <SPAN class="presentation-meta"><SPAN class="title">Deep Learning 
+  for Computer Vision -...</SPAN><SPAN class="author">by&nbsp;Alex 
+  Conway</SPAN><SPAN class="view-count">778&nbsp;views</SPAN></SPAN>          
+  </A></LI>
+  <LI><A title="[DSC 2016] 系列活動：李宏毅 / 一天搞懂深度學習" href="https://public.slidesharecdn.com/tw_dsconf/ss-62245351"><IMG 
+  class="j-thumbnail" alt="[DSC 2016] 系列活動：李宏毅 / 一天搞懂深度學習" data-original="//cdn.slidesharecdn.com/ss_thumbnails/1-160521014039-thumbnail.jpg?cb=1474863115"> 
+             <SPAN class="presentation-meta"><SPAN class="title">[DSC 2016] 
+  系列活動：李宏毅 / 一天搞懂深度學習</SPAN><SPAN class="author">by&nbsp;台灣資料科學年會</SPAN><SPAN 
+  class="view-count">436712&nbsp;views</SPAN></SPAN>          
+</A></LI></UL></DIV></DIV><!-- end of div class pro-overlay -->   
+<DIV class="j-modal-share modal-share mobile-hide" id="last-screen-modal-share" 
+style="display: none;" data-ga-track-action="" data-ga-track-category="">
+<DIV class="j-modal-popup modal-popup" role="dialog" aria-labelledby="button-share-tab"><BUTTON 
+class="j-modal-close modal-close" aria-label="Close"></BUTTON>
+<DIV class="modal-content-wrapper">
+<DIV class="j-modal-content modal-content" id="modal-content" data-slideshowid=""><HEADER 
+class="j-tabs tabs"><A class="selected j-button-share-tab" id="button-share-tab" 
+role="heading" aria-level="1">Share SlideShare</A>           
+<HR class="divider">
+</HEADER>
+<DIV class="j-share-tab share-tab">
+<DIV>
+<UL class="j-share-social-list share-social-list" data-canonical-url="https://www.slideshare.net/KenChatfield/chatfield14-devil">
+  <LI class="facebook" data-network="facebook">
+  <DIV class="social-hover"><A title="Share on Facebook" class="share-link" 
+  href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#" 
+  rel="nofollow" data-u="https://www.slideshare.net/KenChatfield/chatfield14-devil">Facebook</A></DIV></LI>
+  <LI class="twitter" data-network="twitter">
+  <DIV class="social-hover"><A title="Tweet on Twitter" class="share-link" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#" 
+  rel="nofollow" data-via="SlideShare" data-related="" data-text="Devil in the Details: Analysing the Performance of ConvNet Features #categoryretrieval #convnet" 
+  data-url="https://www.slideshare.net/KenChatfield/chatfield14-devil">Twitter</A></DIV></LI>
+  <LI class="linkedin" data-network="linkedin">
+  <DIV class="social-hover"><A title="Share on Linkedin" class="share-link" 
+  href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#" 
+  rel="nofollow" data-text="Devil in the Details: Analysing the Performance of ConvNet Features by Ken Chatfield via slideshare" 
+  data-url="https://www.slideshare.net/KenChatfield/chatfield14-devil">LinkedIn</A></DIV></LI></UL></DIV>
+<DIV class="j-share-embed section share-embed"><LABEL class="header" for="share-embed-link">Embed</LABEL> 
+            <TEXTAREA class="j-share-embed-link j-share-expand-trigger" id="share-embed-link" readonly="" data-ga="link"></TEXTAREA>
+<DIV class="share-embed-options j-share-expand">
+<DIV class="embed-size"><LABEL class="title" for="embed-size-picker">Size 
+(px)</LABEL><SELECT class="j-embed-size-picker embed-size-picker j-update-embed" 
+id="embed-size-picker" data-ga="size-picker"></SELECT>               </DIV>
+<DIV class="embed-start"><LABEL class="title" for="embed-start-picker">Start 
+on</LABEL><SELECT class="j-embed-start-picker embed-start-picker j-update-embed" 
+id="embed-start-picker" data-ga="start-picker"></SELECT>                 </DIV>
+<DIV class="embed-show-related" style="display: none;"><INPUT name="related-content" 
+class="j-embed-related-cbox embed-related-cbox j-update-embed" type="checkbox" 
+checked="checked" data-ga="related">                 <SPAN>Show related 
+SlideShares at end</SPAN>               </DIV></DIV></DIV>
+<DIV class="wordpress-container section"><LABEL class="header" for="share-embed-wp">WordPress 
+Shortcode</LABEL>             <INPUT name="embed-code" class="j-share-embed-wp text quiet h-wpembedcode j-share-expand-trigger" id="share-embed-wp" type="text" readonly="readonly" data-ga="wp-link"></DIV>
+<DIV class="share-link-container section"><LABEL class="header" for="share-link-url">Link</LABEL> 
+            <INPUT class="j-share-link-url j-share-expand-trigger" id="share-link-url" type="text" readonly="" data-ga="link"></DIV></DIV></DIV></DIV></DIV></DIV><!-- share modal --> 
+</DIV><!-- last screen ends here -->         </DIV></DIV>
+<DIV class="slideshow-info-container" itemtype="https://schema.org/MediaObject" 
+itemscope="">
+<DIV class="slideshow-info">
+<META content="en" itemprop="inLanguage">           
+<META content="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-1-638.jpg?cb=1433425924" 
+itemprop="image">           
+<META content="https://cdn.slidesharecdn.com/ss_thumbnails/chatfield14-devil-150604135047-lva1-app6892-thumbnail.jpg?cb=1433425924" 
+itemprop="thumbnailUrl">           
+<META content="https://www.slideshare.net/slideshow/embed_code/key/vl1KS7sk5hFC2V" 
+itemprop="embedURL">           
+<META content="HTML5" itemprop="playerType">           
+<META content="UserComments:0" itemprop="interactionCount">           
+<META content="UserLikes:1" itemprop="interactionCount">           
+<META content="UserDownloads:49" itemprop="interactionCount">           
+<META content="UserPageVisits:1405" itemprop="interactionCount">           
+<META content="UserPlays:1405" itemprop="interactionCount">           
+<META id="meta-google" content="UserPlusOnes:0" itemprop="interactionCount">     
+      
+<DIV class="slideshow-title-container row add-padding-right">
+<DIV class="small-10 columns">
+<H1 class="notranslate slideshow-title-text" itemprop="headline"><SPAN class="j-title-breadcrumb"> 
+                 Devil in the Details: Analysing the Performance of ConvNet 
+Features                 </SPAN>               </H1></DIV>
+<DIV class="small-2 columns text-right format-views"><SPAN class="notranslate pippin-data"> 
+                 1,405 views<BR></SPAN>             </DIV></DIV>
+<UL class="slideshow-actions" id="slideshow-actions">
+  <LI class="item-action"><BUTTON class="tiny art-deco primary share" 
+  data-action="share">Share</BUTTON>             </LI>
+  <LI class="item-action"><BUTTON class="tiny art-deco primary like button" 
+  href="/signup?login_source=slideview.popup.like&amp;from=favorite&amp;layout=foundation&amp;from_source=https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil%3Fnext_slideshow%3D1" 
+  data-action="like" rel="nofollow">Like</BUTTON>               </LI>
+  <LI class="item-action"><BUTTON class="tiny art-deco primary download button" 
+  href="/login?from_source=%2FKenChatfield%2Fchatfield14-devil%3Ffrom_action%3Dsave&amp;from=download&amp;layout=foundation" 
+  data-action="download" rel="nofollow" data-cant-download-alert="We’re sorry, but this file cannot be downloaded" 
+  data-dangerous-download-confirmation="This presentation may be harmful to your computer. Are you sure you want to download it?" 
+  data-poll-interval-seconds="5">                  Download                   <I 
+  class="fa fa-spinner fa-spin download-loading-spinner j-download-loading-spinner" 
+  style="display: none;"></I>                 </BUTTON>               </LI><!-- Report/Flag Content --> 
+              
+  <LI class="item-action"><A class="report-dropdown hide" aria-expanded="false" 
+  aria-controls="report-dropdown" data-dropdown="report-dropdown"><SPAN class="report-ellipsis">...</SPAN></A> 
+                <SPAN title="You have reported this as inappropriate" class="j-tooltip flagged small-text inline_feedback hide"><I 
+  class="notice"></I>                 <SPAN class="copy-in-aria-label" 
+  aria-label="You have reported this as inappropriate"></SPAN>               
+  </SPAN>               
+  <UL tabindex="-1" class="report-dropdown-list" id="report-dropdown" 
+  aria-hidden="true" data-dropdown-content="">
+    <LI><A class="action-flag hide" href="https://www.slideshare.net/signup?login_source=slideview.popup.flags&amp;from=flagss&amp;from_source=https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil%3Fnext_slideshow%3D1" 
+    rel="nofollow"><SPAN title="Flag this presentation as inappropriate" class="j-tooltip flag copy-in-aria-label hide" 
+    aria-label="Report"></SPAN>                   </A>                 
+  </LI></UL></LI></UL>
+<DIV class="author-container add-padding-right" itemprop="author" itemtype="https://schema.org/Person" 
+itemscope="">
+<DIV class="left author-thumbnail"><A title="KenChatfield" class="author-photo-wrapper" 
+href="https://www.slideshare.net/KenChatfield?utm_campaign=profiletracking&amp;utm_medium=sssite&amp;utm_source=ssslideview" 
+itemprop="url"><IMG class="author-photo" alt="Ken Chatfield" src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/user-48x48.png" 
+itemprop="image">               </A>             </DIV>
+<DIV class="author-text">
+<H2 style="display: inline;"><A title="KenChatfield" class="j-author-name" href="https://www.slideshare.net/KenChatfield?utm_campaign=profiletracking&amp;utm_medium=sssite&amp;utm_source=ssslideview" 
+rel="author" data-ga-cat="bigfoot_slideview" 
+data-ga-action="authorlinkclick"><SPAN itemprop="name">Ken 
+Chatfield</SPAN></A></H2>               
+<DIV class="author-cta-container">
+<DIV class="follow-container"><SPAN class="j-follow " data-contactee-id="78533912"><A 
+class="follow-btn" href="https://www.slideshare.net/signup?login_source=slideview.popup.follow&amp;from=addcontact&amp;from_source=https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil%3Fnext_slideshow%3D1" 
+data-contactee="78533912"><I class="fa fa-plus"></I> Follow                      
+   </A>
+<DIV class="j-follow-progress indicator"><I class="fa fa-spinner fa-spin"></I>   
+                    </DIV></SPAN>                   </DIV></DIV></DIV></DIV>
+<DIV class="social-share-container add-padding-right"><BUTTON class="j-share-item button-li tiny radius" 
+id="sv-linkedin-share" data-ga-action="viralshareLinkedIn_click" data-network="linkedin"><I 
+class="fa fa-linkedin fa-lg"></I>               </BUTTON>               <BUTTON 
+class="j-share-item button-fb tiny radius" id="sv-facebook-share" 
+data-ga-action="viralsharefacebook" data-network="facebook"><I class="fa fa-facebook fa-lg"></I> 
+              </BUTTON>               <BUTTON class="j-share-item button-tw tiny radius" 
+id="sv-twitter-share" data-ga-action="viralsharetwitter_click" data-network="twitter"><I 
+class="fa fa-twitter fa-lg"></I>               </BUTTON>             </DIV>
+<P><SMALL>              Published on <time itemprop="datePublished" datetime="Jun 4, 2015">Jun 
+4, 2015</time>             </SMALL>           </P>
+<DIV class="slideshow-description-container add-padding-right">
+<DIV class="description row" data-ga-cat="bigfoot_slideview" data-ga-action="description>more">
+<DIV class="large-10 columns">
+<P class="notranslate" id="slideshow-description-paragraph">                    
+Presentation to accompany paper: 
+http://www.robots.ox.ac.uk/~vgg/research/deep_eval/                   </P></DIV>
+<DIV class="large-2 columns"><BUTTON class="j-expand-text empty_btn_design">     
+               ...<I class="fa fa-caret-down"></I>                   </BUTTON>   
+              </DIV></DIV></DIV>
+<DIV class="categories-container add-padding-right"><SPAN>Published in:</SPAN>   
+              <A href="https://www.slideshare.net/featured/category/technology" 
+rel="nofollow">Technology</A><SPAN class="comma"></SPAN>             
+</DIV></DIV>
+<DIV class="slideshow-tabs-container show-for-medium-up">
+<UL class="tabs" role="tablist" data-tab="">
+  <LI class="active" role="presentation"><A role="tab" aria-selected="true" 
+  aria-controls="comments-panel" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#comments-panel"><I 
+  class="fa fa-comment"></I>                    0 Comments                 
+  </A></LI>
+  <LI role="presentation"><A role="tab" aria-selected="false" aria-controls="likes-panel" 
+  href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#likes-panel"><I 
+  class="fa fa-heart"></I>                 <SPAN class="j-favs-count">           
+         1 Like                 </SPAN>               </A></LI>
+  <LI role="presentation"><A class="j-stats-tab" role="tab" aria-selected="false" 
+  aria-controls="stats-panel" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#stats-panel"><I 
+  class="fa fa-bar-chart"></I>                Statistics               </A></LI>
+  <LI role="presentation"><A role="tab" aria-selected="false" aria-controls="notes-panel" 
+  href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#notes-panel"><I 
+  class="fa fa-file-text"></I>                Notes               </A></LI></UL>
+<DIV class="tabs-content">
+<DIV class="content active commentsWrapper commentsNotes" id="comments-panel" 
+role="tabpanel">
+<UL class="hide">
+  <LI id="commentsTemplate">
+  <DIV class="row">
+  <DIV class="small-1 columns thumbnail"><A title="Commenter Title" class="j-author-photo notranslate commenter" 
+  rel="nofollow"><IMG class="nickname" alt="Full Name" src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/user-48x48.png"> 
+                          </A>                       </DIV>
+  <DIV class="small-11 columns"><A title="Commenter Title" class="j-author-photo notranslate commenter" 
+  rel="nofollow"><SPAN class="j-username notranslate" data-ga-cat="bigfoot_slideview" 
+  data-ga-action="commentuserlinkclick">Full Name</SPAN>                         
+    <SPAN class="bioStub notranslate"><SPAN class="j-commenter-role"></SPAN>     
+                          <SPAN class="j-commenter-org"></SPAN>                  
+           </SPAN>                         </A>                         
+  <DIV class="commentText notranslate">                          Comment goes 
+  here.                         </DIV><time class="commentTimestamp small-text lighter-color-text">12 
+  hours ago</time>&nbsp;&nbsp;                        <SPAN 
+  class="commentMeta"><SPAN class="commentActions small-text"><A class="j-action-delete" 
+  href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">Delete</A> 
+                              <A class="j-reply" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">Reply</A> 
+                              <A class="j-action-block" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">Block</A> 
+                            </SPAN>                         </SPAN>              
+             
+  <DIV class="panel callout block-message" id="confirmDialog">
+  <DIV><SPAN class="title">Are you sure you want to</SPAN>                       
+        <A id="yes" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">Yes</A> 
+                              <A id="no" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">No</A> 
+                            </DIV></DIV>
+  <DIV class="block-message" id="messageDialog">                          Your 
+  message goes here                         </DIV><SPAN class="j-loading" style="display: none;"><I 
+  class="fa fa-spinner fa-spin"></I>                         </SPAN>             
+            </DIV></DIV></LI></UL>
+<FORM class="j-comment-post postComment" id="postComment" action="#" method="post" 
+accept-charset="utf-8">
+<DIV class="row">
+<DIV class="small-1 columns thumbnail">
+<DIV class="left"><IMG class="nickname" alt="no profile picture user" src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/user-48x48.png"> 
+                          </DIV></DIV>
+<DIV class="small-11 columns">
+<DIV class="row collapse">
+<DIV 
+class="small-10 columns"><INPUT class="j-post-comment-input comment-text" type="text" placeholder="Share your thoughts…" value=""></DIV>
+<DIV class="small-2 columns"><A class="postfix" id="login-provider-slideshare" 
+href="https://www.slideshare.net/signup?login_source=slideview.popup.comment&amp;from=comments&amp;from_source=https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil%3Fnext_slideshow%3D1" 
+rel="nofollow"><BUTTON class="postfix" 
+type="button">Post</BUTTON></A></DIV></DIV></DIV></DIV></FORM>
+<UL class="user-list no-bullet" id="commentsList">
+  <LI>
+  <P class="empty-stat-box text-center"><EM>Be the first to comment</EM>         
+                </P></LI></UL></DIV>
+<DIV class="content" id="likes-panel" role="tabpanel" aria-hidden="false">
+<UL class="j-favs-list notranslate user-list no-bullet" id="favsList" itemtype="http://schema.org/UserLikes" 
+itemscope="">
+  <LI itemtype="http://schema.org/Person" itemscope="">
+  <DIV class="row">
+  <DIV class="small-1 columns thumbnail"><A title="hanaleehn" class="j-author-photo notranslate" 
+  href="https://www.slideshare.net/hanaleehn?utm_campaign=profiletracking&amp;utm_medium=sssite&amp;utm_source=ssslideshow" 
+  rel="nofollow" itemprop="url"><IMG class="j-lazy-thumb" alt="hanaleehn" src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/user-48x48.png" 
+  itemprop="image" data-original="//cdn.slidesharecdn.com/profile-photo-hanaleehn-48x48.jpg"> 
+                            </A>                         </DIV>
+  <DIV class="small-11 columns"><A title="hanaleehn" class="favoriter notranslate" 
+  href="https://www.slideshare.net/hanaleehn?utm_campaign=profiletracking&amp;utm_medium=sssite&amp;utm_source=ssslideshow" 
+  rel="nofollow"><SPAN class="j-username notranslate" data-ga-cat="bigfoot_slideview" 
+  data-ga-action="favoriteuserlinkclick" itemprop="name">Hana Lee</SPAN>         
+                      <SPAN class="bioStub notranslate small-text light-color-text"><SPAN 
+  class="j-favoriter-role">                                ,                     
+               <SPAN>Image Processing, Computer Vision</SPAN>                    
+             </SPAN>                               <SPAN 
+  class="j-favoriter-org">                                 at                    
+                <SPAN>Samsung Advanced Institute of Technology</SPAN>            
+                     </SPAN>                             </SPAN>                 
+              
+  <DIV class="j-tags favTags"></DIV><time class="commentTimestamp small-text lighter-color-text"> 
+                               2 years ago                             </time>   
+                          </A>                         
+</DIV></DIV></LI></UL></DIV>
+<DIV class="content" id="downloads-panel" role="tabpanel" aria-hidden="true">
+<DIV class="empty-stat-box">No Downloads</DIV></DIV>
+<DIV class="content" id="stats-panel" role="tabpanel" aria-hidden="true">
+<DIV class="row info-stats">
+<DIV class="small-4 columns"><STRONG>Views</STRONG>                   
+<DIV class="row">
+<DIV class="small-8 columns stat-label">Total views</DIV>
+<DIV class="small-4 columns stat-value text-right">                      1,405   
+                  </DIV>
+<DIV class="small-8 columns stat-label">On SlideShare</DIV>
+<DIV class="j-slideshare-views small-4 columns stat-value text-right ">          
+            0                     </DIV>
+<DIV class="small-8 columns stat-label">From Embeds</DIV>
+<DIV class="j-embed-views small-4 columns stat-value text-right">                
+      0                     </DIV>
+<DIV class="small-8 columns stat-label">Number of Embeds</DIV>
+<DIV class="small-4 columns stat-value text-right">                      20      
+               </DIV></DIV></DIV>
+<DIV class="small-4 columns"><STRONG>Actions</STRONG>                   
+<DIV class="row">
+<DIV class="small-8 columns stat-label">Shares</DIV>
+<DIV class="small-4 columns stat-value text-right j-total-shares">0</DIV>
+<DIV class="small-8 columns stat-label">Downloads</DIV>
+<DIV class="small-4 columns stat-value text-right ">                      49     
+                </DIV>
+<DIV class="small-8 columns stat-label">Comments</DIV>
+<DIV class="small-4 columns stat-value text-right">                      0       
+              </DIV>
+<DIV class="small-8 columns stat-label">Likes</DIV>
+<DIV class="small-4 columns stat-value text-right">                      1       
+              </DIV></DIV></DIV>
+<DIV class="small-4 columns"><STRONG>                    Embeds                  
+   <SPAN class="j-embed-views notranslate from-embed hint">0</SPAN>              
+     </STRONG>                   
+<DIV class="j-info-embeds">
+<DIV class="j-no-embeds no-embeds">No embeds</DIV>
+<DIV class="row no-translate j-embeds-container" style="overflow: auto; max-height: 120px;"></DIV></DIV></DIV></DIV></DIV>
+<DIV class="content" id="notes-panel" role="tabpanel" aria-hidden="true">
+<DIV class="empty-stat-box" id="empty-note">No notes for 
+slide</DIV></DIV></DIV></DIV>
+<DIV class="notranslate transcript add-padding-right j-transcript">
+<H3 class="transcript-header"><I class="fa fa-file-o"></I>                  
+Devil in the Details: Analysing the Performance of ConvNet Features              
+ </H3>
+<OL class="j-transcripts transcripts no-bullet no-style" itemprop="text">
+  <LI>      1.    Devil in the Details: Analysing the Performance of ConvNet 
+  Features Ken Chatﬁeld - University of Oxford May 2015    </LI>
+  <LI><A title="The Devil is still in the Details&#10;2011 2014&#10; " href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-2-638.jpg?cb=1433425924" 
+  target="_blank">        2.       </A>    The Devil is still in the Details
+   2011 2014    </LI>
+  <LI><A title="• This work is about comparing the latest ConvNet&#10;based fea..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-3-638.jpg?cb=1433425924" 
+  target="_blank">        3.       </A>     • This work is about comparing the 
+  latest ConvNet based feature representations on common ground • We compare 
+  both different pre-trained network architectures and different learning 
+  heuristics Comparing Apples to Apples Fixed Evaluation Protocol Fixed Learning
+   CNN Arch 1 CNN Arch 2 IFV Input Dataset …    </LI>
+  <LI><A title="Performance Evolution over VOC2007&#10;BOW&#10;32K&#10;–&#10;IFV-BL&#10;327K&#10;–&#10;..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-4-638.jpg?cb=1433425924" 
+  target="_blank">4.       </A>    Performance Evolution over VOC2007 BOW 32K – 
+  IFV-BL 327K – IFV 84K – IFV 84K f s DeCAF 4K t t CNN-F 4K f s CNN-M 2K 2K f s
+   CNN-S 4K (TN) f s VGG-D+E 4K S s 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82
+   84 86 88 mAP 68.02 54.48 61.69 64.36 73.41 77.15 80.13 2008 2010 2013 2014...
+   82.42 Method Dim. Aug. 2015 89.70 CNN-based methods    </LI>
+  <LI><A title="Evaluation Setup&#10;SVM Classiﬁer&#10;train&#10;test&#10;training set&#10;test..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-5-638.jpg?cb=1433425924" 
+  target="_blank">        5.       </A>    Evaluation Setup SVM Classiﬁer train
+   test training set test set Evaluate using mAP, accuracy etc. classiﬁer output
+   Pre-trained Net on 1,000 ImageNet Classes CNN Feature Extractor (4096-D 
+  feature vector out)    </LI>
+  <LI><A title="Outline&#10;1&#10;2&#10;3&#10;4&#10;Different pre-trained networks&#10;Data augment..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-6-638.jpg?cb=1433425924" 
+  target="_blank">        6.       </A>    Outline 1 2 3 4 Different pre-trained 
+  networks Data augmentation (for both CNN and IFV) Dataset ﬁne-tuning    </LI>
+  <LI><A title="• CNN-F Network&#10;• CNN-M Network&#10;• CNN-S Network&#10;• VGG Very ..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-7-638.jpg?cb=1433425924" 
+  target="_blank">        7.       </A>     • CNN-F Network • CNN-M Network • 
+  CNN-S Network • VGG Very Deep Network Network Architectures    </LI>
+  <LI><A title="Network Architectures&#10;CNN-F Network&#10;Similar to Krizhevsky e..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-8-638.jpg?cb=1433425924" 
+  target="_blank">        8.       </A>    Network Architectures CNN-F Network
+   Similar to Krizhevsky et al. (ILSVRC-2012 winner) conv3 256x3x3 stride 1
+   conv4 512x3x3 conv2 256x5x5 stride 1 conv1 64x11x11 stride 4 conv5 512x3x3
+   fc6 d.o. 4096-D fc7 d.o. 4096-D input image x2 x2    </LI>
+  <LI><A title="Network Architectures&#10;CNN-M Network&#10;Similar to Zeiler &amp; Fer..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-9-638.jpg?cb=1433425924" 
+  target="_blank">        9.       </A>    Network Architectures CNN-M Network
+   Similar to Zeiler &amp; Fergus (ILSVRC-2013 winner) conv3 512x3x3 stride 1
+   conv4 512x3x3 conv2 256x5x5 stride 2 conv1 96x7x7 stride 2 conv5 512x3x3 fc6
+   d.o. 4096-D fc7 d.o. 4096-D input image x2 x2 Smaller receptive window size + 
+  stride in conv1    </LI>
+  <LI><A title="Network Architectures&#10;CNN-S Network&#10;Similar to Overfeat ‘ac..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-10-638.jpg?cb=1433425924" 
+  target="_blank">        10.       </A>    Network Architectures CNN-S Network
+   Similar to Overfeat ‘accurate’ network (ICLR 2014) conv3 512x3x3 stride 1
+   conv4 512x3x3 conv2 256x5x5 stride 1 conv1 96x7x7 stride 2 conv5 512x3x3 fc6
+   d.o. 4096-D fc7 d.o. 4096-D input image x3 x2 Smaller stride in in conv2    
+  </LI>
+  <LI><A title="Network Architectures&#10;VGG Very Deep Network&#10;Simonyan &amp; Ziss..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-11-638.jpg?cb=1433425924" 
+  target="_blank">        11.       </A>    Network Architectures VGG Very Deep 
+  Network Simonyan &amp; Zisserman (ICLR 2015) conv1a 64x3x3 stride 1 fc6 d.o.
+   4096-D fc7 d.o. 4096-D input image Smaller receptive window size + stride, 
+  and deeper conv1b 64x3x3 stride 1 conv1c 64x3x3 stride 1 x2 conv2a 128x3x3
+   stride 1 conv2b 128x3x3 stride 1 conv2c 128x3x3 stride 1 3(32 C2 ) = 27C2 72
+   C2 = 49C2    </LI>
+  <LI><A title="Pre-trained networks&#10;mAP(VOC07)&#10;70&#10;75&#10;80&#10;85&#10;90&#10;Decaf CNN-F ..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-12-638.jpg?cb=1433425924" 
+  target="_blank">        12.       </A>    Pre-trained networks mAP(VOC07) 70
+   75 80 85 90 Decaf CNN-F CNN-M CNN-S VGG-VD 89.3 79.7479.89 77.38 73.41    
+  </LI>
+  <LI><A title="Outline&#10;1&#10;2&#10;3&#10;4&#10;Different pre-trained networks&#10;Data augment..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-13-638.jpg?cb=1433425924" 
+  target="_blank">        13.       </A>    Outline 1 2 3 4 Different 
+  pre-trained networks Data augmentation (for both CNN and IFV) Dataset 
+  ﬁne-tuning    </LI>
+  <LI><A title="Data Augmentation&#10;Given pre-trained ConvNet, augmentation a..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-14-638.jpg?cb=1433425924" 
+  target="_blank">        14.       </A>    Data Augmentation Given pre-trained 
+  ConvNet, augmentation applied at test time CNN Feature Extractor Pre-trained 
+  Network a. Extract crops b. Pool features (average, max)    </LI>
+  <LI><A title="Data Augmentation&#10;a. No augmentation (= 1 image)&#10;b. Flip au..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-15-638.jpg?cb=1433425924" 
+  target="_blank">        15.       </A>    Data Augmentation a. No augmentation 
+  (= 1 image) b. Flip augmentation (= 2 images) c. Crop+Flip augmentation (= 10 
+  images) + + ﬂips 224x224 224x224 224x224    </LI>
+  <LI><A title="Data Augmentation&#10;mAP(VOC07)&#10;60&#10;65&#10;70&#10;75&#10;80&#10;IFV CNN-M&#10;79.89..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-16-638.jpg?cb=1433425924" 
+  target="_blank">        16.       </A>    Data Augmentation mAP(VOC07) 60 65
+   70 75 80 IFV CNN-M 79.89 67.17 79.44 66.68 76.99 64.35 76.97 64.36 None Flip
+   Crop+Flip (train pooling: sum, test pooling: sum) Crop+Flip (train pooling: 
+  none, test pooling: sum)    </LI>
+  <LI><A title="Scale Augmentation&#10;+ ﬂips&#10;224x224&#10;[Smin, Smax] = [256, 512]..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-17-638.jpg?cb=1433425924" 
+  target="_blank">        17.       </A>    Scale Augmentation + ﬂips 224x224
+   [Smin, Smax] = [256, 512] + ﬂips 224x224 256512 Q = {Smin, 0.5(Smin + Smax), 
+  Smax}    </LI>
+  <LI><A title="Fully Convolutional Net&#10;Sermanet et al. 2014 (Overfeat)&#10;• C..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-18-638.jpg?cb=1433425924" 
+  target="_blank">        18.       </A>    Fully Convolutional Net Sermanet et 
+  al. 2014 (Overfeat) • Convert ﬁnal fc layers to convolutional layers • Output 
+  is then an activation map which can be pooled 8.8% 7.5% top-5 val. error 
+  ILSVRC-2014    </LI>
+  <LI><A title="Outline&#10;1&#10;2&#10;3&#10;4&#10;Different pre-trained networks&#10;Data augment..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-19-638.jpg?cb=1433425924" 
+  target="_blank">        19.       </A>    Outline 1 2 3 4 Different 
+  pre-trained networks Data augmentation (for both CNN and IFV) Dataset 
+  ﬁne-tuning    </LI>
+  <LI><A title="Fine Tuning&#10;conv3&#10;512x3x3&#10;conv4&#10;512x3x3&#10;conv2&#10;256x5x5&#10;conv1..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-20-638.jpg?cb=1433425924" 
+  target="_blank">        20.       </A>    Fine Tuning conv3 512x3x3 conv4
+   512x3x3 conv2 256x5x5 conv1 96x7x7 conv5 512x3x3 fc6 d.o. 4096-D fc7 d.o.
+   4096-D ILSVRC softm ax    </LI>
+  <LI><A title="Fine Tuning&#10;conv3&#10;512x3x3&#10;conv4&#10;512x3x3&#10;conv2&#10;256x5x5&#10;conv1..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-21-638.jpg?cb=1433425924" 
+  target="_blank">        21.       </A>    Fine Tuning conv3 512x3x3 conv4
+   512x3x3 conv2 256x5x5 conv1 96x7x7 conv5 512x3x3 fc6 d.o. 4096-D fc7 d.o.
+   4096-D VO C 07 SVM loss VOC 2007 Train Images    </LI>
+  <LI><A title="Fine Tuning&#10;mAP(VOC07)&#10;79&#10;80&#10;81&#10;82&#10;83&#10;No TN TN-RNK TN-RNK&#10;8..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-22-638.jpg?cb=1433425924" 
+  target="_blank">        22.       </A>    Fine Tuning mAP(VOC07) 79 80 81 82
+   83 No TN TN-RNK TN-RNK 82.4 82.2 79.7 • TN-CLS – classiﬁcation loss max{ 0, 1 
+  - ywT φ( I ) } • TN-RNK – ranking loss max{ 0, 1 - wT ( φ( IPOS ) - φ( INEG ) 
+  ) }    </LI>
+  <LI><A title="Comparison with State of the Art&#10;VOC2007 VOC2012ILSVRC-2012..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-23-638.jpg?cb=1433425924" 
+  target="_blank">        23.       </A>    Comparison with State of the Art
+   VOC2007 VOC2012ILSVRC-2012 CNN-M 2048 CNN-S CNN-S TUNE-RNK 13.5 13.1 13.1
+   80.1 79.7 82.4 82.4 82.9 83.2 Zeiler &amp; Fergus Oquab et al. Wei et al.
+   Clarifai (1 net) 16.1 79.0 18.0 77.7 78.7 (82.8*) 81.5 (85.2*) 81.7 (90.3*)
+   GoogLeNet (1 net) 12.5 7.9 VGG Very Deep (1 net) 89.3 89.07.0    </LI>
+  <LI><A title="If you get the details right, a relatively simple ConvNet-&#10;..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-24-638.jpg?cb=1433425924" 
+  target="_blank">        24.       </A>    If you get the details right, a 
+  relatively simple ConvNet- based pipeline can outperform much more complex
+   architectures • Data augmentation helps a lot, both for deep and shallow 
+  features • Fine tuning makes a difference, and should use ranking loss where 
+  appropriate • Smaller ﬁlters and deeper networks help, although feature 
+  computation is slower Take-home Messages    </LI>
+  <LI><A title="• Presented here was just a subset of the full results&#10;from..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-25-638.jpg?cb=1433425924" 
+  target="_blank">        25.       </A>     • Presented here was just a subset 
+  of the full results from the paper • Check out the paper for full results on: 
+  • VOC 2007 • VOC 2012 • Caltech-101 • Caltech-256 • ILSVRC-2012 There’s more…  
+    </LI>
+  <LI><A title="• Caffe-compatible CNN models can be&#10;downloaded from the Ca..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-26-638.jpg?cb=1433425924" 
+  target="_blank">26.       </A>     • Caffe-compatible CNN models can be
+   downloaded from the Caffe Model Zoo: https://
+   github.com/BVLC/caffe/wiki/Model-Zoo • Matlab feature computation code is 
+  also available from the project website: http://
+   www.robots.ox.ac.uk/~vgg/software/deep_eval Source Code    </LI>
+  <LI><A title="Related Publications&#10;“Return of the Devil in the Details: D..." 
+  href="https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-27-638.jpg?cb=1433425924" 
+  target="_blank">        27.       </A>    Related Publications “Return of the 
+  Devil in the Details: Delving Deep into Convolutional Nets”  BMVC 2014 Ken 
+  Chatﬁeld, Karen Simonyan, Andrea Vedaldi, Andrew Zisserman (Best Paper Prize) 
+  “The devil is in the details: an evaluation of recent feature encoding 
+  methods”  BMVC 2011 Ken Chatﬁeld, Karen Simonyan, Andrea Vedaldi, Victor
+   Lempitsky, Andrew Zisserman  (Best Poster Prize Honourable Mention, 300+ 
+  citations) http://www.robots.ox.ac.uk/~ken    </LI></OL></DIV></DIV></DIV><ASIDE 
+class="small-12 large-4 columns j-related-more-tab" id="side-panel">
+<DL class="tabs related-tabs small" data-tab="">
+  <DD class="active"><A href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#related-tab-content" 
+  data-ga-cat="bigfoot_slideview" data-ga-action="relatedslideshows_tab">        
+  Recommended       </A></DD></DL>
+<DIV class="tabs-content">
+<UL class="content active no-bullet notranslate" id="related-tab-content">
+  <LI class="lynda-item"><A title="Learning to Run Webinars" href="https://www.linkedin.com/learning/learning-to-run-webinars?trk=slideshare_sv_learning" 
+  data-ga-label="lil_rec_Learning to Run Webinars" data-ga-cat="sv_loggedout" 
+  data-ga-action="click" data-ssid="48991374">
+  <DIV class="lynda-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="Learning to Run Webinars" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="https://www.linkedin.com/media-proxy/ext?w=1200&amp;h=675&amp;hash=vFZkDTJHyE7YmjsNJctHjxuy270%3D&amp;ora=1%2CaFBCTXdkRmpGL2lvQUFBPQ%2CxAVta5g-0R6plxVUzgUv5K_PrkC9q0RIUJDPBy-gXyyi-d2fYXPgccTXZLSiol4Rfy0ClwM0d-moSTnkFo69LcLmY4Yx3A"> 
+        
+  <DIV class="learning-play-icon-overlay"></DIV></DIV>
+  <DIV class="lynda-content">
+  <DIV class="title"><SPAN>Learning to Run Webinars</SPAN>       </DIV>
+  <DIV class="learning-text"><SPAN>Online Course - LinkedIn Learning</SPAN>      
+   </DIV></DIV></A></LI>
+  <LI class="lynda-item"><A title="Learning Management Systems (LMS) Quick Start" 
+  href="https://www.linkedin.com/learning/learning-management-systems-lms-quick-start?trk=slideshare_sv_learning" 
+  data-ga-label="lil_rec_Learning Management Systems (LMS) Quick Start" 
+  data-ga-cat="sv_loggedout" data-ga-action="click" data-ssid="48991374">
+  <DIV class="lynda-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="Learning Management Systems (LMS) Quick Start" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="https://www.linkedin.com/media-proxy/ext?w=1200&amp;h=675&amp;hash=NDndrBs%2BAaneh6UEp6Ec0uDaO6w%3D&amp;ora=1%2CaFBCTXdkRmpGL2lvQUFBPQ%2CxAVta5g-0R6plxVUzgUv5K_PrkC9q0RIUJDPBy-gXiOs-NefYXLvf8XdZLSiol8QcS4AkQIyeOquRjDmE469LcLmY4Yx3A"> 
+        
+  <DIV class="learning-play-icon-overlay"></DIV></DIV>
+  <DIV class="lynda-content">
+  <DIV class="title"><SPAN>Learning Management Systems (LMS) Quick Start</SPAN>  
+       </DIV>
+  <DIV class="learning-text"><SPAN>Online Course - LinkedIn Learning</SPAN>      
+   </DIV></DIV></A></LI>
+  <LI class="lynda-item"><A title="Teaching Techniques: Creating Effective Learning Assessments" 
+  href="https://www.linkedin.com/learning/teaching-techniques-creating-effective-learning-assessments?trk=slideshare_sv_learning" 
+  data-ga-label="lil_rec_Teaching Techniques: Creating Effective Learning Assessments" 
+  data-ga-cat="sv_loggedout" data-ga-action="click" data-ssid="48991374">
+  <DIV class="lynda-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="Teaching Techniques: Creating Effective Learning Assessments" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="https://www.linkedin.com/media-proxy/ext?w=1200&amp;h=675&amp;hash=Q4uk6hRyMd1fgp%2BiwEZcGbrIUeQ%3D&amp;ora=1%2CaFBCTXdkRmpGL2lvQUFBPQ%2CxAVta5g-0R6plxVUzgUv5K_PrkC9q0RIUJDPBy-kWCWs8tKfZXTpf8_YZLSiolwTey0DlAcxfOerRTLnFY69LcLmY4Yx3A"> 
+        
+  <DIV class="learning-play-icon-overlay"></DIV></DIV>
+  <DIV class="lynda-content">
+  <DIV class="title"><SPAN>Teaching Techniques: Creating Effective Learning 
+  Assessments</SPAN>       </DIV>
+  <DIV class="learning-text"><SPAN>Online Course - LinkedIn Learning</SPAN>      
+   </DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="Deep Learning Class #2 - Deep learning for Images, I See What You Mean" 
+  class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/holbertonschool/deep-learning-class-2-by-louis-monier" 
+  data-ssid="61554905" data-score="1" data-urn-type="Slideshow" 
+  data-source-model="21" data-source-name="BROWSEMAP" data-algo-id="21">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="Deep Learning Class #2 - Deep learning for Images, I See What You Mean" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/deeplearningclass2-louismonier-160501185826-thumbnail-2.jpg?cb=1462253453"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">        Deep Learning Class #2 - Deep learning for Images, 
+  I See What You Mean       </DIV>
+  <DIV class="author">Holberton School</DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="Deep Learning behind Prisma" class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/lostleaves/deep-learning-behind-prisma-66647472" 
+  data-ssid="66647472" data-score="1" data-urn-type="Slideshow" 
+  data-source-model="21" data-source-name="BROWSEMAP" data-algo-id="21">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="Deep Learning behind Prisma" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/styletemp-161002182243-thumbnail-2.jpg?cb=1475432629"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">        Deep Learning behind Prisma       </DIV>
+  <DIV class="author">lostleaves</DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="Deep Learning for Computer Vision - ExecutiveML" 
+  class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/AlexConway2/deep-learning-for-computer-vision-executiveml" 
+  data-ssid="80016137" data-score="1" data-urn-type="Slideshow" 
+  data-source-model="21" data-source-name="BROWSEMAP" data-algo-id="21">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="Deep Learning for Computer Vision - ExecutiveML" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/dl4cvexemlslides-170921121930-thumbnail-2.jpg?cb=1505996419"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">        Deep Learning for Computer Vision - ExecutiveML     
+    </DIV>
+  <DIV class="author">Alex Conway</DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="[DSC 2016] 系列活動：李宏毅 / 一天搞懂深度學習" class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/tw_dsconf/ss-62245351" data-ssid="62245351" 
+  data-score="1" data-urn-type="Slideshow" data-source-model="21" 
+  data-source-name="BROWSEMAP" data-algo-id="21">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="[DSC 2016] 系列活動：李宏毅 / 一天搞懂深度學習" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/1-160521014039-thumbnail-2.jpg?cb=1474863115"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">        [DSC 2016] 系列活動：李宏毅 / 一天搞懂深度學習       </DIV>
+  <DIV class="author">台灣資料科學年會</DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="On-the-fly Visual Category Search in Web-scale Image Collections" 
+  class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/KenChatfield/chatfield14a-otf" data-ssid="48991501" 
+  data-score="" data-urn-type="Slideshow" data-source-model="" data-source-name="MORE_FROM_USER" 
+  data-algo-id="">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="On-the-fly Visual Category Search in Web-scale Image Collections" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/chatfield14a-otf-150604135348-lva1-app6892-thumbnail-2.jpg?cb=1433426133"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">On-the-fly Visual Category Search in Web-scale Image 
+  Collections       </DIV>
+  <DIV class="author">Ken Chatfield</DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="The AI Rush" class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/jeanbaptiste.dumont/the-ai-rush-121047435" 
+  data-ssid="121047435" data-score="0" data-urn-type="Slideshow" 
+  data-source-model="-2" data-source-name="FEATURED" data-algo-id="-2">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="The AI Rush" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/20181029-theartificialintelligencerush-2018edition-181029083930-thumbnail-2.jpg?cb=1541108855"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">        The AI Rush       </DIV>
+  <DIV class="author">Jean-Baptiste Dumont</DIV></DIV></A></LI>
+  <LI class="j-related-item"><A title="AI and Machine Learning Demystified by Carol Smith at Midwest UX 2017" 
+  class="j-related-impression slideview_related_item j-recommendation-tracking" 
+  href="https://www.slideshare.net/carologic/ai-and-machine-learning-demystified-by-carol-smith-at-midwest-ux-2017" 
+  data-ssid="80840514" data-score="0" data-urn-type="Slideshow" 
+  data-source-model="-2" data-source-name="FEATURED" data-algo-id="-2">
+  <DIV class="related-thumbnail"><IMG class="j-thumbnail j-lazy-thumb" alt="AI and Machine Learning Demystified by Carol Smith at Midwest UX 2017" 
+  src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/thumbnail.png" 
+  data-original="//cdn.slidesharecdn.com/ss_thumbnails/ai-ml-demystified-mwux2017-final-171016011705-thumbnail-2.jpg?cb=1508900920"> 
+      </DIV>
+  <DIV class="related-content">
+  <DIV class="title">        AI and Machine Learning Demystified by Carol Smith 
+  at Midwest UX 2017       </DIV>
+  <DIV class="author">Carol 
+Smith</DIV></DIV></A></LI></UL></DIV></ASIDE></DIV></DIV>
+<DIV class="hide" id="first-clip-tour"></DIV>
+<DIV class="hide" id="clip-intention-tour"></DIV><FOOTER>
+<DIV class="row">
+<DIV class="columns">
+<DIV id="smt-lang-selector"></DIV>
+<UL class="j-languages-selector language-links text-center">
+  <LI class="smt-item j-www"><A title="Devil in the Details: Analysing the Performance of ConvNet Features - English" 
+  class="smt-link" lang="en" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+  hreflang="en">English                     </A>                   </LI>         
+            
+  <LI class="smt-item j-es"><A title="Devil in the Details: Analysing the Performance of ConvNet Features - Espanol" 
+  class="smt-link" lang="es" href="https://es.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+  hreflang="es">Español                     </A>                   </LI>         
+            
+  <LI class="smt-item j-pt"><A title="Devil in the Details: Analysing the Performance of ConvNet Features - Portugues" 
+  class="smt-link" lang="pt" href="https://pt.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+  hreflang="pt">Português                     </A>                   </LI>       
+              
+  <LI class="smt-item j-fr"><A title="Devil in the Details: Analysing the Performance of ConvNet Features - Français" 
+  class="smt-link" lang="fr" href="https://fr.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+  hreflang="fr">Français                     </A>                   </LI>        
+             
+  <LI class="smt-item j-de"><A title="Devil in the Details: Analysing the Performance of ConvNet Features - Deutsche" 
+  class="smt-link" lang="de" href="https://de.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1" 
+  hreflang="de">Deutsch                     </A>                   </LI>         
+          </UL></DIV></DIV>
+<DIV class="row">
+<DIV class="columns">
+<UL class="main-links text-center">
+  <LI><A href="https://www.slideshare.net/about">About</A></LI>                 
+  <LI class="hidden-for-small"><A 
+  href="https://www.slideshare.net/developers">Dev &amp; API</A></LI>            
+       
+  <LI><A href="http://blog.slideshare.net/">Blog</A></LI>                 
+  <LI><A href="https://www.slideshare.net/terms">Terms</A></LI>                 
+  <LI><A href="https://www.slideshare.net/privacy">Privacy</A></LI>              
+     
+  <LI><A 
+  href="http://www.linkedin.com/legal/copyright-policy">Copyright</A></LI>       
+            
+  <LI class="hidden-for-small"><A href="https://www.linkedin.com/help/slideshare">Support</A></LI> 
+                </UL></DIV></DIV>
+<DIV class="row">
+<DIV class="columns">
+<UL class="social-links text-center">
+  <LI><A title="Follow us on LinkedIn" class="fa fa-linkedin-square fa-lg" href="http://www.linkedin.com/company/linkedin" 
+  target="_blank" rel="nofollow"></A>                 </LI>                 
+  <LI><A title="Follow us on Facebook" class="fa fa-facebook-square fa-lg" href="http://www.facebook.com/LinkedIn" 
+  target="_blank" rel="nofollow"></A>                 </LI>                 
+  <LI><A title="Follow us on Twitter" class="fa fa-twitter-square fa-lg" href="http://twitter.com/SlideShare" 
+  target="_blank" rel="nofollow"></A>                 </LI>                 
+  <LI><A title="Follow us on Google+" class="fa fa-google-plus-square fa-lg" 
+  href="http://www.google.com/+LinkedIn" target="_blank" rel="nofollow"></A>     
+              </LI>                 
+  <LI><A class="fa fa-rss-square fa-lg" href="https://www.slideshare.net/rss/latest"></A> 
+                  </LI>               </UL></DIV></DIV>
+<DIV class="row">
+<DIV class="columns">
+<P class="copyright text-center">LinkedIn Corporation © 2019</P>
+<P></P></DIV></DIV></FOOTER></DIV>
+<DIV class="reveal-modal" id="alert-modal" data-reveal="">
+<P></P><A class="close-reveal-modal">×</A>     </DIV>
+<DIV class="modal_popup_container">
+<DIV class="reveal-modal small mobile-hide" id="clipboard-share-modal" role="dialog" 
+aria-hidden="true" aria-labelledby="modal-title" data-ga-track-action="" 
+data-ga-track-category="" data-reveal="" translate="no">
+<DIV class="j-modal-popup modal-popup">
+<DIV class="j-modal-content" id="modal-content">
+<H4 class="j-modal-title modal-title notranslate">Share Clipboard</H4>
+<HR>
+<A class="close-reveal-modal" aria-label="Close" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">×</A> 
+      
+<DIV class="row">
+<UL class="j-share-social-list share-social-list" data-canonical-url="">
+  <LI class="facebook" data-network="facebook"><A title="Share on Facebook" 
+  class="share-link" rel="nofollow">Facebook</A>           </LI>
+  <LI class="twitter" data-network="twitter"><A title="Tweet on Twitter" class="share-link" 
+  rel="nofollow">Twitter</A>           </LI>
+  <LI class="linkedin" data-network="linkedin"><A title="Share on LinkedIn" 
+  class="share-link" rel="nofollow">LinkedIn</A>           </LI></UL></DIV>
+<DIV class="row">
+<DIV class="share-link-container"><LABEL 
+for="share-link-url">Link</LABEL><INPUT class="j-share-link-url" id="share-link-url" type="text" data-ga="link"></DIV></DIV></DIV></DIV></DIV>
+<DIV class="reveal-modal xlarge top-clipboards-modal" id="top-clipboards-modal" 
+role="dialog" aria-hidden="true" aria-labelledby="modal-title" data-reveal="">
+<H4 class="modal-title">Public clipboards featuring this slide</H4>
+<HR>
+<BUTTON class="close-reveal-modal button-lrg" aria-label="Close">×</BUTTON>   
+<DIV class="loading text-center"><svg xmlns="http://www.w3.org/2000/svg"><use 
+xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#loader" 
+data-size="small" /></svg>   </DIV>
+<DIV class="empty">    No public clipboards found for this slide   </DIV>
+<DIV class="clipboards row">
+<UL 
+class="small-block-grid-1 medium-block-grid-2 large-block-grid-3"></UL></DIV></DIV>
+<DIV class="reveal-modal medium" id="select-clipboard-modal" role="dialog" 
+aria-hidden="true" aria-labelledby="modal-title" data-reveal="" translate="no">
+<DIV class="modal-header-container">
+<H4 class="modal-title">Select another clipboard</H4>
+<HR>
+<A class="close-reveal-modal button-lrg" aria-label="Close" href="https://www.slideshare.net/KenChatfield/chatfield14-devil?next_slideshow=1#">×</A> 
+  </DIV>
+<DIV class="loading"><svg xmlns="http://www.w3.org/2000/svg"><use xmlns:xlink="http://www.w3.org/1999/xlink" 
+xlink:href="#loader" data-size="small" /></svg>   </DIV>
+<DIV class="modal-content">
+<DIV class="default-clipboard-panel radius">
+<P>Looks like you’ve clipped this slide to <STRONG class="default-clipboard-title"></STRONG> 
+already.</P></DIV>
+<DIV class="clipboard-search-input-container"><I class="fa fa-search"></I>       
+<INPUT class="clipboard-search-input" type="text" placeholder="Search for a clipboard" value=""></DIV>
+<DIV class="clipboard-list-container">
+<UL class="existing-clipboard-list"></UL>
+<UL class="clipboard-list"></UL>
+<DIV class="clipboard-create-new">
+<DIV class="clipboard-item-thumb"><I class="fa fa-plus"></I>         </DIV>
+<DIV class="clipboard-item-title">Create a 
+clipboard</DIV></DIV></DIV></DIV></DIV>
+<DIV class="reveal-modal medium" id="clipboard-create-modal" role="dialog" 
+aria-hidden="true" aria-labelledby="modal-title" data-reveal="" translate="no">
+<DIV class="first-clip-message hide">
+<H3>You just clipped your first slide!</H3><SPAN>        Clipping is a handy way 
+to collect important slides you want to go back to later. Now customize the name 
+of a clipboard to store your clips.       </SPAN>     </DIV>
+<H4 class="modal-title" id="modal-title"></H4>
+<HR aria-hidden="true">
+
+<FORM data-abide="">
+<DIV class="row">
+<DIV class="j-title-wrapper input-wrapper notranslate"><LABEL>Name*           
+<INPUT class="j-title-input" type="text" placeholder="Best of Slides" value=""><SMALL 
+class="j-title-error error hide"></SMALL>         </LABEL></DIV></DIV>
+<DIV class="row">
+<DIV class="j-description-wrapper input-wrapper notranslate"><LABEL>Description  
+         <INPUT class="j-description-input" type="text" placeholder="Add a brief description so others know what your Clipboard is about." value=""><SMALL 
+class="j-description-error error hide"></SMALL>         </LABEL></DIV></DIV>
+<DIV class="row"><LABEL>Visibility         
+<DIV class="switch small notranslate"><SMALL 
+id="privacy-switch-description">Others can see my Clipboard</SMALL><INPUT class="j-privacy-input" 
+id="privacy-switch" aria-describedby="privacy-switch-description" aria-label="Visibility" 
+type="checkbox">           <LABEL for="privacy-switch"></LABEL>         
+</DIV></LABEL></DIV>
+<DIV class="row">
+<DIV class="pull-right"><BUTTON class="j-cancel-button button-ghost small notranslate" 
+type="button">Cancel</BUTTON>             <BUTTON class="j-submit-button button-linkedin small notranslate" 
+type="submit">Save</BUTTON>           </DIV></DIV></FORM><INPUT class="j-i18n-edit-clipboard-modal" type="hidden" value='{"privacyEnabled":"Clipboard is visible only to me.","privacyDisabled":"Others can see my Clipboard","formTitleCreate":"Create a clipboard","formTitleEdit":"Edit Clipboard"}'> 
+</DIV></DIV>
+<SCRIPT src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/combined_foundation_base.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT>
+      $(window).load(function() {
+        loadCSS("//public.slidesharecdn.com/ss_foundation/stylesheets/app.css?b179a8b601858338156903633df81b782a38c217");
+      });
+    </SCRIPT>
+       
+<META name="ss-i18n-translations" content='{"jsplayer_toolbar_clips.clip_count_info":"{:count,choice,0#Be the first to clip this slide|singular#person clipped this slide|plural#people clipped this slide}"}'> 
+  
+<SCRIPT type="text/javascript">
+    $.extend(true, slideshare_object, {"asset_id":"b179a8b601858338156903633df81b782a38c217","dev":false,"userimage_placeholder":"//public.slidesharecdn.com/images/user-48x48.png","slideshow_placeholder":"//public.slidesharecdn.com/images/thumbnail.png","fb_app_name":"slideshare","analytics_api_enabled":true,"top_nav":{"get_url":"/top_nav"},"li_bar":{"get_url":"/li_bar"},"slideshow":{"recommendations":{"finalRankerModel":"model_001","designKey":"design_001"},"user_login":"KenChatfield","user_name":"Ken Chatfield","is_author_premium":false,"id":"48991374","fullscreen_bg_color":"Black","title":"Devil in the Details: Analysing the Performance of ConvNet Features","type":"presentation","allow_embeds":true,"zeroclipboard_url":"https://static.slidesharecdn.com/ZeroClipboardv2.swf","iframe_url":"https://www.slideshare.net/slideshow/embed_code/key/vl1KS7sk5hFC2V","iframe_code":"\u003Ciframe src=\"{iframe_url}\" width=\"{width}\" height=\"{height}\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" style=\"border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;\" allowfullscreen\u003E \u003C/iframe\u003E \u003Cdiv style=\"margin-bottom:5px\"\u003E \u003Cstrong\u003E \u003Ca href=\"https://www.slideshare.net/KenChatfield/chatfield14-devil\" title=\"Devil in the Details: Analysing the Performance of ConvNet Features\" target=\"_blank\"\u003EDevil in the Details: Analysing the Performance of ConvNet Features\u003C/a\u003E \u003C/strong\u003E from \u003Cstrong\u003E\u003Ca href=\"https://www.slideshare.net/KenChatfield\" target=\"_blank\"\u003EKen Chatfield\u003C/a\u003E\u003C/strong\u003E \u003C/div\u003E","wp_code":"[slideshare id=48991374\u0026doc=chatfield14-devil-150604135047-lva1-app6892]","embed_sizes":{"config":{"defaultPreset":"preset4"},"presets":{"preset1":{"size":{"width":340,"height":290},"displaySize":{"width":40,"height":30}},"preset2":{"size":{"width":425,"height":355},"displaySize":{"width":50,"height":38}},"preset3":{"size":{"width":510,"height":420},"displaySize":{"width":60,"height":45}},"preset4":{"size":{"width":595,"height":485},"displaySize":{"width":70,"height":53}}}},"ss_url":"https://www.slideshare.net/KenChatfield/chatfield14-devil","total_slides":27,"view_action_state":"unpublished","pin_image_url":"https://cdn.slidesharecdn.com/ss_thumbnails/chatfield14-devil-150604135047-lva1-app6892-thumbnail-4.jpg?cb=1433425924","facade_slide_url":"https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-1-638.jpg?cb=1433425924","social_urls":{"linkedin":"https://www.linkedin.com/cws/share?url=https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil\u0026trk=SLIDESHARE","facebook":"https://facebook.com/sharer.php?u=https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil\u0026t=Devil+in+the+Details%3A+Analysing+the+Performance+of+ConvNet+Features","twitter":"https://twitter.com/intent/tweet?via=SlideShare\u0026text=Devil+in+the+Details%3A+Analysing+the+Performance+of+ConvNet+Features+%23categoryretrieval+%23convnet+https%3A%2F%2Fwww.slideshare.net%2FKenChatfield%2Fchatfield14-devil"},"clips":{},"clip_counts":{"9":1,"10":1,"11":2,"15":2,"23":1},"is_clippable":true,"allow_clips":true,"is_clickgen_enabled":false,"clickgen_url":null,"is_private":false,"mobile_app_url":"slideshare-app://ss/48991374"},"user":{"clips_number":0,"clipboards":null,"clipboards_url":null,"member_type":"non-member"},"gam_cat_name":"technology","default_tab":".svMoreAuthor","useHttp":1,"pvt":0,"key":false,"totalSlides":27,"startSlide":1,"presentationId":48991374,"preview":"no","show_branding":1,"doc":"chatfield14-devil-150604135047-lva1-app6892","stripped_title":"chatfield14-devil","version_no":"1433425924","is_free_author":false,"activities":{"favorites":{"count":1,"total":1,"url":"/~/slideshow/favorites_list/48991374.json"}},"flagging":{"flagged_value":null},"downloads":{"allow":true,"sp_isdwnl":true},"comments":{"captcha_url":"https://s3.amazonaws.com/ss-captchas/","ajaxurl":"/~/slideshow/comments/48991374.json","total_count":0},"category":{"featured":0},"stats":{"url":"https://www.slideshare.net/~/slideshow/stats/48991374.json"},"facebook_app_id":"2490221586","bizo_partner_id":870,"jsplayer":{"id":48991374,"is_private":false,"is_only_private":false,"stripped_title":"chatfield14-devil","slide_count":27,"image_ready":true,"has_video":false,"video_slides_count":0,"page":1,"image_bucket_location":"https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892","bucket_location":"https://html.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/","ppt_location":"chatfield14-devil-150604135047-lva1-app6892","timestamp":1433425924,"use_ssl":true,"html_ttffont_url_suffix":".js","html_eotfont_url_suffix":"-eot.js","mode":"html","player_type":"presentation","fullscreen_bgcolor":"jsplBgColorBlack","player_bgcolor":"jsplBgColorBigfoot","spinner_url":"//public.slidesharecdn.com/images/ssplayer/loading_bigfoot.gif?8d8fb5905f","spinner_url_fullscreen":"//public.slidesharecdn.com/images/ssplayer/loading_black.gif?468e48bc3a","disable_eagerload":true,"fullscreen_url":"/fullscreen/KenChatfield/chatfield14-devil","author_id":78533912,"slideview_url":"/KenChatfield/chatfield14-devil","embed_code":"\u003Ciframe src=\"https://www.slideshare.net/slideshow/embed_code/key/vl1KS7sk5hFC2V\" width=\"597\" height=\"486\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" style=\"border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;\" allowfullscreen\u003E \u003C/iframe\u003E \u003Cdiv style=\"margin-bottom:5px\"\u003E \u003Cstrong\u003E \u003Ca href=\"https://www.slideshare.net/KenChatfield/chatfield14-devil\" title=\"Devil in the Details: Analysing the Performance of ConvNet Features\" target=\"_blank\"\u003EDevil in the Details: Analysing the Performance of ConvNet Features\u003C/a\u003E \u003C/strong\u003E from \u003Cstrong\u003E\u003Ca href=\"https://www.slideshare.net/KenChatfield\" target=\"_blank\"\u003EKen Chatfield\u003C/a\u003E\u003C/strong\u003E \u003C/div\u003E","embed_sizes":{"config":{"defaultPreset":"preset4"},"presets":{"preset1":{"size":{"width":340,"height":290},"displaySize":{"width":40,"height":30}},"preset2":{"size":{"width":425,"height":355},"displaySize":{"width":50,"height":38}},"preset3":{"size":{"width":510,"height":420},"displaySize":{"width":60,"height":45}},"preset4":{"size":{"width":595,"height":485},"displaySize":{"width":70,"height":53}}}},"iframe_url":"//www.slideshare.net/slideshow/embed_code/key/vl1KS7sk5hFC2V","iframe_code":"\u003Ciframe src=\"{iframe_url}\" width=\"{width}\" height=\"{height}\" frameborder=\"0\" marginwidth=\"0\" marginheight=\"0\" scrolling=\"no\" style=\"border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;\" allowfullscreen\u003E \u003C/iframe\u003E \u003Cdiv style=\"margin-bottom:5px\"\u003E \u003Cstrong\u003E \u003Ca href=\"https://www.slideshare.net/KenChatfield/chatfield14-devil\" title=\"Devil in the Details: Analysing the Performance of ConvNet Features\" target=\"_blank\"\u003EDevil in the Details: Analysing the Performance of ConvNet Features\u003C/a\u003E \u003C/strong\u003E from \u003Cstrong\u003E\u003Ca href=\"https://www.slideshare.net/KenChatfield\" target=\"_blank\"\u003EKen Chatfield\u003C/a\u003E\u003C/strong\u003E \u003C/div\u003E","wp_code":"[slideshare id=48991374\u0026doc=chatfield14-devil-150604135047-lva1-app6892]","show_related_content":"1","lastscreen":{"url":"https://www.slideshare.net/KenChatfield/chatfield14-devil","related":[{"url":"https://public.slidesharecdn.com/holbertonschool/deep-learning-class-2-by-louis-monier","title":"Deep Learning Class #2 - Deep learn...","author":"Holberton School","author_login":"holbertonschool","views":1494,"thumbnail":"//cdn.slidesharecdn.com/ss_thumbnails/deeplearningclass2-louismonier-160501185826-thumbnail.jpg?cb=1462253453"},{"url":"https://public.slidesharecdn.com/lostleaves/deep-learning-behind-prisma-66647472","title":"Deep Learning behind Prisma","author":"lostleaves","author_login":"lostleaves","views":4337,"thumbnail":"//cdn.slidesharecdn.com/ss_thumbnails/styletemp-161002182243-thumbnail.jpg?cb=1475432629"},{"url":"https://public.slidesharecdn.com/AlexConway2/deep-learning-for-computer-vision-executiveml","title":"Deep Learning for Computer Vision -...","author":"Alex Conway","author_login":"AlexConway2","views":778,"thumbnail":"//cdn.slidesharecdn.com/ss_thumbnails/dl4cvexemlslides-170921121930-thumbnail.jpg?cb=1505996419"},{"url":"https://public.slidesharecdn.com/tw_dsconf/ss-62245351","title":"[DSC 2016] \u7cfb\u5217\u6d3b\u52d5\uff1a\u674e\u5b8f\u6bc5 / \u4e00\u5929\u641e\u61c2\u6df1\u5ea6\u5b78\u7fd2","author":"\u53f0\u7063\u8cc7\u6599\u79d1\u5b78\u5e74\u6703","author_login":"tw_dsconf","views":436712,"thumbnail":"//cdn.slidesharecdn.com/ss_thumbnails/1-160521014039-thumbnail.jpg?cb=1474863115"}]},"sharescreen":{"url":"https://www.slideshare.net/KenChatfield/chatfield14-devil","title":"Devil in the Details: Analysi...","slideshow_id":48991374,"html":"\u003Cdiv class=\"shareScreen\"\u003E\n  \u003Ca href=\"#\" class=\"close\"\u003E\u0026times;\u003C/a\u003E\n  \u003Cul class=\"shareMethods\"\u003E\n    \u003Cli class=\"embed\"\u003E\n      \u003Clabel for=\"embed-code\"\u003EInsertar\u003C/label\u003E\n      \u003Cinput type='text' class=\"shareScreenEmbedCode\" value=\"code\" name=\"embed-code\" /\u003E\n    \u003C/li\u003E\n    \u003Cli class=\"url last\"\u003E\n      \u003Clabel for=\"embed-url\"\u003EURL\u003C/label\u003E\n      \u003Cinput type='text' class=\"shareScreenSSUrl\" value=\"code\" name=\"embed-url\" /\u003E\n    \u003C/li\u003E\n  \u003C/ul\u003E\n  \u003Cform class=\"emailShare\"\u003E\n    \u003Cfieldset\u003E\n      \u003Clegend\u003EEnviar por correo electr\u00f3nico\u003C/legend\u003E\n      \u003Cinput type=\"hidden\" class=\"shareDefaultMessage\" value=\"I think you will find this useful.\" /\u003E\n      \u003Cul\u003E\n        \u003Cli\u003E\n          \u003Clabel for=\"name\"\u003ESu nombre\u003C/label\u003E\n          \u003Cinput class='shareScreenFromName' type=\"text\" value=\"\" /\u003E\n        \u003C/li\u003E\n        \u003Cli\u003E\n          \u003Clabel for=\"mailID\"\u003EEnviar a\u003C/label\u003E\n          \u003Cinput class=\"shareScreenMailID\" type=\"text\" value=\"\" /\u003E\n        \u003C/li\u003E\n        \u003Cli class=\"submit\"\u003E\n          \u003Clabel\u003E\u0026nbsp;\u003C/label\u003E\n          \u003Cinput class=\"shareSprite\" type=\"submit\" value=\"\" /\u003E\n        \u003C/li\u003E\n      \u003C/ul\u003E\n      \u003C/fieldset\u003E\n  \u003C/form\u003E\n\u003C/div\u003E\u003C!-- shareScreen ends here --\u003E\n","user_name":""},"track_slide_enable":1,"render_links":"default","twitter_recommended_users":null,"twitter_share_text":"Devil in the Details: Analysing the Performance of ConvNet Features #categoryretrieval #convnet","share_text":"Devil in the Details: Analysing the Performance of ConvNet Features by Ken Chatfield via slideshare","pin_image_url":"https://image.slidesharecdn.com/chatfield14-devil-150604135047-lva1-app6892/95/devil-in-the-details-analysing-the-performance-of-convnet-features-1-638.jpg?cb=1433425924","autoplayOnEmbed":false,"slide_error_template":"\u003Cstyle type=\"text/css\"\u003E\n  .jsplayer-slide-error {\n    background-color: #000;\n    padding: 20% 0 13% !important;\n  }\n  .jsplayer-slide-error div {\n    text-align: center;\n  }\n  .jsplayer-slide-error img {\n    height: 79px !important;\n    margin: 0 0 10px;\n    width: 80px !important;\n  }\n  .jsplayer-slide-error .slide-error-body {\n    color: #eee;\n    font-family: 'Lucida Grande',Verdana, Arial, Helvetica, sans-serif;\n    padding: 0 !important;\n  }\n  .jsplayer-slide-error .slide-error-body p {\n    font-size: 0.8em;\n    line-height: 1.1em;\n    margin: 7px 0 11px;\n  }\n  .jsplayer-slide-error .slide-error-body input[type=button] {\n    margin: 7px 0 0;\n    padding: 7px 14px;\n  }\n\u003C/style\u003E\n\u003Cdiv class=\"jsplayer-slide-error\"\u003E\n  \u003Cdiv style=\"position:relative;\"\u003E\n    \u003Cimg src='https://public.slidesharecdn.com/images/ssplayer/error_dudes-80x79.png' height=\"79\" width=\"80\" /\u003E\n    \u003Cdiv class=\"slide-error-body\"\u003E\n      \u003Cp\u003ENo hemos podido cargar la diapositiva.\u003C/p\u003E\n      \u003Cinput class=\"btn btn-large\" type=\"button\" value=\"Volver a cargar diapositiva\" /\u003E\n    \u003C/div\u003E\n  \u003C/div\u003E\n\u003C/div\u003E\n","meta_error_template":"\u003Cstyle type=\"text/css\"\u003E\n  .jsplayer-slide-error {\n    background-color: #000;\n    padding: 20% 0 13% !important;\n  }\n  .jsplayer-slide-error div {\n    text-align: center;\n  }\n  .jsplayer-slide-error img {\n    height: 79px !important;\n    margin: 0 0 10px;\n    width: 80px !important;\n  }\n  .jsplayer-slide-error .slide-error-body {\n    color: #eee;\n    font-family: 'Lucida Grande',Verdana, Arial, Helvetica, sans-serif;\n    padding: 0 !important;\n  }\n  .jsplayer-slide-error .slide-error-body p {\n    font-size: 0.8em;\n    line-height: 1.1em;\n    margin: 8px 0;\n  }\n  .jsplayer-slide-error .slide-error-body input[type=button] {\n    margin: 7px 0 0;\n    padding: 7px 14px;\n  }\n\u003C/style\u003E\n\u003Cdiv class=\"jsplayer-slide-error\"\u003E\n  \u003Cdiv style=\"position:relative;\"\u003E\n    \u003Cimg src='https://public.slidesharecdn.com/images/ssplayer/error_dudes-80x79.png' height=\"79\" width=\"80\" /\u003E\n    \u003Cdiv class=\"slide-error-body\"\u003E\n      \u003Cp\u003EHa habido un error.\u003C/p\u003E\n      \u003Cp\u003EActualiza la p\u00e1gina.\u003C/p\u003E\n    \u003C/div\u003E\n  \u003C/div\u003E\n\u003C/div\u003E\n","replayscreen":{"html":"\u003Ca href=\"#\" class=\"j-replay-button replay-button\" \u003E\n  \u003Ci class=\"fa fa-refresh\"\u003E\u003C/i\u003E\n  Ver de nuevo\n\u003C/a\u003E\n"},"toolbar_html":"\n\u003C!-- using div.bar-[top, bottom]-margin to fix toolbar spacing with a taller progressbar (improve slide scrubbing UX) --\u003E\n\u003Cdiv class=\"j-progress-bar progress-bar-wrapper\"\u003E\n  \u003Cdiv class=\"progress-bar-spacing\"\u003E\u003C/div\u003E\n  \u003Cdiv class=\"buffered-bar\" tabindex=\"0\"\u003E\u003C/div\u003E\n  \u003Cdiv class=\"j-slides-loaded-bar progress-bar\"\u003E\u003C/div\u003E\n  \u003Cdiv class=\"j-progress-tooltip progress-tooltip\" style=\"display: none;\"\u003E\n    \u003Cdiv class=\"j-tooltip-content progress-tooltip-wrapper\"\u003E\n      \u003Cimg class=\"j-tooltip-thumb tooltip-thumb\" onerror=\"this.src=''\"\n      \u003E\n      \u003Cspan class=\"j-slidecount-label slidecount-label\"\u003E1\u003C/span\u003E\n    \u003C/div\u003E\n    \u003Cdiv class=\"progress-tooltip-caret\"\u003E\u003C/div\u003E\n  \u003C/div\u003E\n\u003C/div\u003E\n\u003Cdiv class=\"progress-bar-spacing\"\u003E\u003C/div\u003E\n\n\n\n\u003Cdiv class=\"j-tools bot-actions\"\u003E\n\u003C/div\u003E\u003C!-- .bot-actions --\u003E\n\n\n  \u003Cdiv class=\"j-tools bot-actions\"\u003E\n    \u003Ca data-tooltip\n      aria-haspopup=\"true\"\n      style=\"display: none\"\n      class=\"j-tooltip j-download action-download has-tip\"\n      title=\"Save this \"\n      href=\"/login?from_source=%2FKenChatfield%2Fchatfield14-devil%3Ffrom_action%3Dsave\u0026amp;from=download\u0026amp;layout=foundation\"\n      data-target=\"#login_modal\"\n      data-placement=\"top\"\u003E\n      \u003Ci class=\"fa fa-download fa-lg\" style=\"margin-top: 1px;\"\u003E\u003C/i\u003E\n    \u003C/a\u003E\n  \u003C/div\u003E\n\n\n\n\n  \u003Cdiv class=\"nav\"\u003E\n      \u003Cbutton id=\"btnPrevious\" title=\"Previous Slide\" aria-label=\"Previous Slide\"\u003E\n        \u003Cdiv class=\"j-prev-btn arrow-left disabled\"\u003E\u003C/div\u003E\n      \u003C/button\u003E\n    \u003Clabel class=\"goToSlideLabel\"\u003E\n      \u003Cspan id=\"current-slide\" class=\"j-current-slide\"\u003E1\u003C/span\u003E of \u003Cspan id=\"total-slides\" class=\"j-total-slides\"\u003E27\u003C/span\u003E\n    \u003C/label\u003E\n      \u003Cbutton id=\"btnNext\" title=\"Next Slide\"  aria-label=\"Next Slide\"\u003E\n        \u003Cdiv class=\"j-next-btn arrow-right\"\u003E\u003C/div\u003E\n      \u003C/button\u003E\n  \u003C/div\u003E\n\n\n\n\u003Cdiv class=\"navActions\"\u003E\n\n\n\n    \u003Cbutton id=\"btnFullScreen\" class=\"j-tooltip btnFullScreen\" title=\"View Fullscreen\" aria-label=\"View Fullscreen\"\u003E\n      \u003Cspan class=\"fa fa-stack\"\u003E\n        \u003Ci class=\"fa fa-expand fa-stack-1x\" aria-hidden=\"true\"\u003E\u003C/i\u003E\n      \u003C/span\u003E\n    \u003C/button\u003E\n    \u003Cbutton id=\"btnLeaveFullScreen\" class=\"j-tooltip btnLeaveFullScreen\" title=\"Exit Fullscreen\" aria-label=\"Exit Fullscreen\"\u003E\n      \u003Cspan class=\"fa-stack\"\u003E\n        \u003Ci class=\"fa fa-compress fa-stack-1x\" aria-hidden=\"true\"\u003E\u003C/i\u003E\n      \u003C/span\u003E\n    \u003C/button\u003E\n\n\u003C/div\u003E\n\n","container":"svPlayerId","disable_lastscreen":false,"disable_share":false,"inpage_full_screen":true,"start_slide":1,"hosted_in":"slideview","preload_after_pageload":true,"show_image_player":true,"next_prev_experiment":true,"next_slideshow_pos":"1","related_position":0,"bambooleaf_presentation":false,"bambooleaf_enabled":null,"bambooleaf_hash":false,"rel_slide_urls":[],"slide_titles":[]},"li_sponsored_content_related":{"url":"https://www.linkedin.com/csp/javascript","tscpEnabled":false,"placeholders":[{"id":"sponsored-content-1","position":0}]}});
+  </SCRIPT>
+     
+<SCRIPT src="Devil%20in%20the%20Details%20Analysing%20the%20Performance%20of%20ConvNet%20Features-Dateien/combined_player_presentation_init.js" type="text/javascript"></SCRIPT>
+     
+<SCRIPT type="text/javascript">
+      $(document).ready(function() {
+        var $el = $('#svPlayerId');
+        var classMap = {
+          'document': 'document_player',
+          'html': 'html_player',
+          'infographic': 'infographic_player',
+          'video': 'video_player'
+        }
+
+        player = new SSPlayer(slideshare_object.jsplayer);
+        $(player).bind('slidechanged', function(e) {
+          if (typeof(loadDataForSlide) === 'function') {
+            loadDataForSlide(e.ssData.index);
+          }
+        });
+
+        $el.addClass(classMap[player.config.player_type]);
+      });
+    </SCRIPT>
+   
+<SCRIPT>
+
+      slideshare_object.add_signin_link('.j-favorite');
+      slideshare_object.add_login_source('.j-favorite', 'slideview.top_toolbar.like');
+      slideshare_object.add_login_source('.j-save', 'slideview.top_toolbar.download');
+      slideshare_object.addSigninFrom('.j-favorite', 'favorite');
+      slideshare_object.bindToModalLogin('.j-favorite');
+      slideshare_object.bindToModalLogin('.j-save');
+
+    slideshare_object.bind_favorites('#slideview-container');
+
+    $(document).ready(function() {
+
+      // Favorites update
+
+      // Remove some sidebar list items to limit the sidebar's height
+      var mainContentHeight = $("#main-panel").height();
+      var sidePanelItemHeight = $("#side-panel .j-related-item").first().outerHeight();
+      var numItemToDisplay = Math.floor((mainContentHeight - 200) / sidePanelItemHeight);
+
+      $("#side-panel .tabs-content .content").each(function() {
+        $(this).find(".j-related-item").slice(numItemToDisplay - 2).remove();
+      });
+
+        var loadAdditionalFunctionality = function() {
+          e = document.createElement('script');
+          e.type = 'text/javascript';
+          e.async = true;
+          e.src =  '//public.slidesharecdn.com/ss_foundation/combined_slideview_loggedout.js?b179a8b601858338156903633df81b782a38c217';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(e, s);
+        };
+
+        $(window).load(function() {
+          loadAdditionalFunctionality();
+        });
+
+
+      // Load additionnal css
+      $(window).load(function() {
+        loadCSS("//public.slidesharecdn.com/ss_foundation/stylesheets/slideview.css?b179a8b601858338156903633df81b782a38c217");
+      });
+    });
+  </SCRIPT>
+     <NOSCRIPT>    &lt;img height="1" width="1" alt="" style="display:none;"     
+ src="//www.bizographics.com/collect/?pid=870&amp;fmt=gif" alt="Bizographics 
+tracking image" /&gt;   </NOSCRIPT>   </BODY></HTML>

@@ -1,0 +1,42 @@
+\doxysection{rasterize\+\_\+stroke.\+cpp File Reference}
+\hypertarget{rasterize__stroke_8cpp}{}\label{rasterize__stroke_8cpp}\index{rasterize\_stroke.cpp@{rasterize\_stroke.cpp}}
+{\ttfamily \#include "{}rasterize\+\_\+stroke.\+h"{}}\newline
+Include dependency graph for rasterize\+\_\+stroke.\+cpp\+:
+% FIG 0
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{rasterize__stroke_8cpp_a03373574882c6f816819c021d3058f2d}{Rasterize\+Stroke}} (int8\+\_\+t \texorpdfstring{$\ast$}{*}stroke\+\_\+points, int stroke\+\_\+points\+\_\+count, float x\+\_\+range, float y\+\_\+range, int width, int height, int8\+\_\+t \texorpdfstring{$\ast$}{*}out\+\_\+buffer)
+\begin{DoxyCompactList}\small\item\em Rasterizes a stroke into a 2D color image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{rasterize__stroke_8cpp_a03373574882c6f816819c021d3058f2d}\index{rasterize\_stroke.cpp@{rasterize\_stroke.cpp}!RasterizeStroke@{RasterizeStroke}}
+\index{RasterizeStroke@{RasterizeStroke}!rasterize\_stroke.cpp@{rasterize\_stroke.cpp}}
+\doxysubsubsection{\texorpdfstring{RasterizeStroke()}{RasterizeStroke()}}
+{\footnotesize\ttfamily \label{rasterize__stroke_8cpp_a03373574882c6f816819c021d3058f2d} 
+void Rasterize\+Stroke (\begin{DoxyParamCaption}\item[{int8\+\_\+t \texorpdfstring{$\ast$}{*}}]{stroke\+\_\+points}{, }\item[{int}]{stroke\+\_\+points\+\_\+count}{, }\item[{float}]{x\+\_\+range}{, }\item[{float}]{y\+\_\+range}{, }\item[{int}]{width}{, }\item[{int}]{height}{, }\item[{int8\+\_\+t \texorpdfstring{$\ast$}{*}}]{out\+\_\+buffer}{}\end{DoxyParamCaption})}
+
+
+
+Rasterizes a stroke into a 2D color image. 
+
+Converts a stroke (sequence of 2D points) into a rasterized image with color encoding. The stroke is drawn as a sequence of connected line segments, with colors shifting from red to green to blue over time.
+
+
+\begin{DoxyParams}{Parameters}
+{\em stroke\+\_\+points} & Array of stroke points (x, y pairs) in normalized coordinates. \\
+\hline
+{\em stroke\+\_\+points\+\_\+count} & Number of points in the stroke. \\
+\hline
+{\em x\+\_\+range} & Range of x values in normalized space. \\
+\hline
+{\em y\+\_\+range} & Range of y values in normalized space. \\
+\hline
+{\em width} & Width of the output image in pixels. \\
+\hline
+{\em height} & Height of the output image in pixels. \\
+\hline
+{\em out\+\_\+buffer} & Output buffer storing the rasterized image (3 channels per pixel). \\
+\hline
+\end{DoxyParams}

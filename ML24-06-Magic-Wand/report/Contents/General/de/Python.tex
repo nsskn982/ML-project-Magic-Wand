@@ -1,0 +1,56 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-07-24 09:05:07Z $
+% $Pfad: GDV/Vortraege/latex - Report/Contents/Python.tex $
+% $Version: 4732 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Darstellung von Python-Programmen}
+
+
+Es ist möglich eine Teil in das Dokument zu integrieren, siehe \ref{Code:Python:File:HelloWorld}. Dies ist die eleganteste Methode und auch zu bevorzugen. In der Liste der Optionen können auch einzelne Zeilen und Zeilenbereich ausgewählt werden. Falls eine Datei integriert wird, so ist diese stets so aktuell wie das Dokument.
+
+
+\begin{code}
+  \lstinputlisting[language=python]{../Code/HelloWorld/Blink.py}    
+    
+  \caption[\glqq Hello World\grqq{} in Python -- Variante 1]{Das Programm ``Hallo World'' in Python für Mikrocontroller-Boards wird aus der Datei \FILE{Blink.py} eingefügt.}\label{Code:Python:File:HelloWorld}    
+\end{code}    
+
+It may also be useful to integrate program lines, see \ref{Code:Python:HelloWorld}.
+
+
+
+\lstset{caption=Some Code}
+\begin{code}
+  \begin{lstlisting}[language=python]
+# Hello World for microcontroller boards
+import pyb
+
+redLED = pyb.LED(1) # built-in red LED
+greenLED = pyb.LED(2) # built-in green LED
+blueLED = pyb.LED(3) # built-in blue LED
+while True:
+    # Turns on the red LED
+    redLED.on()
+    # Makes the script wait for 1 second (1000 miliseconds)
+    pyb.delay(1000)
+    # Turns off the red LED
+    redLED.off()
+    pyb.delay(1000)
+    greenLED.on()
+    pyb.delay(1000)
+    greenLED.off()
+    pyb.delay(1000)
+    blueLED.on()
+    pyb.delay(1000)
+    blueLED.off()
+    pyb.delay(1000)
+\end{lstlisting}      
+
+  \caption[\glqq Hello World\grqq{} in Python -- Variante 2]{Das Programm ``Hello World'' in Python für Mikrocontroller-Boards wurde direkt in die \LaTeX{}-Datei eingefügt.}\label{Code:Python:HelloWorld}    
+\end{code}    
+
+Die Einbindung von Programmen mit Hilfe von Bildern ist sinnfrei.

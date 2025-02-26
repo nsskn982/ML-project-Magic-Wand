@@ -1,0 +1,869 @@
+%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-29 07:55:27Z $
+% $Pfad: General/ArduinoCLI.tex
+% $Version: 1785 $
+%
+%
+%%%%%%%%%%%%%%%
+
+
+%@online{ArduinoCLI:2018,
+%  publisher = Arduino,
+%  year      = 2018,
+%  title     = {Arduino CLI 0.33},
+%  url = {https://arduino.github.io/arduino-cli/0.33/commands/arduino-cli/}
+%}
+
+\chapter{Arduino Command Line Interface (CLI)}
+
+
+\section{To DO}
+
+\ToDo{Citations}
+
+\ToDo{Images}
+
+\ToDo{Explanation of the commands}
+
+\ToDo{too short}
+
+\ToDo{What options are there in the configuration file?}
+
+\ToDo{Example of a configuration file}
+
+\ToDo{use of lstinput}
+
+
+\chapter{Arduino Command Line Interface (CLI)}
+
+Arduino Command Line Interface (CLI) is an all-in-one solution that provides Boards/Library Managers, sketch builder, board detection, uploader, and many other tools needed to use any Arduino compatible board and platform from command line or machine interfaces.
+In addition to being a standalone tool, Arduino CLI is the heart of all official Arduino development software (Arduino IDE, Arduino Web Editor). This means that all functionalities provided by the development environment are also available here. This can be used under Windows, MacOS and Linux \cite{ArduinoCLIpro:2024}. Development using the command line interpreter makes it possible to carry out quality assurance measures in a targeted manner if batch files are used consistently. This means that the configuration of the development environment can be saved and repeated in a traceable manner.
+
+
+The source code can be used freely, but a license must be requested from the company for commercial use \cite{ArduinoCLIGit:2024}. Detailed documentation is provided. \cite{ArduinoCLIDoc:2024}
+
+The development of the Command Line Interface (CLI) focuses on three aspects.
+\begin{enumerate}
+    \item On the one hand, the interface enables development to be embedded in the familiar development environment. This means that the interface can also be used with Edge Impulse.
+    \item Secondly, it enables the integration of development into the Continuous Development and Continuous Integration processes. It thus enables the automation of typical software development activities.
+    \item Furthermore, it now enables simplified communication with edge computers, for example with a Raspberry PI.
+\end{enumerate}
+
+\section {Installing and using the CLI}
+As \ac{cli} is constantly being further developed, the current version must first be downloaded from the GitHub project \url{https://arduino.github.io/arduino-cli/0.36/installation/ #latest-release}, see \cite{ArduinoCLIGit:2024}. The version used here is 0.36.0 \cite{ArduinoCLI:2024}
+
+\bigskip
+
+After successfully downloading the file \FILE{arduino-cli\_0.35.3\_Windows\_64bit.zip}, the folder contents can be extracted to a self-defined storage path. The packed file contains the license terms and the executable file \FILE{arduino-cli.exe}. In order to be able to use the function of the command line interpreter in different paths, the path to the storage location of the \FILE{arduino-cli.exe} file should be added to the \SHELL{PATH} system variable as shown in the below Figure ~\ref{Path}. The interface can then be used by entering \SHELL{arduino-cli} in the command line.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/ArduinocliPATH.png}
+        \caption{Adding arduino-cli.exe file storage location to PATH system variable}
+        \label{Path}
+    \end{center}
+\end{figure}
+
+
+After the installation is complete, arduino-cli board list can be entered in the command prompt. The connected device is displayed as Arduino Portenta H7 with port number and type, as shown in Figure ~\ref{Installation}.  
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLIInstallation.png}
+        \caption{Installation of Arduino CLI}
+        \label{Installation}
+    \end{center}
+\end{figure}
+
+\section{Configuration of the Arduino CLI}
+So that CLI can find the Arduino installation, it helps to create a configuration file for CLI. This configuration file is defined in a YAML format. To create a basic configuration file, CLI can be used in which in a command line
+\SHELL{arduino-cli.exe config init}
+is entered. This command creates a new file \FILE{.cli-config.yml}. All necessary parameters are declared there. The default settings of the configuration file are shown in Figure ~\ref{DefaultConfig}. The following parameters usually need to be changed:
+\begin{itemize}
+    \item \FILE{sketchbook\_path}: Directory of the Arduino sketchbook. All libraries and hardware definitions are installed here.
+    \item \FILE{Arduino\_data}: Installation location of the Arduino board and the library manager. In most cases, this should not need to be changed.
+\end{itemize}
+The other options can generally remain at their default values.
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLIDefaultConfigSettings.png}
+        \caption{ Default settings of the configuration file }
+        \label{DefaultConfig}
+    \end{center}
+\end{figure}
+
+\subsection{Configuration keys}
+
+Configuration keys refer to the parameters or settings stored in the configuration file \FILE{arduino-cli.yaml}. These keys determine various aspects of how the Arduino CLI operates.
+
+\begin{itemize}
+    \item \SHELL{board\_manager}
+    \item \SHELL{additional\_urls} - the URLs to any additional Boards Manager package index files needed for your boards platforms.
+    \item \SHELL{daemon} - options related to running Arduino CLI as a gRPC server.
+    \begin{itemize}
+        \item \SHELL{port} - TCP port used for gRPC client connections.
+    \end{itemize}
+    \item \SHELL{directories} - directories used by Arduino CLI.
+    \begin{itemize}
+        \item \SHELL{data} - directory used to store Boards/Library Manager index files and Boards Manager platform installations.
+        \item \SHELL{downloads} - directory used to stage downloaded archives during Boards/Library Manager installations.
+        \item \SHELL{user} - the equivalent of the Arduino IDE's "sketchbook" directory. Library Manager installations are made to the libraries subdirectory of the user directory.
+        \item \SHELL{builtin.libraries} - the libraries in this directory will be available to all platforms without the need for the user to install them, but with the lowest priority over other installed libraries with the same name, it's the equivalent of the Arduino IDE's bundled libraries directory.
+        \item \SHELL{builtin.tools} - it's a list of directories of tools that will be available to all platforms without the need for the user to install them, it's the equivalent of the Arduino IDE 1.x bundled tools directory.
+    \end{itemize}
+    \item \SHELL{library} - configuration options relating to Arduino libraries.
+    \begin{itemize}
+        \item \SHELL{enable\_unsafe\_install} - set to true to enable the use of the --git-url and --zip-file flags with arduino-cli lib install. These are considered "unsafe" installation methods because they allow installing files that have not passed through the Library Manager submission process.
+    \end{itemize}
+    \item \SHELL{locale} - the language used by Arduino CLI to communicate to the user, the parameter is the language identifier in the standard POSIX format <language>[\_<TERRITORY>[.<encoding>]] (for example it or it\_IT, or it\_IT.UTF-8).
+    \item \SHELL{logging} - configuration options for Arduino CLI's logs.
+    \begin{itemize}
+        \item \SHELL{file} - path to the file where logs will be written.
+        \item \SHELL{format} - output format for the logs. Allowed values are text or json.
+        \item \SHELL{level} - messages with this level and above will be logged. Valid levels are: trace, debug, info, warn, error, fatal, panic.
+    \end{itemize}
+    \item \SHELL{metrics} - settings related to the collection of data used for continued improvement of Arduino CLI.
+    \begin{itemize}
+        \item \SHELL{addr} - TCP port used for metrics communication.
+        \item \SHELL{enabled} - controls the use of metrics.
+    \end{itemize}
+    \item \SHELL{output} - settings related to text output.
+    \begin{itemize}
+        \item \SHELL{no\_color} - ANSI color escape codes are added by default to the output. Set to true to disable colored text output.
+    \end{itemize}
+    \item \SHELL{sketch} - configuration options relating to Arduino sketches.
+    \begin{itemize}
+        \item \SHELL{always\_export\_binaries} - set to true to make arduino-cli compile always save binaries to the sketch folder. This is the equivalent of using the --export-binaries flag.
+    \end{itemize}
+    \item \SHELL{updater} - configuration options related to Arduino CLI updates
+    \begin{itemize}
+        \item \SHELL{enable\_notification} - set to false to disable notifications of new Arduino CLI releases, defaults to true
+    \end{itemize}
+    \item \SHELL{build\_cache} - configuration options related to the compilation cache
+    \begin{itemize}
+        \item \SHELL{compilations\_before\_purge} - interval, in number of compilations, at which the cache is purged, defaults to 10. When 0 the cache is never purged.
+        \item \SHELL{ttl} - cache expiration time of build folders. If the cache is hit by a compilation the corresponding build files lifetime is renewed. The value format must be a valid input for time.ParseDuration(), defaults to 720h (30 days).
+    \end{itemize}
+\end{itemize}
+
+\subsection{Configuration methods}
+Arduino CLI may be configured in three ways:
+\begin{enumerate}
+    \item Command line flags
+    \item Environment variables
+    \item Configuration file
+\end{enumerate}
+
+If a configuration option is configured by multiple methods, the value set by the method highest on the above list overwrites the ones below it.
+
+If a configuration option is not set, Arduino CLI uses a default value.
+
+\SHELL{arduino-cli config dump} displays the current configuration values. Detailed documentation is provided \cite{ArduinoCLIDoc:2024}
+
+\subsubsection{Command line flags}
+Configuration file of Arduino CLI can be modified using Command line flags.
+\\
+\textbf{Example}
+\\Setting an additional Boards Manager URL using the \SHELL{--additional-urls} command line flag:
+\\
+\PYTHON{arduino-cli core update-index --additional-urls https://downloads.arduino.cc/packages/package\_staging\_index.json}
+
+\subsubsection{Environment variables}
+All configuration options can be set via environment variables. The variable names start with \SHELL{ARDUINO}, followed by the configuration key names, with each component separated by \SHELL{\_}. For example, the \SHELL{ARDUINO\_DIRECTORIES\_USER} environment variable sets the directories.user configuration option.
+\\On Linux or macOS, you can use the \SHELL{export} command to set environment variables. On Windows command, you can use the \SHELL{set} command.
+\\
+\textbf{Example}
+\\
+Setting an additional Boards Manager URL using the \SHELL{ARDUINO\_BOARD\_MANAGER\_ADDITIONAL\_URLS} environment variable:
+\\
+\PYTHON{set ARDUINO\_BOARD\_MANAGER\_ADDITIONAL\_URLS=https://
+    downloads.arduino.cc/packages/package\_staging\_index.json}
+\begin{itemize}
+    \item The export or set command should be run in terminal session. It sets the environment variable for the duration of that terminal session.
+    \item If the terminal is closed, the environment variable will be unset. To make the variable persistent across terminal sessions, we should add the export or set command to shell's configuration file (e.g., .bashrc, .zshrc, or .profile).
+\end{itemize}
+
+\subsubsection{Configuration file}
+\SHELL{arduino-cli config init} creates or updates a configuration file with the current configuration settings.
+This allows saving the options set by command line flags or environment variables. 
+\\\textbf{Example}
+\\
+\PYTHON{arduino-cli config init --additional-urls
+    https://downloads.arduino.cc/packages/package\_staging\_index.json}
+\\The configuration file must be named \FILE{arduino-cli}, with the appropriate file extension for the file's format.
+
+\section{Overview of functions}
+The file \FILE{README.md} in the GitHub repository "Arduino CLI" contains an excellent overview of the functions and possibilities \cite{ArduinoCLIGit:2024}
+The following functions are available \cite{ArduinoCLI:2024}:
+
+\begin{itemize}
+    \item \SHELL{arduino-cli}
+    \item \SHELL{board}
+    \begin{itemize}
+        \item \SHELL{board attach}
+        \item \SHELL{board details}
+        \item \SHELL{board list}
+        \item \SHELL{board listall}
+        \item \SHELL{board search}
+    \end{itemize}
+    \item \SHELL{burn-bootloader}
+    \item \SHELL{cache}
+    \item \SHELL{cache clean}
+    \item \SHELL{compile}
+    \item \SHELL{completion}
+    \item \SHELL{config}
+    \begin{itemize}
+        \item \SHELL{config dump}
+        \item \SHELL{config init}
+        \item \SHELL{config add}
+        \item \SHELL{config delete}
+        \item \SHELL{config remove}
+        \item \SHELL{config set}
+    \end{itemize}
+    \item \SHELL{core}
+    \begin{itemize}
+        \item \SHELL{core download}
+        \item \SHELL{core install}
+        \item \SHELL{core list}
+        \item \SHELL{core search}
+        \item \SHELL{core uninstall}
+        \item \SHELL{core update-index}
+        \item \SHELL{core upgrade}
+    \end{itemize}
+    \item \SHELL{daemon}
+    \item \SHELL{debug}
+    \item \SHELL{lib}
+    \begin{itemize}
+        \item \SHELL{lib deps}
+        \item \SHELL{lib download}
+        \item \SHELL{lib examples}
+        \item \SHELL{lib install}
+        \item \SHELL{lib list}
+        \item \SHELL{lib search}
+        \item \SHELL{lib uninstall}
+        \item \SHELL{lib update-index}
+        \item \SHELL{lib upgrade}
+    \end{itemize}
+    \item \SHELL{monitor}
+    \item \SHELL{outdated}
+    \item \SHELL{sketch}
+    \begin{itemize}
+        \item \SHELL{sketch archive}
+        \item \SHELL{sketch new}
+    \end{itemize}
+    \item \SHELL{update}
+    \item \SHELL{upgrade}
+    \item \SHELL{upload}
+    \item \SHELL{version}
+\end{itemize}
+
+\subsection{Basic functions}
+
+The functions required to load a finished sketch onto an Arduino are defined as basic functions. Communication with a connected Arduino is implemented later using the serial monitor.
+
+\bigskip
+The first basic function is the board list command. This can be used to display all Arduino boards connected to the PC with additional information - such as the port used or the core of the board. This information is necessary for using the correct board.
+The core list and core install commands are also required. The already installed cores can be listed with the core list command. If the core specified under board list is not installed, it can be added with the core install command.
+The third basic function is the lib command with the lib list and lib install extensions. The lib list command can be used to check which libraries are already installed on the system. If an additional library is required for a sketch, it can be installed with the lib install command.
+
+The preparations for compiling and uploading a sketch can be made with these basic functions. By executing the compile command, a sketch is compiled into code that can be read by a selected board. A compiled sketch is then uploaded to a board using the upload command. The port of the board known from the board list command is specified as the destination for the upload. The basic functions are summarized  in Table \ref{CLITableBasicFunction}
+
+\begin{center}
+    \begin{table}[h]
+        \captionabove{List of Basic Functions}
+        \begin{tabular}{c|c|l}
+            No. & BasicFunction & Description \\ \hline
+            1 & \SHELL{board list} & List the connected Arduinos with additional information \\
+            2 & \SHELL{core list}/\SHELL{install} & List and install cores \\
+            3 & \SHELL{lib list}/{install} & Listing and installing libraries \\
+            4 & \SHELL{compile} & Compiling a sketch for a specific board \\
+            5 & \SHELL{upload} & Uploading a sketch to an Arduino \\
+        \end{tabular}
+        \label{CLITableBasicFunction}
+    \end{table}
+\end{center}
+
+
+\subsection{Command reference}
+
+Arduino Command Line Interface includes the following syntax format.
+\PYTHON{arduino-cli <command> [flags]}
+\begin{itemize}
+    \item \textbf{<command>} - represents the CLI commands to be executed.
+    \item \textbf{flags} - represents optional command-line arguments that can modify the behavior of the command. These flags provide additional options or configurations that can be passed to the command to customize its execution.
+\end{itemize}
+
+The Command Line Interface (CLI) functions are explained in details along with the command format below.
+
+\begin{itemize}
+    
+    \item \SHELL{board}
+    
+    The arduino-cli board command is used to manage Arduino boards. This command allows you to perform various operations related to boards, such as attaching a sketch, listing available boards, searching for boards, and more.
+    
+    \PYTHON{arduino-cli board <subcommand> [flags]}
+    
+    \item\SHELL{board attach}
+    
+    The arduino-cli board attach command is used to attach a sketch to a board. This command allows you to specify the port and the Fully Qualified Board Name (FQBN) of the board you want to attach the sketch to. SketchPath is the optional path to the directory containing the sketch you want to attach to the board.
+    
+    \PYTHON{arduino-cli board attach [-p <port>] [-b <FQBN>] [sketchPath] [flags]}
+    
+    
+    \item \SHELL{board details}
+    
+    The arduino-cli board details command is used to display detailed information about a specific board. This command requires you to specify the Fully Qualified Board Name (FQBN) of the board you want to get details for.
+    
+    \PYTHON{arduino-cli board details -b <FQBN> [flags]}
+    
+    \item \SHELL{board list}
+    
+    The arduino-cli board list command detects and displays a list of boards connected to the current computer. This command returns the Fully Qualified Board Name (FQBN) of each board along with its vendor and architecture.
+    
+    \PYTHON{arduino-cli board list [flags]}
+    
+    \item \SHELL{board listall}
+    
+    The arduino-cli board listall command is used to list all available boards  that have the support platform installed. You can search for a specific board if you specify the board name.
+    
+    \PYTHON{arduino-cli board listall [boardname] [flags]}
+    
+    \item \SHELL{board search}
+    
+    The arduino-cli board search command is used to search a board in the Boards Manager using the specified keywords.. This command returns a list of boards that match the specified criteria.
+    
+    \PYTHON{arduino-cli board search [boardname] [flags]}
+    
+    \item \SHELL{burn-bootloader}
+    
+    The arduino-cli burn-bootloader command is used to burn the bootloader onto an Arduino board using an external programmer. This command requires you to specify the port and the Fully Qualified Board Name (FQBN) of the target board.
+    
+    \PYTHON{arduino-cli burn-bootloader -p <port> -b <FQBN> [flags]}
+    
+    
+    \item \SHELL{cache}
+    
+    The arduino-cli cache command is used to manage the cache used by Arduino CLI. This command allows you to clean the cache or list the contents of the cache directory.
+    
+    \PYTHON{arduino-cli cache <subcommand> [flags]}
+    
+    \item \SHELL{cache clean}
+    
+    The arduino-cli cache clean command is used to clean the cache used by Arduino CLI. This command deletes contents of the \FILE{directories.downloads} folder, where archive files are staged during installation of libraries and boards platforms.
+    
+    \PYTHON{arduino-cli cache clean [flags]}
+    
+    \item \SHELL{compile}
+    
+    The arduino-cli compile command is used to compile Arduino sketches. This command requires you to specify the path to the sketch directory and optionally the board and output directory.
+    
+    \PYTHON{arduino-cli compile -b <FQBN> <sketchPath> [flags]}
+    
+    \item \SHELL{completion}
+    
+    The arduino-cli completion command is used to generate completion scripts for the specified shell (bash, zsh, fish, powershell).
+    
+    \PYTHON{arduino-cli completion [bash|zsh|fish|powershell] [--no-descriptions] [flags]}
+    
+    \item \SHELL{config}
+    
+    The arduino-cli config command is used to manage Arduino CLI configuration. This command allows you to interact with the configuration file, including initializing a new configuration, adding, deleting, setting, and listing configuration values.
+    
+    \PYTHON{arduino-cli config <subcommand> [flags]}
+    
+    \item \SHELL{config dump}
+    
+    The arduino-cli config dump command is used to print the current configuration to the console.
+    
+    \PYTHON{arduino-cli config dump [flags]}
+    
+    \item \SHELL{config init}
+    
+    The arduino-cli config init command creates or updates the configuration file in the data directory or custom directory with the current configuration settings.
+    
+    \PYTHON{arduino-cli config init [flags]}
+    
+    \item \SHELL{config add}
+    
+    The arduino-cli config add command is used to add a new configuration value.
+    
+    \PYTHON{arduino-cli config add [flags]}
+    
+    \item \SHELL{config delete}
+    
+    The arduino-cli config delete command is used to delete a settings key and all its sub keys in configuration value.
+    
+    \PYTHON{arduino-cli config delete [flags]}
+    
+    \item \SHELL{config remove}
+    
+    The arduino-cli config remove command is an alias for config delete, removes one or more values from a setting
+    
+    \PYTHON{arduino-cli config remove [flags]}
+    
+    \item \SHELL{config set}
+    
+    The arduino-cli config set command is used to set a setting value in configuration value.
+    
+    \PYTHON{arduino-cli config set [flags]}
+    
+    \item \SHELL{core download}
+    
+    The arduino-cli core download command is used to download Arduino cores. This command requires you to specify the Fully Qualified Core Name (FQCN) of the core you want to download.
+    
+    \PYTHON{arduino-cli core download <FQCN> [flags]}
+    
+    \item \SHELL{core install}
+    
+    The arduino-cli core install command is used to install Arduino cores. 
+    
+    \PYTHON{arduino-cli core install <FQCN> [flags]}
+    
+    \item \SHELL{core list}
+    
+    The arduino-cli core list command is used to list installed Arduino cores.
+    
+    \PYTHON{arduino-cli core list [flags]}
+    
+    \item \SHELL{core search}
+    
+    The arduino-cli core search command is used to search for Arduino cores by specified keywords.
+    
+    \PYTHON{arduino-cli core search <keywords> [flags]}
+    
+    \item \SHELL{core uninstall}
+    
+    The arduino-cli core uninstall command is used to uninstall Arduino cores. This command requires you to specify the Fully Qualified Core Name (FQCN) of the core you want to uninstall.
+    
+    \PYTHON{arduino-cli core uninstall <FQCN> [flags]}
+    
+    \item \SHELL{core update-index}
+    
+    The arduino-cli core update-index command is used to update the index of available Arduino cores.
+    
+    \PYTHON{arduino-cli core update-index [flags]}
+    
+    \item \SHELL{core upgrade}
+    
+    The arduino-cli core upgrade command is used to upgrade installed Arduino cores.
+    
+    \PYTHON{arduino-cli core upgrade [flags]}
+    
+    
+    \item \SHELL{daemon}
+    
+    The arduino-cli daemon command is used to start the Arduino CLI daemon, allowing it to listen for commands from other processes.
+    
+    \PYTHON{arduino-cli daemon [flags]}
+    
+    \item \SHELL{debug}
+    
+    The arduino-cli debug command is used to debug Arduino sketches. This command requires you to specify the port, the Fully Qualified Board Name (FQBN), and the path to the sketch directory.
+    
+    \PYTHON{arduino-cli debug -p <port> -b <FQBN> <sketchPath> [flags]}
+    
+    \item \SHELL{lib}
+    
+    The arduino-cli lib command is used to manage Arduino libraries. This command allows you to perform various operations related to libraries, such as installing, uninstalling, searching, listing, and updating libraries.
+    
+    \PYTHON{arduino-cli lib <subcommand> [flags]}
+    
+    \item \SHELL{lib deps}
+    
+    The arduino-cli lib deps command is used to check dependencies status for the specified library.
+    
+    \PYTHON{arduino-cli lib deps <libraryName> [flags]}
+    
+    \item \SHELL{lib download}
+    
+    The arduino-cli lib download command is used to download a library without installing them.
+    
+    \PYTHON{arduino-cli lib download <libraryName> [flags]}
+    
+    \item \SHELL{lib examples}
+    
+    The arduino-cli lib examples command is used to list the examples available in a library. A name may be given as argument to search a specific library.
+    
+    \PYTHON{arduino-cli lib examples <libraryName> [flags]}
+    
+    \item \SHELL{lib install}
+    
+    The arduino-cli lib install command is used to install one or more specified libraries into the system.
+    
+    \PYTHON{arduino-cli lib install <libraryName> [flags]}
+    
+    \item \SHELL{lib list}
+    
+    The arduino-cli lib list command is used to list installed libraries.
+    If the LIBNAME parameter is specified the listing is limited to that specific library. By default the libraries provided as built-in by platforms/core are not listed, they can be listed by adding the --all flag.
+    
+    \PYTHON{arduino-cli lib list <libraryName> [flags]}
+    
+    \item \SHELL{lib search}
+    
+    The arduino-cli lib search command is used to search for libraries by name.
+    
+    \PYTHON{arduino-cli lib search <libraryName> [flags]}
+    
+    \item \SHELL{lib uninstall}
+    
+    The arduino-cli lib uninstall command is used to uninstall a library.
+    
+    \PYTHON{arduino-cli lib uninstall <libraryName> [flags]}
+    
+    \item \SHELL{lib update-index}
+    
+    The arduino-cli lib update-index command is used to update the libraries index to the latest version.
+    
+    \PYTHON{arduino-cli lib update-index [flags]}
+    
+    \item \SHELL{lib upgrade}
+    
+    The arduino-cli lib upgrade command upgrades an installed library to the latest available version. Multiple libraries can be passed separated by a space. If no arguments are provided, the command will upgrade all the installed libraries where an update is available.
+    
+    \PYTHON{arduino-cli lib upgrade [flags]}
+    
+    \item \SHELL{monitor}
+    
+    The arduino-cli monitor command is used to monitor the serial output of an Arduino board. This command requires you to specify the port and optionally the baud rate.
+    
+    \PYTHON{arduino-cli monitor -p <port> [flags]}
+    
+    \item \SHELL{outdated}
+    
+    The arduino-cli outdated commandshows a list of installed cores and/or libraries that can be upgraded. If nothing needs to be updated the output is empty.
+    
+    \PYTHON{arduino-cli outdated [flags]}
+    
+    \item \SHELL{sketch}
+    
+    The arduino-cli sketch command is used to manage Arduino sketches. This command allows you to create, archive, and list sketches.
+    
+    \PYTHON{arduino-cli sketch <subcommand> [flags]}
+    
+    \item \SHELL{sketch archive}
+    
+    The arduino-cli sketch archive command creates a zip file containing all sketch files. This command requires you to specify the path to the sketch directory.
+    
+    \PYTHON{arduino-cli sketch archive <sketchPath> <archivePath> [flags]}
+    
+    \item \SHELL{sketch new}
+    
+    The arduino-cli sketch new command is used to create a new Arduino sketch. This command requires you to specify the name of the sketch.
+    
+    \PYTHON{arduino-cli sketch new <sketchName> [flags]}
+    
+    \item \SHELL{update}
+    
+    The arduino-cli update command is used to update the index of cores and libraries to the latest versions.
+    
+    \PYTHON{arduino-cli update [flags]}
+    
+    \item \SHELL{upgrade}
+    
+    The arduino-cli upgrade command is used to upgrade the index of cores and libraries to the latest versions.
+    
+    \PYTHON{arduino-cli upgrade [flags]}
+    
+    \item \SHELL{upload}
+    
+    The arduino-cli upload command is used to upload Arduino sketches. This does NOT compile the sketch prior to upload. This command requires you to specify the port, the Fully Qualified Board Name (FQBN), and the path to the sketch directory.
+    
+    \PYTHON{arduino-cli upload -p <port> -b <FQBN> <sketchPath> [flags]}
+    
+    \item \SHELL{version}
+    
+    The arduino-cli version command is used to display the current version of Arduino CLI installed on your system.
+    
+    \PYTHON{arduino-cli version [flags]}
+    
+\end{itemize}
+
+\textbf{NOTE:} The flags used in Arduino CLI commands can vary based on both the version of Arduino CLI being used and the specific command being executed.
+
+\section{First steps with Arduino H7 Portenta using the CLI}
+
+\subsection{Recognizing the connected boards}
+
+CLI can be used to query which boards are installed:
+\SHELL{arduino-cli board listall}
+\\
+If the connected board is missing, it must be installed:
+\SHELL{arduino-cli core install arduino:avr}
+\\
+CLI can be used to query which boards are connected:
+\SHELL{arduino-cli board list}
+\\
+After connecting the Arduino to a PC, the command "arduino-cli board list" can be 
+used to check whether the board is recognized by the computer. The "board 
+list" function has several return values. The port via which the board is connected to 
+the PC, the protocol, the type, the board name and the FQBN and core are returned, 
+as shown in Figure ~\ref{CLIBoardList}. 
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLIBoardList.png}
+        \caption{ Return values of the “board list” function }
+        \label{CLIBoardList}
+    \end{center}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLIInstallationCore.png}
+        \caption{ Installing the core for the Arduino }
+        \label{InstallationCore}
+    \end{center}
+\end{figure}
+
+To begin with, the correct core for the Arduino Portenta H7 should be installed, as shown in Figure ~\ref{InstallationCore}.. This is done with the "core install" command and the correct core name, which can be taken from Figure ~\ref{CLIBoardList}.
+
+\subsection{Creating a new sketch}
+The first step is to create a new sketch:
+\begin{lstlisting}[language=bash]
+    arduino-cli sketch new cli_test
+\end{lstlisting}
+This command creates a directory named \texttt{cli\_test}, which contains a file with the same name.
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLItemp.png}
+        \caption{Compiling a sketch with CLI }
+        \label{CompileSketchCommand}
+    \end{center}
+\end{figure}
+
+\subsection{Compiling a sketch}
+The "compile" function of CLI can be used to compile a sketch for any supported board. The crucial option required by this function is the board type, which can be specified with the \texttt{--fqbn} option. The abbreviation \texttt{fqbn} means "fully-qualified board name". For example, the following boards are available:
+\begin{itemize}
+    \item Arduino Uno: arduino:avr:uno
+    \item Arduino Mega: arduino:avr:mega
+    \item Arduino Portenta H7:
+    \item Arduino Portenta Cat. M1/NB IoT GNSS Shield:
+    
+\end{itemize}
+
+The possible boards are structured as follows: 
+\texttt{manufacturer:architecture:board}.
+
+With the following command, the example sketch, which is located in the folder \texttt{C:/Users/user.name/Documents/Arduino/} can be compiled for an Arduino UNO: 
+\medskip
+\begin{lstlisting}[language=bash]
+    arduino-cli compile -fqbn arduino:avr:uno C:/Users/user.name/Documents/Arduino/cli_test
+\end{lstlisting}
+\medskip
+Figure ~\ref{CompileSketchCommand} shows the CLI messages. The following flags can be added:
+\begin{itemize}
+    \item Verbose \texttt{-v}: Useful if you want to display all options and files that are compiled in your sketch.
+    \item Build path \texttt{--build-path [string]}: Useful if the compiled object and hex files are to be saved. On my Windows system, the value of this parameter must be a complete path.
+\end{itemize}
+
+\subsection{Uploading a sketch}
+A compiled sketch can be uploaded. Similar to the compile command, the upload command also requires the use of the \texttt{-fqbn} option. Additionally, a serial interface is necessary for uploading, which is specified with the \texttt{-p} option. The following command uploads the example sketch to a Windows COM port on COM18:
+\begin{lstlisting}[language=bash]
+    arduino-cli upload -p COM18 -fqbn arduino:avr:uno C:/Users/user.name/Documents/Arduino/cli_test
+\end{lstlisting}
+
+If executed correctly, the RX/TX LEDs of the Arduino should start flashing, and shortly afterward, an empty sketch will be executed.
+
+\subsection{Installation of Libraries}
+
+If a library is required, you can first use the command
+\begin{lstlisting}[language=bash]
+    arduino-cli lib search ethernet
+\end{lstlisting}
+to check if the library (in this case, Ethernet) is installed. Then, with the command
+\begin{lstlisting}[language=bash]
+    arduino-cli lib install "UIPEthernet"
+\end{lstlisting}
+you can install it.
+
+\subsection{Example program "Hello World"}
+
+The "Hello World!" counterpart for microcontrollers will be used to demonstrate how to compile a sketch and then upload it using the Arduino CLI. A simple sketch that makes the Arduino's LED flash is used for this.
+
+\begin{code}
+    \centering
+    \begin{lstlisting}[caption=Arduino Blink Example, label=lst:arduino_blink]
+        // This is a simple Arduino program to blink an LED
+        void setup() {
+            pinMode(LED_BUILTIN, OUTPUT); // Initialize the LED pin as an output
+        }
+        
+        void loop() {
+            digitalWrite(LED_BUILTIN, HIGH); // Turn the LED on
+            delay(1000); // Wait for a second
+            digitalWrite(LED_BUILTIN, LOW); // Turn the LED off
+            delay(1000); // Wait for a second
+        }
+    \end{lstlisting}
+\end{code}
+
+In the \texttt{setup()} function, which is executed once at the beginning, the built-in LED is defined as an output (\texttt{pinMode(LED\_BUILTIN, OUTPUT)}). This allows the LED to be controlled later. Within the \texttt{loop()} function, the LED is first switched on (\texttt{digitalWrite(LED\_BUILTIN, HIGH)}) and then switched off again with a delay of one second (\texttt{delay(1000)}). Before the LED is switched on again at the beginning of the loop, another second is waited at the end of the loop to achieve the flashing effect.
+
+To compile the sketch, the command previously defined as the basic function compile, as shown in Figure \ref{CompileSketch}, can be used.
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLItemp.png}
+        \caption{The file path to the sketch is also specified for compiling the blink sketch (underlined in red). The FQBN of the Arduino for which the sketch is being compiled should also be specified.}
+        \label{CompileSketch}
+    \end{center}
+\end{figure}
+
+The compiled sketch can then be uploaded to the Arduino using the "upload" function. To do this, the memory path to the sketch is specified, as shown in Figure \ref{UploadSketch}. This causes the compiled data for the specified sketch to be uploaded.
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLItemp.png}
+        \caption{Uploading the compiled sketch from the temp folder}
+        \label{UploadSketch}
+    \end{center}
+\end{figure}
+
+After the successful upload, the LED of the Arduino Portenta H7 shown in Figure \ref{LEDflash} starts to flash.
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{Arduino/CLI/CLItemp.png}
+        \caption{The orange LED of the Arduino starts to flash}
+        \label{LEDflash}
+    \end{center}
+\end{figure}
+
+\section{Batch File}
+
+\subsection{Batch File}
+
+A batch file is a text file that contains a sequence of commands intended to be executed by the command-line interpreter. On Windows operating systems, these files typically have the extension .bat or .cmd. Batch files are used to automate repetitive tasks, perform complex sequences of commands, and streamline system administration processes. The results are documented in a log file. 
+
+\subsection{List Batch File}
+A "list batch file" refers to a batch file designed to list specific items, such as files in a directory, the contents of a directory, or any other listable resources. In the context of Arduino CLI, a list batch file might include commands to list available Arduino boards, libraries, or sketches.
+
+\begin{center}
+    \begin{lstlisting}
+        @echo off
+        :: List available Arduino boards
+        arduino-cli board list
+    \end{lstlisting}
+\end{center}
+
+\SHELL{@echo off} command is used at the beginning of the batch file to suppress the display of each command as it executes. By default, batch files echo each command to the console as they execute, but \SHELL{@echo off} prevents this behavior, making the output cleaner. 
+\SHELL{:: List available Arduino boards} is a comment in the batch file. In batch scripting, comments start with :: or rem, and they are ignored by the command interpreter.
+\SHELL{arduino-cli board list} command executes the arduino-cli command-line tool with the board list subcommand. This subcommand lists all available Arduino boards connected to the system
+
+\subsection{Explanation of Batch commands}
+
+This section describes how the batch script works.
+
+{\small 
+    \begin{lstlisting}
+        @echo off
+        echo log file Arduino setup, %time% clock, %date% > setup-log.txt
+        echo. >> setup-log.txt
+        echo. >> setup-log.txt
+    \end{lstlisting}
+}
+
+The command \SHELL{\@echo off} prevents the script content from being output during execution. This enables more appealing front-end programming. The log file is created in the second line. When it is created, the first line of the log is given the heading \SHELL{Logfile Arduino setup} and the system time \SHELL{\%time\%} and date \SHELL{\%date\%} are read out. For later clarity of the log file, two empty lines \SHELL{echo. >> setup-log.txt}. If the greater than operator \SHELL{> setup-log.txt} is used once, a new file is created or an existing file with the same name is overwritten. If the greater than operator \SHELL{>> setup-log.txt} is used twice, the left-hand content is appended to an existing file in a new line. In this way, the log file is written line by line and not once completely at the end of the batch script.
+
+\begin{center}
+    \begin{lstlisting}
+        :: If necessary, the core is installed
+        echo core status: >> setup-log.txt
+        arduino-cli core install arduino:mbed_nano >> setup-log.txt
+    \end{lstlisting}
+\end{center}
+
+Comments in the batch script are identified by two consecutive colons \SHELL{:: If necessary, the core is installed} and are intended to increase traceability within the script. The command \SHELL{echo core status: >> setup-log.txt} is used in the log file to indicate that the next line contains information about the core to be installed for the Arduino Nano 33 BLE Sense Lite. The Arduino CLI already has the intelligence to check whether the specified core is already installed. If this is the case, the corresponding documentation is included in the log file. The installation of the core is initialized with the line \SHELL{arduino-cli core install arduino:mbed\_nano >> setup-log.txt}. The core required for the Arduino Nano 33 BLE Sense Lite is specified with the name \SHELL{arduino:mbed\_nano}. The return value of the function for core installation is saved in the log file.
+
+\begin{lstlisting}
+    echo A search is made for connected boards...
+    :: List the connected Arduinos
+    echo The following boards are connected to the PC: >> setup-log.txt
+    echo.
+    echo. >> setup-log.txt
+    arduino-cli board list >> setup-log.txt
+    arduino-cli board list
+    echo.
+\end{lstlisting}
+At the beginning of this script section, the user of the software is first informed about the search for the connected Arduino boards \SHELL{echo A search for connected boards is performed...}. The following command \SHELL{echo The following boards are connected to the PC: >> setup-log.txt} informs the user about the content of the next line in the log file. Information about which Arduinos are connected to the PC can be obtained with the command \SHELL{arduino-cli board list}, which is executed twice here. In the first execution, the return of the Arduino-CLI is saved in the log file \SHELL{>> setup-log.txt}, the second execution is used for display in the currently executed script. The user needs the information about the connected Arduinos for an input in the next step.
+
+\begin{lstlisting}
+    :: Query the port name for later upload 
+    :: of the sensor test file
+    set /p port="Please enter the port name of the Sense-Lite and confirm: "
+    echo The port %port% was selected. >> setup-log.txt
+\end{lstlisting}
+In the line \SHELL{set /p port="Please enter the port name of the Sense-Lite and confirm:"} a user query is displayed. The command \SHELL{set} allows the variable \SHELL{port} to be set to a specific value. With the addition \SHELL{/p}, this specific value is set to the following user input. Execution of the script is stopped until the user input is successful. The user input contains the port of the connected Arduino Nano 33 BLE Sense Lite. For later traceability, the selected port is entered in the log file with the line \SHELL{echo The port \%port\% was selected. >> setup-log.txt} is documented. 
+
+\begin{lstlisting}
+    :: Create the folder for the compiled sensor test
+    set folder=SensorTestCompiledData
+    mkdir %folder%
+\end{lstlisting}
+The variable \SHELL{ordner} is assigned the value \SHELL{SensorentestCompiledData}. In the next line \SHELL{mkdir \%folder\%} the folder with the name \PYTHON{SensorentestCompiledData} is created for saving the compiled sketch later.
+
+\begin{lstlisting}
+    :: If necessary, the required libraries for 
+    :: the sensor test are installed
+    :: Bib for IMU
+    echo Bib for IMU >> setup-log.txt
+    arduino-cli lib install Arduino_LSM9DS1 >> setup-log.txt
+    echo. >> setup-log.txt
+    
+    :: Bib for color sensor
+    echo Bib for color sensor >> setup-log.txt
+    arduino-cli lib install Arduino_APDS9960 >> setup-log.txt
+    echo. >> setup-log.txt
+    
+    :: Bib for pressure and temperature sensor
+    echo Bib for pressure and temperature sensor >> setup-log.txt
+    arduino-cli lib install Arduino_LPS22HB >> setup-log.txt
+    echo. >> setup-log.txt
+\end{lstlisting}
+
+The log file documents which library is involved in the following line \SHELL{SensorentestCompiledData}. Then use the command \SHELL{arduino-cli lib install Arduino\_LSM9DS1 >> setup-log.txt} to install the library and save the return value of the installation in the log file. A library that has already been installed is recognized by the Arduino CLI and a corresponding return value is written to the log file. The procedure is identical for all three libraries to be installed.
+
+\begin{lstlisting}
+    :: Compiling the sensor test sketch
+    echo Compiling the sensor test sketch: >> setup-log.txt
+    echo. >> setup-log.txt
+    arduino-cli compile -b arduino:mbed_nano:nano33ble 
+    %cd%\SensortestLite 
+    --build-path %cd%\%folder% >> setup-log.txt
+\end{lstlisting}
+
+Once the necessary libraries have been installed, the previously created sketch for testing the sensors can be compiled. The sketch for the Arduino Nano 33 BLE Sense Lite is compiled with the command \SHELL{arduino-cli compile -b arduino:mbed\_nano:nano33ble \%cd\%/SensortestLite}. The last part of the command specifies the memory path of the sketch to be compiled. Furthermore, the target folder for the compiled sketch can be defined with the addition \SHELL{--build-path \%cd\%/\%folder\% >> setup-log.txt}. The return value of compiling with the Arduino CLI is saved in the log file.
+
+\begin{lstlisting}
+    :: Upload the compiled sketch to the Arduino
+    echo Upload the compiled sketch to the Arduino >> setup-log.txt
+    arduino-cli upload -p %port% --input-dir %cd%\%folder% 
+    >> setup-log.txt
+\end{lstlisting}
+
+The compiled sketch is stored in the line \SHELL{arduino-cli upload -p \%port\% --input-dir}  \SHELL{\%cd\%/\%folder\% >> setup-log.txt} to the Arduino Nano 33 BLE Sense Lite connected via \SHELL{port}. The storage path of the compiled data is specified with the addition \SHELL{--input-dir \%cd\%/\%folder\%}.
+
+\begin{lstlisting}
+    :: Opening the serial monitor
+    start monitor_log
+    :: Automatic closing of the serial monitor after 4 seconds 
+    :: (n-1 seconds, with n=5)
+    ping 127.0.0.1 -n 5 > nul
+    taskkill /im serial-monitor.exe /F
+\end{lstlisting}
+
+The command \SHELL{start monitor\_log} calls another batch script to read out the serial monitor. The line \SHELL{ping 127.0.0.1 -n 5 > nul} stops the execution of the software for four seconds. Five requests are sent to the local computer and one second is waited between each request. With \SHELL{> nul}, the output of the responses is directed to the void and not displayed. Once the four-second period has elapsed, the serial monitor for reading the sensor data is automatically closed with the command \SHELL{taskkill /im serial-monitor.exe /F}. The window to be closed can be named \SHELL{serial-monitor.exe} using the suffix \SHELL{/im}. The forced closing of the serial monitor takes place with the appendix \SHELL{/F}. After the serial monitor has been read out and closed, the software can be closed. The results of the sensor test can then be found in the log file.
+
+The serial monitor is opened in the script \FILE{monitor\_log.bat}.
+
+\begin{lstlisting}
+    echo Sensor data: >> setup-log.txt
+    echo. >> setup-log.txt
+    
+    echo The serial monitor is opened, the sensor data is 
+    read out and saved in the log file...
+    
+    arduino-cli monitor -p %port% >> setup-log.txt
+\end{lstlisting}	
+
+The serial monitor can be activated using the Arduino CLI command \SHELL{arduino-cli monitor} \SHELL{-p \%port\% >> setup-log.txt} to open it. The connection for the specified port is established with \SHELL{-p \%port\%}. With the addition \SHELL{>> setup-log.txt} the received data is written to the log file.

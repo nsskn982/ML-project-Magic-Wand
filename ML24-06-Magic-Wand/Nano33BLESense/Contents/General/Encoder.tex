@@ -1,0 +1,69 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Encoder.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Drehwinkel-Encoder}
+
+Der Demonstrator soll mehrere Programme fahren können, deswegen wurde ein Drehwinkel-Encoder der Steuerung hinzugefügt. Dieser wird über drei Pins am Arduino angeschlossen und über zwei weitere Pins wird er mit Spannung versorgt. Durch drehen des Drehschalters werden nacheinander drei Kontakte geschlossen oder geöffnet (ein Kontakt ist immer geschlossen). Dieser dadurch entstehende Signalfluss, bestehend aus zwei um 90 Grad versetzte Sinus bzw. Cosinusschwingungen werden ausgewertet. Daraus wird bestimmt, in welche Richtung (im oder gegen Uhrzeigersinn) und wie weit (inkrementell) gedreht wurde. Mithilfe dieser Logik kann durch ein Menü eine Bewegungsstufe ausgewählt werden, die der Schrittmotor fahren soll.\cite{Basler:2016} Bei einer Drehung im Uhrzeigersinn wird im Menü eine Bewegungsstufe höher und bei einer Drehung gegen den Uhrzeigersinn eine Bewegungsstufe niedriger ausgewählt. Zusätzlich zum Drehwinkel-Encoder ist auch noch ein Schaltfunktion im Bauteil selbst integriert. Durch eindrücken des Encoders wird ein Taster betätigt, durch denn der eingestellte Wert bestätigt und an den Arduino zur weiteren Verarbeitung weitergegeben wird. Zur Besseren Handhabung des Drehwinkel-Encoders wurde noch ein Drehgriff angefertigt und auf dem Drehgeber montiert.
+Weitere Details: 
+\begin{itemize}
+    \item \textbf{Abmessungen ($b \times l \times h$):} $18 \ mm \times 31 \ mm \times 30 \ mm$
+    \item \textbf{Betriebsspannung:} 3,3 - 5\ V
+    \cite{Simac:2019c}
+\end{itemize}
+
+\section{Encoder}
+
+Die  Library Encoder ermöglicht das Zählen von Impulsen aus bestimmten Signalen, die häufig von Drehknöpfen, Motor- oder Wellensensoren sowie anderen Positionsgebern stammen. Diese Bibliothek ist für Arduino und Teensy Boards optimiert und bietet verschiedene Zählmodi, darunter 4X counting für präzise Positionserfassung. Die Verwendung erfolgt durch die Initialisierung eines Encoder-Objekts mit zwei Pins, wobei der erste Pin idealerweise über Interruptfähigkeit verfügt für optimale Leistung. Die Bibliothek unterstützt sowohl I2C- als auch SPI-Schnittstellen und bietet verschiedene Hardware- und Softwareoptionen zur Anpassung an die Anforderungen des Benutzers. Sie wird in diesem Projekt in der Version 1.4.4 verwendet.\cite{Stoffregen:2024}
+
+\section{Drehwinkel-Encoder}
+
+Um die Funktion und korrekte Ansteuerung des Drehwinkel-Encoders zu testen, wird das Testprogramm \ref{Code:Testprogramm für den Encoder} verwendet. Das Programm wertet die Drehung des Encoders aus und gibt den neuen Zustand im seriellen Monitor der Arduino IDE aus \cite{Stoffregen:2024}.
+
+\begin{code}[H]
+    \begin{lstlisting}[language=c++]
+        #include <Encoder.h>
+        
+        const int CLK = 9;
+        const int DT = 2;
+        const int SW = 3;
+        long altePosition = -999;
+        
+        Encoder meinEncoder(DT, CLK);
+        
+        void setup()
+        {
+            Serial.begin(9600);
+            pinMode(SW, INPUT);
+        }
+        
+        void loop()
+        {
+            long neuePosition = meinEncoder.read();
+            
+            if (neuePosition != altePosition)
+            {
+                altePosition = neuePosition;
+                Serial.println(neuePosition);
+            }
+            
+            int StatusTaster = digitalRead(SW);
+            if (StatusTaster == 0) {
+                Serial.println("Switch betaetigt");
+                Serial.println("Switch betaetigte");
+            }
+        }
+    \end{lstlisting}      
+    
+    \caption[Testprogramm für den Encoder]{Testprogramm für den Encoder}\label{Code:Testprogramm für den Encoder}    
+\end{code}
+

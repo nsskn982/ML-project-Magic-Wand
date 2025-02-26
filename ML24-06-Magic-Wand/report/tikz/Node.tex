@@ -1,0 +1,11 @@
+%\usetikzlibrary{backgrounds}  % is needed
+
+  \begin{tikzpicture}
+    \node [fill=gray!30] (P1) at (0,0) { $P_1$ };
+    \node [fill=gray!30] (P2) at (2,0) { $P_2$ };
+    \node [fill=gray!30] (P3) at (4,0) { $P_3$ };
+
+    \begin{scope}[on background layer]
+        \draw (P1) -- (P3);
+    \end{scope}
+  \end{tikzpicture}

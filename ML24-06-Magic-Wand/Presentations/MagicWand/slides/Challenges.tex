@@ -1,0 +1,66 @@
+%%%%%%
+%
+% $Autor: Sudeshna Nanda $
+% $Date: 2025-01-15 $
+% $File name:  ProjectPresentation.tex
+% $Version: 1.0 $
+%
+% !TeX encoding = utf8
+%
+%%%%%%
+
+
+\Mysection{Challenges}
+
+\begin{frame}{Challenge 1}
+
+\textbf{Resource Constraints}
+	
+	\begin{itemize}
+		
+		\item The limited memory and computational power of the Arduino Nano 33 BLE Sense required optimization techniques to adapt machine learning models for deployment. [\cite{Ard:2021}].
+		
+		\item High-performance deep learning models designed for GPUs or clusters are incompatible with microcontroller units (MCUs), demanding significant model simplifications.
+		
+	\end{itemize}
+	
+\end{frame}
+	
+\begin{frame}{Challenges 2}
+\textbf{Gesture Recognition Complexity}
+
+	\begin{itemize}
+	
+		\item Developing a robust ML model to recognize predefined gestures (wing, ring, slope).
+	
+		\item Accurately distinguishing untrained or "unknown" gestures.
+	
+		\item Avoiding false positives caused by overlapping or extended gestures, which could mislead the accelerometer readings.
+	
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}{Challenges 3}
+\textbf{Model Optimization}
+	
+	\begin{itemize}
+
+		\item Ensuring real-time performance while keeping model size and computational complexity low – a critical balance for edge devices.
+	
+		\item Employing techniques like quantization and pruning to minimize resource usage without degrading accuracy.
+
+	\end{itemize}
+\end{frame}
+	
+\begin{frame}{Challenges 4}
+\textbf{Framework Adaptation}
+
+	\begin{itemize}
+	
+		\item Leveraging tools like TensorFlow Lite and TinyML frameworks, which are not fully optimized for intricate applications.
+	
+		\item Tailoring frameworks to meet project-specific requirements.
+\end{itemize}
+
+\end{frame}

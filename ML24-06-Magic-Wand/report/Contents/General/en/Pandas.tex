@@ -1,0 +1,504 @@
+%%%%%%%%%%%%
+%
+% $Autor: Srikanth Nanda $
+% $Datum: 2024-01-08 08:03:15Z $
+% $Pfad: Pandas $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+\chapter{Pandas}
+
+	\section{Introduction}
+	
+	Pandas is a powerful and popular open-source data analysis and manipulation library for Python. It provides easy-to-use data structures and data analysis tools, making it highly efficient for working with structured data, such as spreadsheets, SQL tables, and time series data.
+	
+	This report aims to provide a comprehensive overview of the Pandas package, including its description, installation process, and several examples demonstrating its usage in different scenarios. Additionally, further reading resources will be suggested for those interested in diving deeper into the Pandas library \cite{McKinney:2012}. 
+	
+	The version of the Pandas package used here is 1.4.4. This package is used in the project to load the data from CSV files, transform the data (e.g. handle missing values), add columns, and etc. All these functions of the Pandas package are explained in the upcoming sections.
+	
+	\section{Description}
+	
+	Pandas is a powerful and popular open-source data analysis and manipulation library for Python. It provides easy-to-use data structures and data analysis tools, making it highly efficient for working with structured data, such as spreadsheets, SQL tables, and time series data.
+	
+	At its core, Pandas introduces two primary data structures: Series and DataFrame. 
+	
+	\begin{itemize}
+		
+		\item Series is a one-dimensional labeled array that can hold any data type. It is similar to a column in a spreadsheet or a database table and can be accessed using labels or positions. With Series, data can be efficiently manipulated and analyzed, enabling tasks such as filtering, aggregation, and transformation \cite{McKinney:2012}.
+		
+		\item DataFrame, on the other hand, is a two-dimensional labeled data structure with columns of potentially different types. It can be thought of as a tabular data structure, similar to a spreadsheet or SQL table. DataFrames provide a rich set of operations, such as indexing, merging, reshaping, and grouping, allowing for extensive data manipulation and analysis capabilities.
+		
+	\end{itemize}
+	
+	Pandas offers a wide range of functionalities, including data cleaning, transformation, filtering, merging, reshaping, and visualization. It provides tools for handling missing data, working with time series data, and performing statistical operations. With its intuitive and expressive syntax, Pandas simplifies data manipulation tasks and accelerates the data analysis process \cite{McKinney:2012}.
+	
+	Furthermore, Pandas seamlessly integrates with other popular Python libraries, such as NumPy, Matplotlib, and scikit-learn, making it an essential tool in the data science and analytics ecosystem. Its versatility, efficiency, and extensive documentation make it a preferred choice for data professionals, researchers, and analysts working with structured data in Python.
+
+	\subsection{Data Suitability}
+	
+	Pandas is highly compatible with various types of data.
+	
+	\begin{itemize}
+		
+		\item \textbf{Data Structure:} Pandas primarily works with two main data structures: Series and DataFrame. Series is a one-dimensional labeled array capable of holding any data type, while DataFrame is a two-dimensional labeled data structure resembling a table or spreadsheet. Ensure that your data is organized in a structure that can be represented by these data structures for effective usage with Pandas.
+		
+		\item \textbf{Data Format:} Pandas supports various data formats, including CSV, Excel, SQL databases, JSON, HTML,HDF5 (Hierarchical Data Format),Parquet, Feather, and more. Ensure that your data is in a compatible format that can be easily read and loaded into Pandas. Additionally, Pandas provides functions to read and write data in different formats, allowing you to seamlessly work with different types of data sources.
+		
+		\item \textbf{Data Size:} Consider the size of your data when working with Pandas. While Pandas can handle large datasets, excessively large datasets may result in performance issues or memory constraints. If you have a large dataset, you may need to optimize your code, use appropriate data types, or consider using alternative tools like \textbf{Dask} or \textbf{Apache Spark} for distributed computing.
+		
+		\item \textbf{Performance Considerations:} Depending on the size and complexity of your data, certain operations in Pandas may be more computationally expensive. It is essential to optimize your code and leverage Pandas' built-in vectorized operations and efficient indexing techniques to achieve better performance.
+		
+	\end{itemize}
+
+	\subsection{Key Features of Pandas}
+	
+	Pandas excels in the following areas \cite{pandas:2021}:
+	
+	\begin{itemize}
+		
+		\item Easy management of missing data (represented as NaN) in both floating point and non-floating point data.
+		
+		\item Size mutability, allowing the insertion and deletion of columns from DataFrame and higher-dimensional objects.
+		
+		\item Automatic and explicit data alignment, enabling explicit alignment of objects to a set of labels or automatic alignment by Series, DataFrame, etc. during computations.
+		
+		\item Powerful and flexible group by functionality, facilitating split-apply-combine operations on data sets for both aggregation and transformation.
+		
+		\item Seamless conversion of ragged and differently-indexed data from other Python and NumPy data structures into DataFrame objects.
+		
+		\item Intelligent label-based slicing, fancy indexing, and subsetting of large data sets.
+		
+		\item Intuitive merging and joining of data sets.
+		
+		\item Flexible reshaping and pivoting of data sets.
+		
+		\item Hierarchical labeling of axes, allowing the presence of multiple labels per tick.
+		
+		\item Robust I/O tools for loading data from flat files (CSV and delimited formats), Excel files, databases, and efficient saving/loading of data in the HDF5 format.
+		
+		\item Time series-specific functionality, including date range generation, frequency conversion, moving window statistics, date shifting, and lagging.
+		
+	\end{itemize}
+
+	\subsection{Why Multiple Data Structures in Pandas?}
+	
+	Pandas employs multiple data structures for a specific purpose. It is best to view pandas data structures as flexible containers for lower-dimensional data. For instance, DataFrame acts as a container for Series, and Series acts as a container for scalars. This allows us to insert and remove objects from these containers in a manner similar to dictionaries \cite{McKinney:2015}.
+	
+	Additionally, pandas provides sensible default behaviors for common API functions, considering the typical orientation of time series and cross-sectional data sets. When using N-dimensional arrays (ndarrays) to store 2- and 3-dimensional data, it burdens the user to consider the data set's orientation while writing functions. In pandas, the axes are designed to impart more semantic meaning to the data. For a given data set, there is usually a preferred orientation. The objective is to reduce the mental effort required to code data transformations in downstream functions \cite{McKinney:2012}.
+	
+	For example, when dealing with tabular data (DataFrame), it is more semantically helpful to think in terms of the index (representing rows) and the columns, rather than axis 0 and axis 1. Iterating through the columns of a DataFrame results in more readable code:
+
+	\begin{code}[h!]
+	\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={30-32}]{Code/Pandas/Pandas.py}    
+	
+	\caption{Columns of DataFrame}
+	
+   	\end{code}
+
+	\section{Installation}
+	
+	Installing pandas as a component of the cross-platform Anaconda distribution, which is used for data analysis and scientific computing, is the simplest way to do so. For the majority of users, this installation technique is advised.
+	
+	\subsection{Python version support}
+	
+	Pandas officially supports a range of Python versions, including Python 3.8, 3.9, 3.10, and 3.11.
+	
+	\subsection{Installing with Anaconda}
+	
+	For less experienced users, installing pandas and the rest of the NumPy and SciPy stack can be challenging.
+	With Anaconda, a cross-platform (Linux, macOS, Windows) Python distribution for data analytics and scientific computing, it is easy to install not only pandas, but Python and the most well-known tools that make up the SciPy stack (IPython, NumPy, Matplotlib,...) as well.
+	After launching the installer, the user won't need to install anything else or wait for any software to compile in order to utilize pandas and the rest of the SciPy stack.
+
+
+	\subsection{Installing using terminal or command prompt}
+	
+	To install Pandas, you can use the Python package manager, pip, by running the following command in your terminal or command prompt:
+	
+		\begin{code}[h!]
+			\lstinputlisting[language=Python, numbers=none, linerange={34-35}]{Code/Pandas/Pandas.py}    
+			
+			\caption{Installing Pandas using terminal}
+			
+		\end{code}	
+	
+	Ensure that you have a compatible version of Python installed on your system before running the installation command.
+	
+	\subsection{Required dependencies}
+	
+	Pandas requires the following dependencies:
+
+	\begin{center}
+		\begin{tabular}{ |c|c| }
+			\hline
+			Package & Minimum supported version \\
+			\hline
+			NumPy & 1.20.3 \\
+			python-dateutil & 2.8.2 \\
+			pytz & 2020.1 \\
+			\hline
+		\end{tabular}
+	\end{center}
+
+\section{Example - Manual}
+
+	\subsection{User Manual for the Example Python File in PyCharm}
+	
+		\subsubsection{Installation and Setup}
+		
+		\begin{enumerate}
+			
+			\item \textbf{Download and install Python:}
+			
+			 Visit the official Python website \url{https://www.python.org} and download the latest version of Python for your operating system. Follow the installation instructions provided.
+			 
+			\item \textbf{Install PyCharm: }
+			
+			Visit the JetBrains website \url{https://www.jetbrains.com/pycharm} and download PyCharm Community Edition, which is the free version. Install PyCharm by following the installation instructions specific to your operating system.
+			
+		\end{enumerate}
+
+		\subsubsection{Opening the Python File in PyCharm}
+		
+		\begin{enumerate}
+			
+			\item Launch PyCharm: Open the PyCharm application from your desktop or applications menu.
+			
+			\item Create a new project: Click on \texttt{Create New Project} or go to \texttt{File} $\rightarrow$ \texttt{New Project}. Choose a suitable location for your project and provide a name.
+			
+			\item Open the Python file: Once the project is created, navigate to the project directory in the PyCharm project view. Right-click on the desired folder and select \texttt{New} $\rightarrow$ \texttt{Python File}. Provide a name for the file and click \texttt{OK}.
+			
+			\item Copy your Python code: Open your Python file (with .py extension) in a text editor and copy the contents.
+			
+			\item Paste the code: Paste the copied code into the newly created Python file in PyCharm.
+			
+		\end{enumerate}
+	
+		\subsubsection{Working with the Python File}
+		
+		\begin{enumerate}
+			
+			\item Running the script: To run the Python script, right-click anywhere within the Python file and select \texttt{Run} $\rightarrow$ \texttt{Run ExampleManual.py}. Alternatively, you can use the keyboard shortcut \texttt{Shift + F10}. The script will execute, and the output will be displayed in the PyCharm console.
+			
+			\item Debugging the script: To debug the Python script and set breakpoints for analysis, click on the left gutter of the Python file, next to the line where you want to set the breakpoint. A red dot will appear, indicating the breakpoint. Click on the \texttt{Debug} button or use the keyboard shortcut \texttt{Shift + F9} to start debugging the script.
+			
+			\item Interacting with the script: If your script expects user input or provides interactive prompts, you can provide the input in the PyCharm console. The console allows you to interact with the script while it is running.
+			
+		\end{enumerate}
+		
+		\subsubsection{Modifying the Python File}
+		
+		\begin{enumerate}
+			
+			\item Editing the code: To make changes to the Python code, simply locate the section you want to modify and edit the code accordingly.
+			
+			\item Saving the changes: PyCharm automatically saves your changes as you work. However, you can manually save the file by going to \texttt{File} $\rightarrow$ \texttt{Save} or using the keyboard shortcut \texttt{Ctrl + S}.
+			
+		\end{enumerate}
+		
+		\subsubsection{Further Assistance and Resources}
+		
+		\begin{itemize}
+			
+			\item PyCharm Documentation: PyCharm offers comprehensive documentation to help you understand its features and functionality. You can access it online at \texttt{https://www.jetbrains.com/help/pycharm}.
+			
+			\item Python Documentation: The official Python documentation provides detailed information about the Python language, libraries, and best practices. It is available at \url{https://docs.python.org}.
+			
+			\item Online Python Communities: Joining online communities like Stack Overflow \url{https://stackoverflow.com} or the Python subreddit \url{https://www.reddit.com/r/Python} can provide valuable insights and assistance from experienced Python developers.
+		
+		\end{itemize}
+
+
+	\subsection{How to import}
+	The code begins by importing the required libraries, numpy (\texttt{np}) and pandas (\texttt{pd}).
+	
+		\begin{code}[h!]
+		\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={37-38}]{Code/Pandas/Pandas.py}    
+		
+		\caption{How to Import the package}
+		
+		\end{code}
+	
+	\subsection{Object creation}
+
+	\begin{itemize}
+		\item A pandas Series \texttt{s} is created with some values, including a NaN (not a number) value.
+		\item A sequence of dates is generated using the \texttt{pd.date\_range()} function and stored in the \texttt{dates} variable.
+		\item A DataFrame \texttt{df} is created with random values using the \texttt{np.random.randn()} function. The DataFrame has 6 rows and 4 columns, with the dates as the index and column labels as 'A', 'B', 'C', and 'D'.
+	\end{itemize}
+
+\begin{code}[h!]
+	\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={41-48}, style=pythonstyle, caption={Object Creation Example}, label={code:object-creation-example}] {Code/Pandas/Pandas.py}
+\end{code}
+
+	\begin{verbatim}
+		0    1.0
+		1    3.0
+		2    5.0
+		3    NaN
+		4    6.0
+		5    8.0
+		dtype: float64
+		DatetimeIndex(['2013-01-01', '2013-01-02', '2013-01-03', '2013-01-04',
+		'2013-01-05', '2013-01-06'],
+		dtype='datetime64[ns]', freq='D')
+		A         B         C         D
+		2013-01-01 -1.473364  1.116274 -1.815663  0.198003
+		2013-01-02 -0.094806 -0.501628 -1.722026  0.190776
+		2013-01-03  0.163170  0.995486  0.854393 -2.657105
+		2013-01-04  0.064040 -0.041879  0.581580 -0.896344
+		2013-01-05 -0.209241 -0.910417  0.517225  0.097267
+		2013-01-06  0.669742  0.226435 -0.609790 -0.741223
+	\end{verbatim}
+
+	\subsection{Viewing data}
+	
+	\begin{itemize}
+		
+		\item The \texttt{head()} method is used to display the first few rows of the DataFrame \texttt{df}.
+		
+		\item The \texttt{tail()} method is used to display the last 3 rows of \texttt{df}.
+		
+		\item The \texttt{describe()} method provides a statistical summary of the DataFrame.
+		
+		\item The \texttt{sort\_values()} method is used to sort the DataFrame \texttt{df} by the values in column 'B'.
+		
+	\end{itemize}
+	
+		\begin{code}[h!]
+		\lstinputlisting[language=Python,style=pythonstyle, numbers=none, linerange={50-52}]{Code/Pandas/Pandas.py}    
+		
+		\caption{Viewing Data}
+		
+		\end{code}
+
+	The results are not shown from now on due to the shortage of space. The manual for the user is provided, so by runing that, the results would appear in the console.
+	
+	\subsection{Selection}
+
+		\subsubsection{Getting}
+		
+		\begin{itemize}
+			
+			\item Column 'A' of the DataFrame \texttt{df} is selected using \texttt{df["A"]}.
+			
+			\item The first three rows of the DataFrame \texttt{df} are selected using slicing with \texttt{df[0:3]}.
+			
+		\end{itemize}
+	
+		\subsubsection{selection by label}
+		\begin{itemize}
+			
+			\item Using label-based indexing with \texttt{df.loc}, all rows and columns 'A' and 'B' are selected.
+			
+		\end{itemize}
+
+		\subsubsection{Selection by position}
+		\begin{itemize}
+			\item The fourth row of the DataFrame \texttt{df} is selected using \texttt{df.iloc[3]}.
+			\item Rows 3 to 4 and columns 0 to 1 are selected using \texttt{df.iloc[3:5, 0:2]}.
+		\end{itemize}
+		
+		\subsubsection{Boolean indexing}
+		\begin{itemize}
+			\item The DataFrame \texttt{df} is filtered using a Boolean condition \texttt{df["A"] > 0}.
+		\end{itemize}
+		
+		\begin{code}[h!]
+		\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={54-69}]{Code/Pandas/Pandas.py}    
+		
+		\caption{Boolean Indexing Example}
+		
+		\end{code}
+
+		\subsection{Setting}
+		\begin{itemize}
+			\item The value at row 0, column 1 of the DataFrame \texttt{df} is modified to 0 using \texttt{df.iloc[0, 1] = 0}.
+		\end{itemize}
+		
+			\begin{code}[h!]
+			\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={71-73}]{Code/Pandas/Pandas.py}    
+			
+			\caption{Setting Example}
+			
+			\end{code}
+
+
+	\subsection{Handling missing data}
+	\begin{itemize}
+		
+		\item A new DataFrame \texttt{df1} is created by reindexing \texttt{df} and adding a new column 'E'.
+		
+		\item Values in column 'E' for the first two rows of \texttt{df1} are set to 1.
+		
+		\item The \texttt{dropna()} method is used to drop rows with any NaN values from \texttt{df1}.
+		
+		\item The \texttt{pd.isna()} function is used to check for NaN values in \texttt{df1}.
+		
+	\end{itemize}
+
+
+	\begin{code}[h!]
+	\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={75-77}]{Code/Pandas/Pandas.py}    
+	
+	\caption{Handling Missing Data}
+	
+	\end{code}
+
+
+	\subsection{Operations}
+	
+	\begin{itemize}
+		\item The \texttt{apply()} method is used to calculate the difference between the maximum and minimum values of each column in \texttt{df}.
+	\end{itemize}
+	
+		\begin{code}[h!]
+		\lstinputlisting[language=Python, style=pythonstyle , numbers=none, linerange={79-80}]{Code/Pandas/Pandas.py}    
+		
+		\caption{Operations Example}
+		
+		\end{code}
+
+	\subsection{Merge}
+	
+	\begin{itemize}
+		\item The \texttt{concat()} function is used to concatenate three chunks of the DataFrame \texttt{df}.
+		
+		\item Two DataFrames, \texttt{left} and \texttt{right}, are created with a common column 'key'.
+		
+		\item The \texttt{merge()} function is used to merge \texttt{left} and \texttt{right} DataFrames based on the 'key' column.
+		
+	\end{itemize}
+
+	\begin{code}[h!]
+	\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={83-97}]{Code/Pandas/Pandas.py}    
+	
+	\caption{Merge Example}
+	
+	\end{code}
+
+
+	\subsection{Grouping}
+	
+	\begin{itemize}
+		\item A DataFrame \texttt{df} is created with 'Animal' and 'Max Speed' columns.
+		
+		\item The \texttt{groupby()} method is used to group the DataFrame \texttt{df} by the 'Animal' column and calculate the mean of 'Max Speed' for each group.
+		
+	\end{itemize}
+
+	\begin{code}[h!]
+	\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={99-104}]{Code/Pandas/Pandas.py}    
+	
+	\caption{Grouping Example}
+	
+	\end{code}
+
+	\subsection{Reshaping}
+	
+	\begin{itemize}
+		
+		\item A DataFrame \texttt{df\_single\_level\_cols} is created with two rows, two columns, and single-level column labels.
+		
+		\item The \texttt{stack()} method is used to stack the DataFrame, returning a Series.
+		
+		\item The \texttt{unstack()} method is used to unstack the Series, reverting it.
+		
+	\end{itemize}
+
+	\begin{code}[h!]
+	\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={106-115}]{Code/Pandas/Pandas.py}    
+	
+	\caption{Reshaping Example}
+	
+	\end{code}
+
+	\subsection{Importing and exporting data}
+	
+	\begin{enumerate}
+		\item \texttt{df.to\_csv("foo.csv")}: This line takes a Pandas DataFrame, \texttt{df}, and exports it to a CSV file named "foo.csv". The \texttt{to\_csv} method is used to convert the DataFrame into a CSV format and save it as a file. The resulting CSV file will contain the data from the DataFrame, with each row representing a data entry and each column representing a variable.
+		
+		\item \texttt{pd.read\_csv("foo.csv")}: This line reads the contents of the CSV file "foo.csv" and creates a new DataFrame using the data from the file. The \texttt{read\_csv} function from the Pandas library is used to read the CSV file and convert it back into a DataFrame.
+	\end{enumerate}
+	
+		\begin{code}[h!]
+		\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={117-119}]{Code/Pandas/Pandas.py}    
+		
+		\caption{Reading CSV file }
+		
+		\end{code}
+
+	\subsection{Pandas Error Handling}
+	
+	Pandas provides various error handling mechanisms to handle exceptions and errors that may occur during data manipulation and analysis. These error handling techniques help in diagnosing and addressing issues that arise when working with data in Pandas. Some common error handling techniques in Pandas include:
+	
+	\begin{enumerate}
+		\item \textbf{Try-Except Blocks:} You can use standard Python try-except blocks to catch and handle specific exceptions that may occur during Pandas operations. For example, you can wrap a Pandas function call within a try block and use except blocks to handle specific exceptions, such as \texttt{ValueError} or \texttt{KeyError}, and perform appropriate error handling actions.
+		
+			\begin{code}[h!]
+			\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={121-130}]{Code/Pandas/Pandas.py}    
+			
+			\caption{Try Except Blocks}
+			
+			\end{code}
+		
+	\item \textbf{Error Reporting:} Pandas provides descriptive error messages that provide information about the nature of the error and the location where it occurred. These error messages can be useful for diagnosing and debugging issues in the data or the code. When an error occurs, Pandas displays an error message along with a traceback that helps identify the source of the error.
+	
+	\item \textbf{Error Handling Functions:} Pandas provides specific functions to handle errors and exceptions. For example, the \texttt{pd.options.mode} function allows you to set error handling modes, such as \texttt{raise} to raise exceptions for errors, \texttt{warn} to display warning messages instead of raising exceptions, and \texttt{ignore} to ignore errors and proceed with the operation.
+	
+		\begin{code}[h!]
+		\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={132-140}]{Code/Pandas/Pandas.py}    
+		
+		\caption{Error Handling Functions}
+		
+	\end{code}
+	
+	\item \textbf{Error Handling with DataFrame and Series:} Pandas provides methods and properties for error handling specific to DataFrame and Series objects. For example, the \texttt{.at} and \texttt{.iat} attributes allow for safe access and assignment of scalar values, raising exceptions if the provided index is not found. The \texttt{.get()} method allows retrieving values with a default value, avoiding exceptions when the key is not found.
+	
+	\begin{code}[h!]
+		\lstinputlisting[language=Python,style=pythonstyle , numbers=none, linerange={142-150}]{Code/Pandas/Pandas.py}    
+		
+		\caption{Error Handling with DataFrame and Series}
+
+	\end{code}
+	
+	\end{enumerate}
+	
+	By leveraging these error handling techniques, you can effectively handle exceptions and errors that may arise during data operations in Pandas, ensuring smooth data processing and analysis.
+
+
+\section{Further Reading}
+
+	\subsection{A Comprehensive Overview of Pandas}
+
+	Explore pandas, a Python library tailored for structured data analysis in statistics, finance, and social sciences. This paper covers its design, features, and its role as a foundational layer in Python's statistical computing landscape. Discover how pandas complements the scientific Python stack and improves upon data manipulation tools from languages like R. Additionally, insights into future development and growth opportunities for statistical applications in Python are discussed \cite{McKinney:2012}. Find it here : \url{https://www.dlr.de/sc/portaldata/15/resources/dokumente/pyhpc2011/submissions/pyhpc2011_submission_9.pdf}
+
+	\subsection{pandas: a python data analysis library}
+	
+	This book, written by Wes McKinney (the creator of Pandas) \cite{McKinney:2012}, is a valuable resource for learning Pandas. It covers various aspects of data manipulation, analysis, and visualization using Pandas. The book also explores practical examples and real-world use cases. 
+	Find it here: \ul{https://www.oreilly.com/library/view/python-for-data/9781491957653/}
+
+	\subsection{Pandas Library}
+	
+	This chapter presents pandas, a powerful Python library that introduces the DataFrame data structure. Derived from NumPy arrays, pandas revolutionizes data analysis by offering a structured framework. The core elements, Series and DataFrame, enable the organization of varied data types into a unified structure, facilitating easy application of methods or functions to the entire dataset or specific segments. This capability expands the horizons of efficient and comprehensive data analysis \cite{Zheng:2018}. 
+	Find it here: \url{https://link.springer.com/chapter/10.1007/978-1-4842-5001-3_3}
+
+	\subsection{Python for Data Analysis}
+	
+	The provided Books page with the book titled "Python for Data Analysis" by Wes McKinney. This book extensively covers the pandas library, a key tool for data analysis in Python. The link allows access to the book for further exploration of pandas and its applications in the context of data analysis using Python. \cite{McKinney:2012}. 
+	Access it here: \url{https://books.google.de/books?hl=en&lr=&id=v3n4_AK8vu0C&oi=fnd&pg=PR3&dq=pandas+library&ots=riDL2lxAsD&sig=652ON3D9JVUQ4BBtgvBuo-4tdgc&redir_esc=y#v=onepage&q=pandas%20library&f=false}
+
+	\subsection{Pandas Learning}
+	The provided link directs to a Google Books page for the book titled "Python for Data Science For Dummies" by John Paul Mueller and Luca Massaron. This book likely covers various aspects of Python for data science, including the pandas library. The link allows access to the book for further exploration of pandas and its applications within the broader context of data science using Python \cite{Zheng:2018}.
+	You can find the official Pandas learning book here: \url{https://books.google.de/books?hl=en&lr=&id=Sng5DwAAQBAJ&oi=fnd&pg=PP1&dq=pandas+library&ots=J-L7JhMo75&sig=9RaIsH-obmG0vNc9_qjL6AnNUHA&redir_esc=y#v=onepage&q=pandas%20library&f=false}
+
+Remember to explore the official documentation first as it covers the most up-to-date information about Pandas. The books, online resources, and video tutorials mentioned above will complement your learning and provide additional insights into working with Pandas.
+
+
+
+	

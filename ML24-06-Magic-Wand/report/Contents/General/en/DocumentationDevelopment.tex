@@ -1,0 +1,290 @@
+%%%%%%%%%%%%
+%
+% $Autor: Sudeshna,Srikanth $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: TemplateSensor $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+\chapter{Documentation Development}
+\label{chapter 7}
+\section{Structure, Idea and Flow Chart }
+
+\begin{itemize}
+	
+	\item Data Collection and Preprocessing:
+	
+	Real-world gestures are recorded and stored in JSON format. The strokes are loaded, visualized, and augmented for diverse training.
+	
+	\item Image Generation and Augmentation:
+	
+	Strokes are converted into images, and augmentation techniques are applied to create a robust dataset.
+	
+	\item Dataset Splitting:
+	
+	The dataset is divided into training, validation, and test sets.
+	
+	\item Model Creation and Training:
+	
+	A CNN model is defined and compiled. The model is trained using the training dataset with checkpoints saved.
+	
+	\item Model Evaluation:
+	
+	The trained model is evaluated on the test dataset for accuracy metrics.
+	
+	\item Model Conversion and Quantization:
+	
+	The model is converted to TensorFlow Lite format. Quantization is applied to reduce model size.
+	
+	\item Model Testing:
+	
+	TensorFlow Lite models are tested on the test dataset.
+	
+	\item Conversion to C Source File:
+	
+	The quantized TensorFlow Lite model is converted to a C source file for deployment.
+	
+\end{itemize}
+
+\begin{center}
+	\begin{tikzpicture}[node distance=2cm]
+		
+		
+		\node (start) [startstop] {Start};
+		\node (data) [process, below of=start] {Data Collection and Preprocessing};
+		\node (augmentation) [process, below of=data] {Gesture Generation and Augmentation};
+		\node (splitting) [process, below of=augmentation] {Dataset Splitting};
+		\node (model) [process, below of=splitting] {Model Creation and Training};
+		\node (evaluation) [process, below of=model] {Model Evaluation};
+		\node (conversion) [process, below of=evaluation] {Model Conversion and Quantization};
+		\node (testing) [process, below of=conversion] {Model Testing};
+		\node (end) [startstop, below of=testing] {End};
+		
+		\draw [arrow] (start) -- (data);
+		\draw [arrow] (data) -- (augmentation);s
+		\draw [arrow] (augmentation) -- (splitting);
+		\draw [arrow] (splitting) -- (model);
+		\draw [arrow] (model) -- (evaluation);
+		\draw [arrow] (evaluation) -- (conversion);
+		\draw [arrow] (conversion) -- (testing);
+		\draw [arrow] (testing) -- (end);
+		
+	\end{tikzpicture}
+\end{center}
+
+The flowchart outlines the comprehensive process involved in training a machine learning model for the Magic Wand project. It commences with the "Start" node, where the journey begins. The initial step, "Data Collection and Preprocessing," involves capturing real-world gestures using the Arduino Nano 33 BLE Sense board and subsequently preprocessing the data. The following stage, "Gesture Generation and Augmentation," transforms the recorded strokes into images and applies augmentation techniques to enhance dataset diversity.
+
+The process then proceeds to "Dataset Splitting," where the dataset is partitioned into training, validation, and test sets. The core of the operation lies in "Model Creation and Training," where a Convolutional Neural Network (CNN) model is crafted and trained using the designated training dataset. Following this, the model's performance is evaluated on the test dataset through "Model Evaluation."
+
+The subsequent steps, "Model Conversion and Quantization," involve converting the trained model into TensorFlow Lite format and applying quantization to optimize the model's size. The optimized model is then put to the test in "Model Testing," where TensorFlow Lite models undergo testing on the dedicated test dataset. Finally, the process concludes with the "End" node.
+
+This flowchart provides a visual representation of the intricate steps undertaken, offering a clear and organized overview of the Magic Wand project's data training pipeline. From initial data collection to the deployment-ready TensorFlow Lite models, the flowchart encapsulates the entire journey in a structured and systematic manner.
+
+\section{ML Pipeline}
+
+A Machine Learning (ML) pipeline for the Magic Wand project involves a systematic sequence of steps to develop, train, and deploy a machine learning model for gesture recognition \cite{Cong:2022}. Here's a detailed explanation of each phase along with the significance and advantages of using an ML pipeline:
+
+\begin{enumerate}
+	
+	\item \textbf{Problem Definition:}
+	
+	\begin{itemize}
+		
+		\item Objective: Recognize gestures made with the Arduino Nano BLE 33 sensor as specific commands (e.g., gestures to control a device).
+		
+		\item Input: Time-series data from the sensor capturing gesture information.
+		
+		\item Output: A prediction of the recognized gesture.
+		
+	\end{itemize}
+	
+	\item \textbf{Data Collection:}
+	
+	\begin{itemize}
+		
+		\item Hardware: Arduino Nano BLE 33 sensor.
+		
+		\item Sensors: Accelerometer, gyroscope, or any other relevant sensors on the Arduino Nano BLE 33 \cite{Mardiyanto:2017}.
+		
+		\item Data: Collect labeled time-series data for each gesture to create a training dataset.
+		
+	\end{itemize}
+	
+	\item \textbf{Data Preprocessing:}
+	
+	\begin{itemize}
+		
+		\item Normalization: Normalize sensor readings to a common scale.
+		
+		\item Feature Extraction: Extract relevant features from the time-series data (e.g., peaks, slopes) \cite{Cong:2022}.
+		
+		\item Label Encoding: Convert categorical labels (gestures) into numerical format.
+		
+	\end{itemize}
+	
+	\item \textbf{Dataset Splitting:}
+	
+	Train-Validation-Test Split: Split the dataset into training, validation, and test sets.
+	
+	\item \textbf{Model Selection:}
+	
+	\begin{itemize}
+		
+		\item Algorithm: Choose a suitable ML algorithm for time-series gesture recognition (e.g., LSTM, CNN, Random Forest).
+		
+		\item Model Architecture: Design the architecture of the chosen model.
+		
+	\end{itemize}
+	
+	\item \textbf{Model Training:}
+	
+	\begin{itemize}
+		
+		\item Training: Train the model using the training dataset.
+		
+		\item Validation: Validate the model using the validation dataset to prevent overfitting.
+		
+		\item Hyperparameter Tuning: Optimize hyperparameters for better performance.
+		
+	\end{itemize}
+	
+	\item \textbf{Model Evaluation:}
+	
+	\begin{itemize}
+		
+		\item Test Set Evaluation: Evaluate the trained model using the test dataset.
+		
+		\item Metrics: Choose appropriate metrics (e.g., accuracy, precision, recall) for evaluation \cite{Zhou:2020}.
+		
+		\item Convert the model to TensorFlow Lite format and apply quantization to reduce model size.
+		
+		\item Test TensorFlow Lite models on the test dataset. Convert the quantized TensorFlow Lite model to a C source file for microcontroller deployment \cite{TensorFlow:2023}.
+		
+	\end{itemize}
+	
+	\item \textbf{Deployment to Arduino Nano BLE 33:}
+	
+	\begin{itemize}
+		
+		\item Conversion: Convert the trained model to a format compatible with the Arduino Nano BLE 33.
+		
+		\item Integration: Integrate the model into the Arduino Nano BLE 33 environment.
+		
+		\item Real-time Inference: Implement code for real-time inference on the Arduino Nano BLE 33.
+		
+	\end{itemize}
+	
+	\item \textbf{Testing and Debugging:}
+	
+	\begin{itemize}
+		
+		\item Device Testing: Test the complete system with the Arduino Nano BLE 33 and ensure accurate gesture recognition.
+		
+		\item Debugging: Address any issues related to sensor data, model inference, or device integration.
+		
+		\href{run:../Datatraining}{\texttt{Tests}}
+		
+		\href{run:../Datatraining}{\texttt{Errorhanddler}}
+		
+		
+	\end{itemize}
+	
+	\item \textbf{Optimization:}
+	
+	\begin{itemize}
+		
+		\item Size Optimization: Optimize the model for size and efficiency suitable for the Arduino Nano BLE 33.
+		
+		\item Power Optimization: Optimize power consumption for prolonged device usage \cite{Cong:2022}.
+		
+	\end{itemize}
+	
+	\item \textbf{Documentation:}
+	
+	\begin{itemize}
+		
+		\item Code Documentation: Provide detailed comments in the code for better understanding.
+		
+		\item Project Report: Create a comprehensive report documenting the entire ML pipeline, including challenges faced and solutions.
+		
+	\end{itemize}
+	
+\end{enumerate}
+
+\subsection{Why Use an ML Pipeline}
+
+\begin{enumerate}
+	
+	\item Structured Development: 
+	
+	ML pipelines provide a systematic and organized approach to model development, ensuring clarity and maintainability.
+	
+	\item Reproducibility: 
+	
+	The pipeline allows for easy reproduction of experiments, facilitating collaboration and research reproducibility.
+	
+	\item Hyperparameter Tuning: 
+	
+	Enables systematic optimization of model hyperparameters for better performance \cite{Cong:2022}.
+	
+	\item Ease of Debugging:
+	
+	A step-by-step approach makes it simpler to identify and rectify issues at each stage.
+	
+	\item Efficient Resource Utilization: 
+	
+	ML pipelines enable efficient use of computational resources by breaking down complex tasks into manageable steps.
+	
+	\item Scalability: 
+	
+	A well-defined pipeline is scalable, allowing for the incorporation of additional data and improvements without a complete overhaul.
+	
+	\item Deployment Readiness: 
+	
+	Ensures that the model is not only accurate but also optimized and ready for deployment on edge devices.
+	
+\end{enumerate}
+
+An ML pipeline for the Magic Wand project streamlines the development process, enhances model performance, and ensures the successful deployment of the gesture recognition system \cite{Zhou:2020}.
+
+\subsection{Magic Wand Flowchart}
+
+\begin{center}
+	\begin{tikzpicture}[node distance = 2.2cm, auto]
+		
+		\node [cloud,fill=green!50,node distance=1cm] (init) {Start};
+		\node [block, below of=init] (start) {Waiting for movement};
+		\node [decision,fill=yellow!20,below of=start] (select) {Check if moving};
+		\node [block, left of=select,node distance=5cm] (invalid){Wand is still in stillness};
+		%		\node [block, below of=select,node distance=3cm] (neighbour) {Pending movement};
+		\node [block, below of=select, node distance=3cm] (distance) {Record gesture};
+		\node [block, below of=distance,node distance=2cm] (update) {Gesture Predictor};
+		\node [block, below of=update,node distance=2cm] (run) {Check the predicted score};
+		\node [decision,fill=yellow!20,below of=run, node distance=3cm] (decide) {Gesture found?};
+		\node [cloud,fill=red!50, left of=decide,node distance=5cm] (none){"Unkown"};
+		\node [block, below of=decide, node distance=3cm] (stop) {Display Output};
+		\node [cloud,fill=red!50, below of=stop,node distance=2cm] (end) {End};
+		\path [line] (init) -- (start);
+		\path [line] (start) -- (select);
+		\path [line] (select) --node {Yes} (distance);
+		\path [line] (select) -- node[near start]{No}  (invalid);
+		\path [line] (invalid) |-  (start);
+		%	\path [line] (neighbour) -- (distance);
+		\path [line] (distance) -- (update);
+		\path [line] (update) -- (run);
+		\path [line] (run) -- (decide);
+		\path [line] (decide) -- node {Yes}(stop);
+		\path [line] (decide) -- node[near start]{No}  (none);
+		\path [line] (stop) -- (end);
+		%	\path [line] (solution) -- (stop);
+		
+	\end{tikzpicture}
+\end{center}
+
+The flow chart depicts a basic flow of the program. Initially the wand is still , once the wand starts moving, the program recognizes the movement followed by recording and predicting the gesture. Then the most probable gesture to the one that was waved by the user is displayed in the serial monitor window.

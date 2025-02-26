@@ -1,0 +1,30 @@
+%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-07-24 09:05:07Z $
+% $Pfad: GDV/Vortraege/latex - Ausarbeitung/Kapitel/Einleitung.tex $
+% $Version: 4732 $
+%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Bézier-Kurven}
+
+\section{Einleitung}
+
+Bézier-Kurven sind Parameterkurven, mit deren Hilfe Freiformkurven dargestellt werden können. Sie sind nach dem französischen Ingenieur Pierre Bézier benannt, der diese in den 1960er Jahren 
+bei Renault entwickelte um Karosserieformen zu designen. Im selben Zeitraum entwickelte unabhängig von Pierre Bézier auch der französische Physiker und Mathematiker Paul de Casteljau diese Kurven bei Citroën. Paul de Casteljaus Ergebnisse lagen \FEHLER{fr"uher vor, doch wurden sie nicht} veröffentlicht. Dies ist der Grund dafür, dass Pierre Bézier Namensgeber dieser Parameterkurven ist.\cite{Farin:2002}
+
+\bigskip
+
+
+Die Bézier-Kurven sind die Grundlage für das rechnerunterstützte Entwerfen von Modellen. Dieses wird entweder als Computer Aided Design (CAD) oder, wenn der Schwerpunkt mehr auf einer mathematischen Sicht liegt, als Computer Aided Geometric Design (CAGD) bezeichnet. \cite{Babovsky:2011} Computer benötigt zum Darstellen von Formen eine mathematische Beschreibung dieser. Die am besten hierfür geeignete Beschreibungsmethode ist die Verwendung von parametrischen Kurven und Flächen. Hier spielen Bézier-Kurven die zentrale Rolle, denn sie sind die numerisch stabilsten Polynombasen die bei CAD/CAGD Software zum Einsatz kommen.\cite{Farin:2002}
+
+\bigskip
+
+
+Bei der Typografie am Computer werden ebenfalls Bézier-Kurven genutzt. Es gibt zwei Arten Schrift mit dem Computer darzustellen. Die einfachste Art besteht darin, jeden einzelnen Buchstaben mit einer festen Auflösung und Größe zu als Bitmap zu speichern und bei Bedarf in den Speicherbereich des Bildschirms zu kopieren. Diese sogenannten Bitmap-Fonts sind so zwar schnell darstellbar aber benötigen viel Speicherplatz wenn die Schriftzeichen auch in verschiedenen Größen zur Verfügung stehen sollen. Hier muss eine extra Bitmap für jede Größe angelegt werden.  Ebenfalls sinkt die Qualität wenn diese Bitmap-Fonts in Größe  und Auflösung skaliert werden. Eine Alternative stellen hier  die Vektor-Fonts da. Ihr Name leitet sich daher ab, dass sie  in einem zweidimensionalen Vektorraum definierte Kurven zur  Darstellung der Schriftzeichen verwenden. Der Vorteil liegt  hier darin, dass die so dargestellten Schriftzeichen sich  ohne Qualitätsverlust skalieren lassen. Bei den Vektor-Fonts  haben sich zwei Standards entwickelt. Zu einem die TrueType-Fonts und zum anderen die PostScript-Fonts.  Die TrueType-Fonts verwenden quadratische Bézier-Kurven  während die PostScript-Fonts kubische Bézier-Kurven  verwenden. Die kubischen Bézier-Kurven haben mehr  Kontrollpunkte was zu eine besseren Qualität  führt.\cite{Malaka:2009}
+ 
+ \bigskip
+ 
+
+Ein weiteres Anwendungsgebiet liegt in der Steuerung von Werkzeugmaschinen. Beim Abfahren einer Ecke muss die Achse am Eckpunkt bis zum Stillstand abgebremst und anschließend nach Richtungskorrektur wieder beschleunigt zu werden. Diese Vorgehen sorgt dafür, dass nicht mit einer konstanten Geschwindigkeit gefahren kann, was negative Folgen für die Zykluszeit und Qualität hat. Eine mögliche Lösung dieses Problems liegt darin statt einer scharfen Ecke eine Kurve zwischen die zwei Teilstrecken zu legen, die mit konstanter Geschwindigkeit abgefahren werden kann. Für diesen Einsatzzweck eigenen sich Bézier-Kurven, da nur zwei Punkte sowie zwei Tangenten benötigt werden um sie zu bilden. Bei einer Ecke lägen die Punkte sowie die Tangenten auf den Teilstrecken die die Ecke bilden. Der entstehende Fehler wäre analytisch kontrollierbar und würde eine Einstellung der Kurventoleranz erlauben.\cite{Sencer:2014}

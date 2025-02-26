@@ -1,0 +1,31 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-18 11:15:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+
+\chapter{\TRANS{Data Sheets}{Datenblätter} Arduino Vision Shield}
+
+
+\newcounter{VScounter}
+\setcounter{VScounter}{1}
+
+\whiledo {\value{VScounter} < 9}
+{
+	\includegraphics[width=1\textwidth,page=\theVScounter]{../../MLbib/Arduino/ArduCAM/ArduCAM_Mini_2MP_Camera_Shield_DS.pdf}
+	\stepcounter{VScounter}
+	\newpage
+}
+
+\setcounter{VScounter}{1}
+
+\whiledo {\value{VScounter} < 8}
+{
+	\includegraphics[width=1\textwidth,page=\theVScounter]{../../MLbib/Arduino/ArduCAM/ArduCAM_Mini_2MP_Camera_Shield_Hardware_Application_Note.pdf}
+	\stepcounter{VScounter}
+	\newpage
+}

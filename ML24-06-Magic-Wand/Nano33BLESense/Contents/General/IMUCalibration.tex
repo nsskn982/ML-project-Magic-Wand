@@ -1,0 +1,216 @@
+%%%
+%
+% $Autor: Wingd$
+% $Datum: 2023-03-01 $
+% $Dateiname: IMUCalibration $
+% $Version: 1 $
+%
+%%%
+
+
+\chapter{Calibration}  \label{Chap: Calibration}
+
+\section{Introduction}
+
+Calibration of an IMU (Inertial Measurement Unit) is the process of determining the bias, drift, and noise values of the sensors within the IMU. \cite{wahyudi:2011}This is done by measuring the output of the IMU in multiple positions and orientations and then using algorithms to determine the bias, drift, and noise values. The process is important for ensuring the accuracy of the IMU's measurements.\cite{Vectornav:2021}
+
+\section{Standard Operating Procedure}
+The standard operation procedure for calibrating LSM6DSOX IMU involves the following steps:
+
+\begin{itemize}
+    \item Scope and Measurand(s) of Calibrations 
+    \item Description of the Item to be Calibrated
+    \item Measurement Parameters, Quantities, and Ranges to be Determined 
+    \item Environmental Conditions and Stabilization Periods 
+    \item Procedure Include:
+    \begin{itemize}
+        \item Handling, transporting, storing and preparation of items
+        \item Checks to be made before the work is started
+        \item  Step by step process
+    \end{itemize}
+    \item Handling, transporting, storing and preparation of items
+    \item Checks to be made before the work is started
+    \item Step by step process 
+\end{itemize}
+
+\textbf{Scope and Measurand(s) of Calibrations:}
+\begin{itemize}
+    \item The scope of the calibration process refers to the range of measurements or properties that are being assessed. In this case, the scope of calibration means determining the bias, drift, and noise values of the accelerometer and gyroscope readings. Bias refers to the systematic error in the sensor readings, while drift refers to the change in measurement over time due to factors such as temperature or humidity. Noise refers to the random fluctuations in the sensor readings.
+    \item The measurands to be calibrated are the acceleration and angular velocity values of the sensor. Acceleration refers to the rate of change of velocity, and is typically measured in meters per second squared m/\(s^2\). Angular velocity refers to the rate of change of angular displacement, and is typically measured in degree per second (°/s). Both acceleration and angular velocity are important measurements for applications such as robotics, navigation, and motion tracking.
+    \item By calibrating the sensor, the accuracy of the acceleration and angular velocity measurements can be improved, leading to more reliable and precise data. This is especially important in applications where small errors in measurement can have significant consequences, such as in mobile robot.
+\end{itemize}
+
+\textbf{Description of the Item to be Calibrated:}
+
+\begin{itemize}
+\item The LSM6DSOX IMU sensor is a device that is designed to measure acceleration and angular velocity in three different axes. It is commonly used in applications where the measurement of motion or orientation is required, such as in drones, robotics, and virtual reality systems.
+\item The sensor uses a combination of accelerometers and gyroscopes to measure motion and orientation. The accelerometers measure changes in acceleration, while the gyroscopes measure changes in angular velocity. Together, these measurements can be used to calculate the orientation and movement of the sensor in three dimensions.
+\item The LSM6DSOX IMU sensor is a compact device that can be integrated into various systems and devices. It typically includes a microcontroller and communication interface, such as I2C or SPI, for sending the measured data to other devices or systems.
+\end{itemize}
+
+\textbf{Measurement Parameters, Quantities, and Ranges to be Determined:}
+\begin{itemize}
+\item The bias, drift, and noise are parameters that affect the accuracy and stability of the sensor readings. Bias refers to any systematic error in the sensor output that is not related to the input signal. It can be thought of as an offset that needs to be subtracted from the raw sensor output to get a more accurate measurement. Drift refers to the change in the sensor output over time, even when there is no change in the input signal. It can be caused by factors such as temperature changes or aging of the sensor components. Noise refers to the random fluctuations in the sensor output that can be caused by various sources, such as electrical interference or mechanical vibration.
+\item The quantities to be measured are the acceleration and angular velocity values in each axis of the sensor. Acceleration is measured in units of meters per second squared m/\(s^2\) and angular velocity is measured in units of radians per second (rad/s).
+\item The range of the measurements will depend on the specifications of the sensor and the conditions in which it is being used. For example, the range of acceleration measurements might be ±2g, ±4g, ±8g, ±16g  (where g is the acceleration due to gravity) and the range of angular velocity measurements might be : ±125, ±250, ±500, ±1000, ±2000 (degrees per second). The actual range of measurements will be determined by the sensitivity and resolution of the sensor and the specific application in which it is being used.
+\end{itemize}
+
+\textbf{Environmental Conditions and Stabilization Periods:}
+\begin{itemize}
+    \item Environmental conditions play a critical role in ensuring accurate calibration of the sensor. Any significant vibration or movement in the environment can cause erroneous readings and introduce error into the calibration process. Therefore, it is essential to ensure that the environment in which the calibration is performed is stable and free from any such disturbances.
+    \item The sensor also requires sufficient stabilization time to ensure that it is at a steady state before calibration. This stabilization period allows the sensor to adjust to its environment and ensures that any initial drift is stabilized. The length of this stabilization period can vary depending on the sensor's specifications and the specific conditions in which the calibration is being performed. It is crucial to allow sufficient time for the sensor to stabilize before any measurements are taken to ensure accurate and reliable calibration results.
+\end{itemize}
+
+\textbf{Procedure:}
+
+\begin{itemize}
+\item \textbf{Handling, transporting, storing, and preparing the items: }\newline
+The sensor should be handled carefully to avoid any damage or contamination. It should be transported and stored in a clean and dry environment, away from any sources of electromagnetic interference. Before starting the calibration, the sensor should be mounted securely on a stable surface and connected to the calibration equipment.
+
+ \item \textbf{Checks to be made before the work is started: } \newline
+Before starting the calibration, several checks should be made to ensure that the setup and environment are suitable for calibration. These checks may include verifying equipment is a flat surface, additional checks may include ensuring that the surface is level and stable, and checking that the sensor is securely mounted and positioned correctly on the surface, checking that the sensor is connected and communicating properly, and verifying that the environment is stable and free from any significant vibration or movement.
+
+\item \textbf{Step by step process:}\newline
+\begin{enumerate}
+
+\item \textbf{Reading the accelerometer and gyroscope values from each axis: }\newline
+    The sensor should be placed on a stable and flat surface to ensure accurate readings. The readings can be obtained using software designed to communicate with the sensor or a microcontroller. The readings are usually in the form of digital signals, which are then converted into acceleration and angular speed values.
+ \item \textbf{Updating the Kalman filter with these values:}\newline
+ Once the readings from each axis are obtained, they are used to update the Kalman filter. The Kalman filter is a mathematical algorithm that estimates the bias, drift, and noise of each axis based on the readings obtained. The filter takes into account previous readings and estimates to provide a more accurate estimate of the current values. The Kalman filter is an essential part of the calibration process as it helps to correct for errors in the sensor readings.
+\item \textbf{Storing these values:}\newline
+The estimated bias, drift, and noise values for each axis are stored in the sensor's memory or in a separate data storage device. These values can be used to correct for errors in subsequent measurements taken by the sensor. The storage location and format of the values depend on the sensor and the application. Some sensors have built-in memory, while others may require an external storage device. The values may be stored in a binary or text format depending on the application's requirements.
+
+\end{enumerate}
+
+%\lstinputlisting[language=C++]{Code/Calibration.h}
+
+
+\item \textbf{Measurement Assurance:}
+\begin{itemize}
+    \item Measurement assurance is a critical aspect of any measurement process, which involves verifying the accuracy, precision, and reliability of the measurements. There are several ways to ensure measurement assurance, including comparing the measured values to known reference values, repeating the calibration process multiple times, and performing statistical analysis of the measurement data.
+    \item Our approach is ensuring measurement assurance is to compare the estimated values to known reference values. This can involve using a reference standard or a calibration artefact with a known value, such as a calibrated weight or a temperature sensor with a known output. By comparing the measured values to the reference values, it is possible to determine the accuracy and precision of the measurement system and make any necessary adjustments to improve the measurement quality. For our LSM6DSOX IMU sensor measurement assurance is to compare all the accelerometer and gyroscope reading to zero when the IMU is in stationery over a flat surface and the temperature reading should be compared with external temperature sensor. 
+\end{itemize}
+
+\end{itemize}
+
+\subsection{Low and high limit method}
+
+The low and high limit method involves recording minimum and maximum values on all three axes using a simple scratch to determine their absolute values. The sensor undergoes circular rotations along each axis multiple times\cite{Rehder:2017}. The centre point is then identified between these extremes. Increasing the number of rotations enhances the likelihood of capturing the absolute peak. The center point will be close to zero if the sensor exhibits no offset. However, slight variations may indicate a hard iron offset attributed to distortion caused by the Earth's magnetic field\cite{Rehder:2017}. This method assumes minimal soft iron distortion, evident from the rounded outlines in the graph. 
+
+It is important to note that this method necessitates capturing values each time to prevent performance degradation due to component drift and aging sensors\cite{Rehder:2017}. For devices relying on primary batteries, calibration becomes essential after each battery change, as the battery inevitably serves as the main source of magnetic disturbance, and new batteries may behave differently from their predecessors\cite{Rehder:2017}.
+
+\subsection{FreeIMU Calibration Application Magnetometer}
+
+In the FreeIMU Calibration Application Magnetometer method, raw magnetometer data undergoes pre-processing with axis-specific gain correction to convert the raw output into nanoTesla \cite{Rehder:2017}:
+
+\begin{itemize}
+  \item Xm-nanoTesla = rawCompass.m.x*(100000.0/1100.0); 
+  \item Gain X [LSB/Gauss] for selected input field range;
+  \item Ym-nanoTesla = rawCompass.m.y*(100000.0/1100.0);  
+  \item  Zm-nanoTesla = rawCompass.m.z*(100000.0/980.0);
+\end{itemize}
+
+The converted data is saved in the Mag-raw.txt file, which can be opened with the Magneto program. To implement this method, the scaling factors(e.g. 100000.0/1100.0) must be replaced with values specific to your sensor to convert the output into nanoTesla. Magneto generates twelve calibration values that correct for various errors, including bias, hard iron, scale factor, soft iron, and misalignment \cite{Rehder:2017}. An additional benefit is that this method can be used to calibrate accelerometers by pre-processing raw accelerometer output, considering bit depth and G sensitivity, converting the data into milliGalileo. We can also enter a value of 1000 milliGalileo as the "norm" for the gravitational field \cite{Rehder:2017}.
+
+
+
+\subsection{Example}
+
+\begin{code}
+    \begin{Arduino}
+#include <ArduinoSound.h>
+    
+void setup() {
+    Serial.begin(9600);
+    Sound.begin();
+}
+    
+void loop() {
+    int micValue = Sound.read();
+    Serial.println(micValue);
+    delay(1000);
+}
+\end{Arduino}
+\caption{Example Microphone}
+
+\end{code}
+
+\begin{code}
+    \begin{Arduino}
+#include <Arduino_LSM9DS1.h>
+    
+void setup() {
+  Serial.begin(9600);
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  }
+}
+    
+void loop() {
+  float x, y, z;
+ 
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(x, y, z);
+    Serial.print("AccX: "); Serial.print(x);
+    Serial.print(", AccY: "); Serial.print(y);
+    Serial.print(", AccZ: "); Serial.println(z);
+  }
+  if (IMU.gyroscopeAvailable()) {
+    IMU.readGyroscope(x, y, z);
+    Serial.print("GyroX: "); Serial.print(x);
+    Serial.print(", GyroY: "); Serial.print(y);
+    Serial.print(", GyroZ: "); Serial.println(z);
+  }
+  delay(1000);
+}
+\end{lstlisting}
+\end{Arduino}
+\caption{Example IMU (Accelerometer and Gyroscope)}
+
+\end{code}
+
+\begin{code}
+    \begin{Arduino}
+#include <Wire.h>
+#include <SparkFun_APDS9960.h>
+    
+// Object declaration
+SparkFun_APDS9960 apds;
+    
+void setup() {
+  Serial.begin(9600);
+  // Initialize sensor
+  if (!apds.init()) {
+    Serial.println("Failed to initialize sensor!");
+    while (1);
+  }
+  // Enable proximity and gesture sensing
+  apds.enableProximitySensor(true);
+  apds.enableGestureSensor(true);
+  Serial.println("Sensor initialized");
+}
+    
+void loop() {
+  // Read proximity value
+  if (apds.proximityAvailable()) {
+    uint8_t proximity = apds.readProximity();
+    Serial.print("Proximity: ");
+    Serial.println(proximity);
+  }
+         
+  // Read gesture
+  if (apds.isGestureAvailable()) {
+    uint8_t gesture = apds.readGesture();
+    Serial.print("Gesture: ");
+    Serial.println(gesture);
+  }
+        
+  delay(1000);
+}
+
+\end{Arduino}
+\caption{Example ADPS-9960}
+
+\end{code}
+

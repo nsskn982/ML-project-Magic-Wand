@@ -1,0 +1,129 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: ArduinoSerial $
+% $Dateiname: 
+% $Version: 4620 $
+%
+% !TeX spellcheck = en_EN-EnglishUnitedKingdom
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
+
+
+
+\chapter{Serial Communication between PC and Arduino}
+
+
+
+To communicate from the PC with the Arduino Nano 33 BLE 33 Sense using Python via USB, using the serial protocol is a good idea. 
+
+In this chapter, the simple example is a program which controls the RGB LED via the serial port.
+
+
+To do this, there are four steps:
+
+\begin{enumerate}
+  \item Installation of a library on the PC
+  \item Development of the Python program on the PC
+  \item Preparation of the Arduino and Development of the Arduino Sketch
+  \item Development of the Arduino Sketch
+  \item Identical configuration of the serial port and the Arduino sketch
+\end{enumerate}
+
+\section{Installation of a library on the PC}
+
+
+The serial protocol allows you to exchange data between devices using a serial port. You can use the package  \PYTHON{PySerial} in Python under Windows to interact with serial devices.
+
+The first step is to  install the  package \PYTHON{PySerial} using the program \SHELL{pip}:
+
+\medskip
+
+\SHELL{pip install pyserial}
+
+
+
+\section{Development of the Python program on the PC}
+
+After the installation of the package \FILE{PySerial}, the class \PYTHON {serial}.
+The method \PYTHON{serial.Serial}  creates an object that represents the connection to the Arduino. The port name (e.g. COM7) and the baud rate (e.g. 9600) must match to the  Arduino sketch. With the methods \PYTHON{write} and \PYTHON{read} data  can be sent and received to and from the Arduino. Here is a simple example to send a letter to the Arduino and receive a response:
+
+
+{
+    \captionof{code}{Python program for the Windows PC for communication with an Arduino via the serial interface.}\label{Nano:TestSerialPC}
+    \PythonExternalO{../../Code/Nano33BLESense/Serial/TestSerialPC.py}
+}
+
+
+
+
+\section{Development of the Arduino Sketch and Preparation of the Arduino}
+
+{
+  \captionof{code}{Sketch of an Arduino for communication with a Windows PC via the serial interface.}\label{Nano:TestSerial}
+  \ArduinoExternal{}{../../Code/Nano33BLESense/Serial/TestSerial.ino}
+}
+
+
+
+\bigskip
+
+
+\begin{itemize}
+    \item Connect the Arduino to the computer using a USB cable.
+    \item Upload the desired sketch to the Arduino.
+\end{itemize}
+
+
+
+
+\section{Identical configuration of the serial port and the Arduino sketch}
+
+
+Make adjustments
+
+\begin{itemize}
+    \item Adjust the port \PYTHON{ArduinoPort} according to your Arduino connection.
+    
+    \item Make sure that the baud rate \PYTHON{Baudrate} matches the baud rate used in the Arduino sketch.
+\end{itemize}
+
+
+
+
+\section{Further Readings}
+
+\begin{itemize}
+    \item 
+\HREF{https://www.instructables.com/Python-Serial-Port-Communication-Between-PC-and-Ar/}{Python Serial Port Communication Between PC and Arduino Using PySerial Library}
+
+  \item \HREF{https://arduino.stackexchange.com/questions/4891/how-would-i-establish-a-serial-connection-with-python-without-using-the-serial-m}{How would I establish a serial connection with python without using the serial monitor?}
+\end{itemize}
+
+
+\bigskip
+
+Use serial monitor:
+
+\begin{itemize}
+  \item Open the Arduino IDE Serial Monitor and make sure that the baud rate is also set correctly there.
+  \item You can use the Serial Monitor to send and receive data between the Arduino and the computer.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+You can find an example of a Python program that can control the RGB LED of the Arduino Nano 33 BLE 33 Sense using the pacakge \PYTHON{pySerial} \HREF{https://arduino.stackexchange.com/questions/91319/serial-communication-between-python-and-arduino-nano-ble-sense-33-for-running-si}{here}. You can also find the corresponding Arduino sketch that uses the serial library \HREF{https://micropython.org/download/ARDUINO_NANO_33_BLE_SENSE/}{here}
+
+
+\section{Example: Transfer of an Image using the Serial Port}
+
+TinyML Cookbook - 2nd edition, \cite{Iodice:2023}
+
+p. 361ff
+
+

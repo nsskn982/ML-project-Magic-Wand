@@ -1,0 +1,155 @@
+%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Batch.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+\section{Batch File}
+
+\section{Batch File}
+
+A batch file is a text file that contains a sequence of commands intended to be executed by the command-line interpreter. On Windows operating systems, these files typically have the extension \FILE{.bat} or \FILE{.cmd}. Batch files are used to automate repetitive tasks, perform complex sequences of commands, and streamline system administration processes. The results can be documented in a log file. 
+
+\section{List Batch File}
+
+A ``list batch file`` refers to a batch file designed to list specific items, such as files in a directory, the contents of a directory, or any other listable resources. In the context of Arduino CLI, a list batch file might include commands to list available Arduino boards, libraries, or sketches.
+
+\begin{center}
+    \begin{lstlisting}
+@echo off
+:: List available Arduino boards
+arduino-cli board list
+    \end{lstlisting}
+\end{center}
+
+\SHELL{@echo off} command is used at the beginning of the batch file to suppress the display of each command as it executes. By default, batch files echo each command to the console as they execute, but \SHELL{@echo off} prevents this behavior, making the output cleaner. 
+\SHELL{:: List available Arduino boards} is a comment in the batch file. In batch scripting, comments start with :: or rem, and they are ignored by the command interpreter.
+\SHELL{arduino-cli board list} command executes the arduino-cli command-line tool with the board list subcommand. This subcommand lists all available Arduino boards connected to the system
+
+\subsection{Explanation of Batch commands}
+
+This section describes how the batch script works.
+
+{\small 
+    \begin{lstlisting}
+@echo off
+echo log file Arduino setup, %time% clock, %date% > setup-log.txt
+echo. >> setup-log.txt
+echo. >> setup-log.txt
+    \end{lstlisting}
+}
+
+The command \SHELL{\@echo off} prevents the script content from being output during execution. This enables more appealing front-end programming. The log file is created in the second line. When it is created, the first line of the log is given the heading \SHELL{Logfile Arduino setup} and the system time \SHELL{\%time\%} and date \SHELL{\%date\%} are read out. For later clarity of the log file, two empty lines \SHELL{echo. >> setup-log.txt}. If the greater than operator \SHELL{> setup-log.txt} is used once, a new file is created or an existing file with the same name is overwritten. If the greater than operator \SHELL{>> setup-log.txt} is used twice, the left-hand content is appended to an existing file in a new line. In this way, the log file is written line by line and not once completely at the end of the batch script.
+
+\begin{center}
+    \begin{lstlisting}
+:: If necessary, the core is installed
+echo core status: >> setup-log.txt
+arduino-cli core install arduino:mbed_nano >> setup-log.txt
+    \end{lstlisting}
+\end{center}
+
+Comments in the batch script are identified by two consecutive colons \SHELL{:: If necessary, the core is installed} and are intended to increase traceability within the script. The command \SHELL{echo core status: >> setup-log.txt} is used in the log file to indicate that the next line contains information about the core to be installed for the Arduino Nano 33 BLE Sense Lite. The Arduino CLI already has the intelligence to check whether the specified core is already installed. If this is the case, the corresponding documentation is included in the log file. The installation of the core is initialized with the line \SHELL{arduino-cli core install arduino:mbed\_nano >> setup-log.txt}. The core required for the Arduino Nano 33 BLE Sense Lite is specified with the name \SHELL{arduino:mbed\_nano}. The return value of the function for core installation is saved in the log file.
+
+\begin{lstlisting}
+echo A search is made for connected boards...
+:: List the connected Arduinos
+echo The following boards are connected to the PC: >> setup-log.txt
+echo.
+echo. >> setup-log.txt
+arduino-cli board list >> setup-log.txt
+arduino-cli board list
+echo.
+\end{lstlisting}
+
+At the beginning of this script section, the user of the software is first informed about the search for the connected Arduino boards \SHELL{echo A search for connected boards is performed...}. The following command \SHELL{echo The following boards are connected to the PC: >> setup-log.txt} informs the user about the content of the next line in the log file. Information about which Arduinos are connected to the PC can be obtained with the command \SHELL{arduino-cli board list}, which is executed twice here. In the first execution, the return of the Arduino-CLI is saved in the log file \SHELL{>> setup-log.txt}, the second execution is used for display in the currently executed script. The user needs the information about the connected Arduinos for an input in the next step.
+
+\begin{lstlisting}
+:: Query the port name for later upload 
+:: of the sensor test file
+set /p port="Please enter the port name of the Sense-Lite and confirm: "
+echo The port %port% was selected. >> setup-log.txt
+\end{lstlisting}
+
+In the line \SHELL{set /p port="Please enter the port name of the Sense-Lite and confirm:"} a user query is displayed. The command \SHELL{set} allows the variable \SHELL{port} to be set to a specific value. With the addition \SHELL{/p}, this specific value is set to the following user input. Execution of the script is stopped until the user input is successful. The user input contains the port of the connected Arduino Nano 33 BLE Sense Lite. For later traceability, the selected port is entered in the log file with the line \SHELL{echo The port \%port\% was selected. >> setup-log.txt} is documented. 
+
+\begin{lstlisting}
+:: Create the folder for the compiled sensor test
+set folder=SensorTestCompiledData
+mkdir %folder%
+\end{lstlisting}
+The variable \SHELL{ordner} is assigned the value \SHELL{SensorentestCompiledData}. In the next line \SHELL{mkdir \%folder\%} the folder with the name \PYTHON{SensorentestCompiledData} is created for saving the compiled sketch later.
+
+\begin{lstlisting}
+:: If necessary, the required libraries for 
+:: the sensor test are installed
+:: Bib for IMU
+echo Bib for IMU >> setup-log.txt
+arduino-cli lib install Arduino_LSM9DS1 >> setup-log.txt
+echo. >> setup-log.txt
+    
+:: Bib for color sensor
+echo Bib for color sensor >> setup-log.txt
+arduino-cli lib install Arduino_APDS9960 >> setup-log.txt
+echo. >> setup-log.txt
+    
+:: Bib for pressure and temperature sensor
+echo Bib for pressure and temperature sensor >> setup-log.txt
+arduino-cli lib install Arduino_LPS22HB >> setup-log.txt
+echo. >> setup-log.txt
+\end{lstlisting}
+
+The log file documents which library is involved in the following line \SHELL{SensorentestCompiledData}. Then use the command \SHELL{arduino-cli lib install Arduino\_LSM9DS1 >> setup-log.txt} to install the library and save the return value of the installation in the log file. A library that has already been installed is recognized by the Arduino CLI and a corresponding return value is written to the log file. The procedure is identical for all three libraries to be installed.
+
+\begin{lstlisting}
+:: Compiling the sensor test sketch
+echo Compiling the sensor test sketch: >> setup-log.txt
+echo. >> setup-log.txt
+arduino-cli compile -b arduino:mbed_nano:nano33ble 
+%cd%\SensortestLite 
+--build-path %cd%\%folder% >> setup-log.txt
+\end{lstlisting}
+
+Once the necessary libraries have been installed, the previously created sketch for testing the sensors can be compiled. The sketch for the Arduino Nano 33 BLE Sense Lite is compiled with the command \SHELL{arduino-cli compile -b arduino:mbed\_nano:nano33ble \%cd\%/SensortestLite}. The last part of the command specifies the memory path of the sketch to be compiled. Furthermore, the target folder for the compiled sketch can be defined with the addition \SHELL{--build-path \%cd\%/\%folder\% >> setup-log.txt}. The return value of compiling with the Arduino CLI is saved in the log file.
+
+\begin{lstlisting}
+:: Upload the compiled sketch to the Arduino
+echo Upload the compiled sketch to the Arduino >> setup-log.txt
+arduino-cli upload -p %port% --input-dir %cd%\%folder% 
+>> setup-log.txt
+\end{lstlisting}
+
+The compiled sketch is stored in the line \SHELL{arduino-cli upload -p \%port\% --input-dir}  \SHELL{\%cd\%/\%folder\% >> setup-log.txt} to the Arduino Nano 33 BLE Sense Lite connected via \SHELL{port}. The storage path of the compiled data is specified with the addition \SHELL{--input-dir \%cd\%/\%folder\%}.
+
+\begin{lstlisting}
+:: Opening the serial monitor
+start monitor_log
+:: Automatic closing of the serial monitor after 4 seconds 
+:: (n-1 seconds, with n=5)
+ping 127.0.0.1 -n 5 > nul
+taskkill /im serial-monitor.exe /F
+\end{lstlisting}
+
+The command \SHELL{start monitor\_log} calls another batch script to read out the serial monitor. The line \SHELL{ping 127.0.0.1 -n 5 > nul} stops the execution of the software for four seconds. Five requests are sent to the local computer and one second is waited between each request. With \SHELL{> nul}, the output of the responses is directed to the void and not displayed. Once the four-second period has elapsed, the serial monitor for reading the sensor data is automatically closed with the command \SHELL{taskkill /im serial-monitor.exe /F}. The window to be closed can be named \SHELL{serial-monitor.exe} using the suffix \SHELL{/im}. The forced closing of the serial monitor takes place with the appendix \SHELL{/F}. After the serial monitor has been read out and closed, the software can be closed. The results of the sensor test can then be found in the log file.
+
+The serial monitor is opened in the script \FILE{monitor\_log.bat}.
+
+\begin{lstlisting}
+echo Sensor data: >> setup-log.txt
+echo. >> setup-log.txt
+    
+echo The serial monitor is opened, the sensor data is 
+read out and saved in the log file...
+    
+arduino-cli monitor -p %port% >> setup-log.txt
+\end{lstlisting}	
+
+The serial monitor can be activated using the Arduino CLI command \SHELL{arduino-cli monitor} \SHELL{-p \%port\% >> setup-log.txt} to open it. The connection for the specified port is established with \SHELL{-p \%port\%}. With the addition \SHELL{>> setup-log.txt} the received data is written to the log file.

@@ -1,0 +1,14 @@
+# LaTeX - temporary files
++*.aux
++*.bbl
++*.idx
++*.ilg
++*.ind
++*.lof
++*.log
++*.out
++*.run.xml
++*.synctex.gz
++*.toc
++*.upa
++*-blx.bib

@@ -1,0 +1,85 @@
+%%%%%%%%%%%%
+%
+% $Autor: Adhiraj $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: AddOns.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = manual 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Add Ons}
+
+\section{Project Folder Structure}
+
+\begin{lstlisting}[
+	basicstyle=\ttfamily\footnotesize, 
+	frame=single, 
+	numbers=none, 
+	caption=Project Directory Structure, 
+	captionpos=b, 
+	label=lst:project_structure
+	]
+	Project Root
+	|- src/
+	|- main.cpp
+	|- imu_processing.cpp
+	|- ml_model.cpp
+	|- gesture_recognition.cpp
+	|- include/
+	|- imu_processing.h
+	|- ml_model.h
+	|- gesture_recognition.h
+	|- models/
+	|- magic_gestures.tflite
+	|- scripts/
+	|- data_collection.py
+	|- model_training.py 
+\end{lstlisting}
+
+Reference to the structure: See Listing~\ref{lst:project_structure}.
+
+
+\section{File Descriptions}
+
+
+\subsection*{\texttt{src/}}
+Contains the main application code.
+
+\begin{itemize}
+	\item \texttt{main.cpp}: Serves as the entry point of the program, initializing and orchestrating the overall flow.
+	\item \texttt{imu\_processing.cpp}: Handles data collection from IMU (Inertial Measurement Unit) sensors, including filtering or preprocessing data.
+	\item \texttt{ml\_model.cpp}: Loads and interfaces with the pre-trained TensorFlow Lite model, running inference on the processed IMU data.
+	\item \texttt{gesture\_recognition.cpp}: Contains the logic for recognizing specific gestures based on model predictions.
+\end{itemize}
+
+\subsection*{\texttt{include/}}
+Header files for the source files, defining necessary interfaces and dependencies.
+
+\begin{itemize}
+	\item \texttt{imu\_processing.h}: Declares the functions and classes for IMU processing.
+	\item \texttt{ml\_model.h}: Declares the model loading and inference functions.
+	\item \texttt{gesture\_recognition.h}: Declares the gesture recognition logic functions.
+\end{itemize}
+
+\subsection*{\texttt{models/}}
+Stores machine learning models.
+
+\begin{itemize}
+	\item \texttt{magic\_gestures.tflite}: The pre-trained TensorFlow Lite model used for gesture classification.
+\end{itemize}
+
+\subsection*{\texttt{scripts/}}
+Python scripts for data collection and model training.
+
+\begin{itemize}
+	\item \texttt{data\_collection.py}: Used to collect motion data, typically in the form of raw IMU sensor readings.
+	\item \texttt{model\_training.py}: Handles the training of the machine learning model, potentially generating \texttt{magic\_gestures.tflite}.
+\end{itemize}
+
+
+
+

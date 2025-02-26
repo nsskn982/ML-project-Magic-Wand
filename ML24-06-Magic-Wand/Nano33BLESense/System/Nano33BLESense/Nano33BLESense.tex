@@ -1,0 +1,216 @@
+%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-29 07:55:27Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/Nano33BLESense/Nano33BLESense.tex $
+% $Version: 1785 $
+%
+% !TeX encoding = utf8
+% !TeX root = Nano33BLESense
+% !TeX TXS-program:bibliography = txs:///bibtex
+%
+%
+%%%%%%%%%%%%%%%
+
+
+% Auswahl der Sprache
+% Die nicht gewünschte Sprache muss auskommentiert werden:
+%\def\isGerman{1}
+\def\isEnglish{1}
+
+
+
+\documentclass[10pt,a4paper,bibliography=totoc]{scrbook}
+
+\input{../../General/packages}
+\input{../../General/commands}
+\input{../../General/tikzdefs}
+\input{../../General/ArduinoFormatting}
+
+\input{../../General/acronyms}
+\input{../../General/Hyphenations}%
+
+\bibliography{../../../MLbib/Jetson} 
+
+
+
+%\InputLanguage
+
+
+\begin{document}
+
+
+\input{../../Contents/Nano33BLESense/Titelseite}
+
+\tableofcontents
+\cleardoublepage
+
+\listoffigures
+\cleardoublepage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Liste der Programme}{List of Listings}}
+%\lstlistoflistings
+\listofcodes
+\cleardoublepage
+
+\InputLanguage{Contents/General/}{Acronymlist}
+\cleardoublepage
+
+
+%\Ausblenden
+{
+
+
+
+%\Ausblenden
+{
+\part{Arduino IDE}
+
+    
+  \input{../../Contents/General/ArduinoIDE2}    
+    
+  \input{../../Contents/General/ArduinoIDEWeb} 
+
+  \input{../../Contents/General/ArduinoCLI}    
+    
+  \chapter{Arduino Lab for MicroPython}
+}
+
+
+
+
+
+%\Ausblenden
+{
+
+
+\part{Arduino Nano 33 BLE Sense - Onboard Sensoren}
+
+\input{../../Contents/Nano33BLESense/Nano33BLESense}
+
+\input{../../Contents/Nano33BLESense/TinyMLKit}
+
+\input{../../Contents/General/LEDPower}
+
+\input{../../Contents/General/LEDBuiltIn}
+
+\input{../../Contents/General/LEDRGB}
+
+\input{../../Contents/General/PushButton}
+
+\input{../../Contents/General/SensorLPS22HB}
+
+\input{../../Contents/General/SensorAPDS9960}
+
+\InputLanguage{Contents/General/}{MicrophoneMP34DT05}
+
+\input{../../Contents/Nano33BLESense/SWTest}
+
+\input{../../Contents/General/ArduinoSerial}  
+
+\input{../../Contents/General/I2C}
+
+\input{../../Contents/General/SPI}
+
+\InputLanguage{Contents/General/}{IMU}
+
+\input{../../Contents/General/IMUSoftware}
+
+\input{../../Contents/General/IMUCalibration}
+
+\input{../../Contents/General/IMUErrors}
+
+\input{../../Contents/General/IMULibFunctions}
+
+
+}
+
+
+
+
+
+
+
+
+%\Ausblenden
+{
+
+\part{Arduino Nano 33 BLE Sense - External  Sensors and Actors}
+
+\input{../../Contents/General/LEDExternal}
+
+\input{../../Contents/General/LEDRGBExternal}
+
+\input{../../Contents/General/SensorBME280}
+
+\input{../../Contents/General/ServoDrive}
+
+\input{../../Contents/General/OLED}
+
+  \InputLanguage{Contents/General/}{CAMov2640} 
+
+\input{../../Contents/General/CAMov7675}
+  
+  \input{../../Contents/General/LensCalibrationTool} % deutsch
+
+\input{../../Contents/General/BlueTooth}
+
+\input{../../Contents/General/EthernetENC28J60}
+
+\input{../../Contents/General/HeartRate}
+
+\input{../../Contents/General/Grove}
+
+\input{../../Contents/General/SensorHCSR04}
+
+\input{../../Contents/General/Battery}
+
+\input{../../Contents/General/L298N}
+
+\input{../../Contents/General/AdapterBoard}
+
+\input{../../Contents/General/GearDrive}
+
+\input{../../Contents/General/Encoder}
+
+\input{../../Contents/General/SDCard}
+
+\input{../../Contents/General/SensorDHT22}
+}
+
+%\Ausblenden
+{
+\part{Anhang}
+
+%  \input{../../Contents/Nano33BLESense/MateriallisteNano}
+
+  \input{../../Contents/Nano33BLESense/DatenblattNano}
+  \input{../../Contents/Nano33BLESense/DatenblattArduCAM}
+}
+
+%\Ausblenden
+{
+  \input{../../Contents/General/Batch}
+}
+
+%\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+
+\printbibliography[
+heading=bibintoc,
+title={Literaturverzeichnis}
+]
+
+
+\newpage
+
+\addcontentsline{toc}{chapter}{Stichwortverzeichnis}
+\printindex
+
+%\part{Anhang}
+
+
+%%\input{todo}
+%
+
+
+\end{document}

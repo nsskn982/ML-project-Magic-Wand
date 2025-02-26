@@ -1,0 +1,4 @@
+https://www.arduino.cc/en/Reference/PDM
+https://www.arduino.cc/en/Reference/ArduinoAPDS9960
+https://www.arduino.cc/en/Reference/ArduinoLPS22HB
+https://www.arduino.cc/en/Reference/ArduinoHTS221

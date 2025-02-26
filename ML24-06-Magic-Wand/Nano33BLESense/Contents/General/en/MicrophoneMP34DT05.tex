@@ -1,0 +1,1507 @@
+%%%
+%
+% $Autor: Wings $
+% $Datum: 2021-05-14 $
+% $Pfad: GitLab/MLEdgeComputer $
+% $Dateiname: MicrophoneMP34DT05.tex
+% $Version: 4620 $
+%
+% !TeX spellcheck = de_DE/GB
+% !TeX program = pdflatex
+% !BIB program = biber/bibtex
+% !TeX encoding = utf8
+%
+%%%
+
+
+
+\chapter{Mikrophone MP34DT05-A}\label{MicrophoneMP34DT05}
+
+
+
+\textcolor{red}{
+\begin{itemize}
+    \item Allgemeine Information über Mikrophone
+    \item Spezielle Betrachtung des Mikrophons
+    \item Kalibrierung und Test des Mikrophons
+    \item Algorithmen zur Auswertung eines Mikrophons
+    \item Auswertung des speziellen Mikrophons
+    \item Programmierung des Mikrophons
+\end{itemize} 
+}
+
+
+
+
+Some Arduino boards have a microphone on board which can use for the application. 
+
+Das Mikrofon des Arduino Nano 33 BLE Sense ist ein ultrakompaktes Modul, das den MP34DT05-Sensor verwendet. Es wurde speziell für den Arduino Nano 33 BLE Sense entwickelt. Dieser Sensor nutzt die Puls-Dichtemodulation (PDM), um ein analoges Signal in ein binäres Signal umzuwandeln. Durch PDM wird ein analoges Signal in binäre Werte umgewandelt. \cite{STMicroelectronics:2021b}
+
+\Mynote{cite books, applications, board}
+
+
+\subsection{Ton und Frequenzen}\label{Ton und Frequenz}
+
+Ton, auch bekannt als Schall, ist genauer eine einzige Schallfrequenz, die eine mechanische Deformation in dem Medium Luft verursacht, welche sich als Longitudinalwelle ausbreitet.
+
+Die Frequenz $f$, gemessen in Hertz (Hz), stellt die Schwingungen über Luftdruckschwankung pro Sekunde in einer Schallwelle dar. Beispielsweise kann der Mensch einen Frequenzbereich von etwa 20 Hz bis 20 000 Hz wahrnehmen.
+Es gelten folgende Formeln für die Beschreibung von Schall:
+
+
+\bigskip
+
+\begin{center}    
+    \begin{tikzpicture}
+        %\node at (0,0) (Board) {\includegraphics{Arduino/Nano33BLE/Nano33BLESense}};
+        
+        \ArduinoNanoTikz;
+        
+        \fill[gray, opacity=0.7] (-11.2,-0.2) rectangle (0.1,4.7);
+        
+        \coordinate (A) at (-4.3,2.55);
+        \coordinate (B) at (-3.3,1.85);    
+        
+        
+        
+        \begin{scope}
+            \clip (A) rectangle (B);
+            
+            \ArduinoNanoTikz
+            
+            %\node at (0,0) (Board) {\includegraphics{Arduino/Nano33BLE/Nano33BLESense}};
+            
+        \end{scope}
+        
+    \end{tikzpicture}    
+    
+    \captionof{figure}{Arduino Nano 33 BLE Sense's RGB LED with Pin 22, Pin 23, and Pin 24}  
+\end{center}
+
+
+\bigskip
+
+\begin{itemize}
+  \item Schalldruck $p$:
+  
+        \begin{equation}
+          p(t)=\hat{p} \cdot \cos(\omega t - \phi) 
+          \end{equation}
+\label{eq: Schalldruck}
+
+mit $\hat{p}$: Amplitude des  Schalldrucks,
+
+$\omega = 2 \cdot \pi \cdot  f$: Kreisfrequenz, 
+
+$\phi$: Phasenverschiebung
+
+  \item Schallschnelle $\nu$:
+
+     \begin{equation}
+       \nu(t)=\hat{\nu}\cdot \cos(\omega \cdot  t)
+     \end{equation}
+\label{eq: Schallschnelle}
+
+mit $\hat{\nu}$: Amplitude des  Schalldrucks
+
+  \item Schallgeschwindigkeit $c$ (für Gase):
+  
+  \begin{equation}
+      c=\sqrt{(\kappa \rho)/p}
+  \end{equation}
+  \label{eq: Schallgeschwindigkeit}
+
+   \medskip
+
+    Für Luft beträgt die Schallgeschwindigkeit $c_{Luft}=331,2 m/s$.
+\end{itemize}
+
+
+Je schneller die Abfolge der Schwingungen, desto höher ist die Frequenz bzw. der Ton. Je größer die Amplitude ist, desto lauter ist der Ton. 
+
+Die Lautstärke wird durch die Amplitude beschrieben, die durch den Schalldruck erzeugt wird. Die Einheit für die Lautstärke wird in Dezibel (dB) angegeben. Hierfür wird der Abstand der Auslenkung zum Nullpunkt gemessen. Als Nullpunkt wurde, mit $P_{ref} = 2 \cdot 10^{-5} Pa$ die menschliche Hörschwelle festgelegt. Ein negativer dB-Wert ist somit nicht mehr für den Menschen hörbar. (\cite{Luders:2017})
+
+In der Tonverarbeitung werden diese Schwingungen mechanisch, meist über Mikrofone aufgenommen.
+
+\subsection{Unterschied Ton, Klang und Geräusch }
+
+Ein Ton ist beschreibbar durch eine harmonische Funktion mit unveränderlicher Frequenz.
+Ein Klang ist hingegen ein komplexeres, aber periodisches Schallereignis.
+Wesentlicher Bestandteil der Charakterisierung eines Klanges ist die Überlagerung eines 
+Grundtons mit seinen Oberschwingungen.
+Ein Geräusch ist generell nicht periodisch und zeigt  veränderliche Strukturen. \Mynote{cite}
+
+\subsection{Mikrofone}
+
+Die prinzipiellen Funktionsweisen verschiedener Mikrofonarten sind sehr ähnlich zueinander. 
+Die Schallwellen versetzen eine Membran in Schwingung, diese wird durch verschiedene Methoden 
+in elektrische Signale umgewandelt (siehe Abbildung \ref{fig:Mikrofonarten}).
+
+Da Computerprozessoren mit diesen analogen elektrischen Signalen nicht rechnen können, werden 
+sie durch elektronische Wandler in digitale Signale umgewandelt. Zunächst werden einige Methoden, die geeignet sind, Schwingungen der Membran in elektrische Signale umzuwandeln, betrachtet. Dies kann durch physikalische Prinzipien wie elektrodynamische Induktion, Kapazitätsänderungen, Piezoelektrische-Elemente, durch die Änderung des elektrischen Widerstands (Kohlemikrofone) usw. umgesetzt werden.
+Neben diesen heute üblichen Methoden der Schallwandlungen gibt es auch noch eine Reihe anderer Methoden.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/MikrofonArten.png}
+    \caption{Liste verschiedener Mikrofonarten mit Funktionsprinzip}
+    \label{fig:Mikrofonarten}
+\end{figure}
+
+In diesem Fall wird das Mikrofon Thomann t.bone SC 420 benutzt. 
+Dem Datenblatt des Mikrofons \ref{fig:Datenblatt Mikrofon} sind folgende Angaben zu entnehmen:
+
+\begin{itemize}
+  \item Beim Mikrofon handelt es sich um ein Kondensatormikrofon. 
+  \item Der nutzbare Frequenzbereich liegt bei 80 Hz - 18000 Hz. 
+  \item Das digitale Signal hat eine Auflösung von 16 bit (mono) bei einer Abtastfrequenz von 48 kHz.
+  \item Es hat eine supernierenförmige Richtcharakteristik.
+  \item Die Arbeitstemperatur liegt zwischen 0°C und 40°C, die erlaubte relative Luftfeuchtigkeit zwischen 20\% und 80\%.
+\end{itemize}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/MikrofonTechnischeDaten.png}
+    \caption{Datenblatt des betrachteten Mikrofons}
+    \label{fig:Datenblatt Mikrofon}
+\end{figure}
+
+\subsubsection{Kondensatormikrofon}
+
+Beim Kondensatormikrofon (siehe Abbildung \ref{fig:Kondensator Mikrofon}) bildet die Membran eine Elektrode eines Kondensators. Durch die Bewegung der Membran 
+ändert sich der Abstand zu der Gegenelektrode und damit die Kapazität des Kondensators.
+Der Kondensator wird über einen hochohmigen Widerstand geladen. Die Kapazitätsänderung führt dann zu einer
+Änderungen der am Kondensator anliegenden Spannung. Diese Spannungsänderung kann mit einem geeignetem Spannungsmesser gemessen werden. 
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/BeispielKondensatorMikrofon.png}
+    \caption{Aufbau eines Kondensator Mikrofons}
+    \label{fig:Kondensator Mikrofon}
+\end{figure}
+
+
+Anschließend muss dieses analoge, elektrische Signal noch in ein digitales Signal umgewandelt werden (siehe Abbildung \ref{fig:AD-Wandler}). Dies ist notwendig, da Computerprozessoren nur mit digitalen Signalen arbeiten können. 
+Dazu werden AD-Wandler (Analog zu Digital Wandler) genutzt. 
+Die AD-Wandler können entweder im Mikrofon selbst eingebaut oder vom Mikrofon getrennt sein.
+AD-Wandler sind in heutigen Computern selbst eingebaut. 
+Im professionellen Bereich werden aber meist hochwertige externe AD-Wandler
+eingesetzt.
+In diesem Projekt wird ein Mikrofon benutzt, bei dem der AD-Wandler direkt im Mikrofon verbaut ist. Das digitale 
+Signal wird als binäres Signal über eine USB Schnittstelle an den Computer übermittelt.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/AD-Wandler.png}
+    \caption{Funktionsprinzip eines Analog zu Digital Wandlers}
+    \label{fig:AD-Wandler}
+\end{figure}
+(\cite{Weinzierl:2020})
+
+\subsection{Wavedatei}
+
+Unkomprimierte Audiodaten werden üblicherweise im Wave-Dateiformat gespeichert (siehe Abbildung \ref{fig:AufbauWave}). Dieses Dateiformat ist ein von 
+Microsoft und IBM, im Jahr 1991 veröffentlichtes Format zur digitalen Speicherung von Audiodaten.
+Es setzt auf dem RIFF (Resource Interchange File Format) Dateiformat auf.
+Das besondere beim RIFF-Datenformat ist, dass in diesen Dateien Informationen über das Format des Dateiinhalts 
+am Anfang der Datei gespeichert sind.
+Bei WAV-Audiodateien handelt es sich um eine RIFF Datei mit einem WAVE Container. 
+Normalerweise sind die Audiodateien als  PCM (Pulse-Code-Modulation)-Rohdaten enthalten, wobei PCM das Pulsmodulationsverfahren ist, mit dem die analogen Signale in digitale Signale umgesetzt werden.
+Meist enthält eine RIFF Audiodatei einen WAVE Container, welcher zwei Untercontainer enthält:
+Den fmt (Format) Container, der das Format der Audiodaten und deren Speicherung beschreibt und 
+einen data Container, welcher die eigentlichen Audiodaten in dem Format enthält, das im fmt Container beschrieben wird.
+
+Eine Wave-Datei enthält in den ersten 4 Byte das Wort RIFF im ASCII-Format.
+Die folgenden vier Byte enthalten Größen der noch folgenden Daten im little-endian-Format.  Der letzte Teil der Beschreibung sind noch einmal 4 Byte, die den Dateityp angeben. 
+In unserem Fall also immer das Wort WAVE im ASCII-Format.
+
+
+\label{ascii}ASCII steht für \glqq American Standard Code for Information Interchange\grqq~und ist einer 7-Bit Zeichenkodierung, die der ISO-646 entspricht.
+
+Die Zeichenkodierung besteht aus 128 Zeichen wovon 95 druckbar und 33 nicht druckbar sind. 
+Einige hiervon sind:
+\begin{itemize}
+    \item Buchstaben: A, B, C, …, Z, a, b, c, …, z
+    \item Ziffern: 0, 1, 2, …, 9
+    \item Interpunktionszeichen: !, ", \#,\$, \%, \&, 
+\end{itemize}
+Eine ausführliche Darstellung ist in Abbildung \ref{fig:ASCII}.
+
+Wichtig anzumerken ist, dass jedes Zeichen einem definiertem Zahlenwert entspricht.
+
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/ASCII.png}
+    \caption{Symbole und numerische Werte des ASCII Formats}
+    \label{fig:ASCII}
+\end{figure}
+
+
+
+Die Zusatzwerte little endian(LE)/big endian(BE) geben an, von welcher Reihenfolge die Zahlenwerte der Bytes betrachtet 
+werden.
+
+\begin{itemize}
+    \item BE, auch als big-endian bekannt, speichert das höchstwertige Byte zuerst. Wenn mehrere Bytes gelesen werden, 
+    ist das erste Byte (oder die niedrigste Speicheradresse) das größte. 
+    \item LE, auch als little-endian bekannt, speichert das niederwertigste Byte zuerst. Wenn mehrere Bytes gelesen werden, 
+    ist das erste Byte (oder die niedrigste Speicheradresse) das kleinste.
+\end{itemize}
+
+In dem Container \grqq fmt\grqq \ (Format)  sind sämtliche Angaben zum Aufbau der nachfolgenden Audiodatei spezifiziert.
+
+\begin{itemize}
+    \item 
+    Die ersten 4 Bytes leiten das Format Container mit dem Wort \grqq fmt\grqq \ ein. Also die Buchstaben f, m, t und ein Leerzeichen.
+    (ASCII) (big endian).
+    \item (Subchunk1Size) Die nächsten 4 Bytes geben an, wie groß der restliche fmt Container noch ist. (little endian).
+    \item (AudioFormat) Die nächsten zwei Bytes geben die Art an, wie die Audiodaten gespeichert sind. (üblicherweise 1 = PCM unkomprimiert) (little endian).
+    \item (NumChannels) In den nächsten zwei Bytes steht, wie viele Kanäle in der Audiodatei enthalten sind (mono = 1, stereo = 2, ...).
+    \item (SampleRate) Die nächsten 4 Bytes geben die Abtastrate des Signals in Hertz an.
+    \item (ByteRate) In den nächsten 4 Bytes ist die Bandbreite des Audiosignals angegeben. Diese wird in Bytes pro Sekunde (Bytes/s) angegeben.
+    \item (BlockAlign) In den nächsten zwei Bytes wird angegeben, wie viele Byte ein Block enthält. Ein Block entspricht einem Sample mal die Anzahl der Kanäle. (Bits pro Audiowert * Anzahl der Kanäle / 8).
+    \item (BitsPerSample) In den hier letzten beiden Bytes des Beispiels wird angegeben, wie viele Bit ein Audiowert enthält. 8 Bit entsprechen einem Byte.
+\end{itemize}
+
+Würde bei den Audiodaten etwas Anderes als PCM verwendet werden, würde nach dem jetzigem
+Abschnitt noch ein Abschnitt folgen, der dieses Format spezifiziert.
+\newline
+Als letztes sind im data-Container die wirklichen Audiodaten gespeichert, wie oben spezifiziert wurde.
+Eingeleitet wird dieser Container mit dem Wort \glqq data\grqq~in den ersten 4 Bytes (ASCII). In den darauf folgenden 4 Bytes
+wird die Größe der tatsächlichen Audiodaten in Byte (little Endian) angegeben.
+
+\begin{figure}[ht]
+    \centering
+  \includegraphics[width=1\linewidth]{Microphon/AufbauWaveDatei.png}
+    \caption{Aufbau des Wave
+        Dateiformats 
+        mit Erklärung \cite{Wilson:2003}}
+    \label{fig:AufbauWave}
+\end{figure}
+
+
+\subsection{Package \PYTHON{PyAudio} Version 0.2.14}
+
+Die Bibliothek PyAudio ermöglicht den Zugriff auf ein Mikrofon. In diesem Fall wird das im Computer verbaute Mikrofon verwendet.  
+
+Zur Erläuterung der Einbindung der Bibliothek in einen Code wird ein Sample zum Abspielen einer Wave-Datei gezeigt. 
+
+\begin{verbatim}
+    import wave
+    import sys
+    
+    import pyaudio
+    
+    CHUNK = 1024
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1 if sys.platform == ´darwin´else 2
+    RATE = 44100
+    RECORD_SECONDS = 5
+    
+    with wave.open(óutput.wav´,´wb´) as wf:
+    p = pyaudio.PyAudio()
+    wf.setchannels(CHANNELS)
+    wf.setsampwidth(p.get_sample_size(FORMAT))
+    wf.setframerate(RATE)
+    
+    stream = p.open(format=FORMAT, channels=CHANNELS, 
+    rate=RATE, input=True)
+    
+    print(´Recording...´)
+    for _ in range(0, RATE // CHUNK * RECORD_SECONDS):
+    wf.writeframes(stream.read(CHUNK))
+    print(´Done´)
+    
+    stream.close()
+    p.terminate()
+\end{verbatim}
+
+Es ist zu sehen, dass zunächst durch den Befehl „import pyaudio“ die Bibliothek importiert wird. 
+Mit dem Befehl \PYTHON{pyaudio.PyAudio()} kann nun auf die Bibliothek zugegriffen werden.
+\PYTHON{pyaudio.PyAudio.open()} öffnet als Nächstes einen Stream, das bedeutet, dass ein kontinuierlich bestehender Datenfluss ermöglicht wird, aus dem Audiodaten gelesen werden können mit \PYTHON{pyaudio.PyAudio.Stream.read()}.
+Um nun den Stream, also den kontinuierlichen Audiodatenfluss, zu beenden, wird \PYTHON{stream.close()} verwendet. Um den Zugriff auf das Mikrofon abzubrechen, verwendet man \PYTHON{p.terminate()}.
+(vgl. PyAudio Documentation — PyAudio 0.2.14 documentation (mit.edu)) 
+
+Die Bibliothek PyAudio besitzt jedoch noch weitere Funktionen. Die für dieses Projekt wichtigste Funktion ist jedoch der Zugriff auf Lautsprecher und Mikrofon, sowie der Aufbau eines Streams für einen kontinuierlichen Audiodatenfluss. \cite{Pham:2006}
+
+\subsection{Package \PYTHON{Wave} Version 3.12}
+
+Die Bibliothek Wave ist bereits in Python integriert und ermöglicht das Lesen von Wave-Dateien.  
+
+Zur Erläuterung ist nachfolgend ein Sample zu sehen. 
+
+\begin{verbatim}
+    import numpy as np
+    import wave
+    
+    FRAMES_PER_SECOND = 44100
+    
+    def sound_wave(frequency, num_seconds):
+    time = np.arrange(0, num_seconds, 1 / FRAMES_PER_SECOND)
+    amplitude = np.sin(2 * np.pi * frequency * time)
+    return np.clip(
+    np.round(amplitude * 32768),
+    -32768,
+    32767,
+    ).astype("<h")
+    
+    left_channel = sound_wave(440, 2.5)
+    right_channel = sound_wave(480, 2.5)
+    stereo_frames = np.dstack((left_channel, right_channel)).flattern()
+    
+    with wave.open("output.wav", mode="wb") as wav_file:
+    wav_file.setnchannels(2)
+    wav_file.setsampwidth(2)
+    wav_file.setframerate(FRAMES_PER_SECOND)
+    wav_file.writeframes(stereo_frames)
+\end{verbatim}
+
+Das oben gezeigte Sample erstellt eine Audiodatei mit einer Frequenz von 440 Hz, die über den linken Lautsprecher ausgegeben wird und einer Frequenz von 480 Hz, die über den rechten Lautsprecher ausgegeben wird. Beide Frequenzen werden zeitgleich für eine Dauer von 2,5 Sekunden ausgegeben.  
+
+Die Nutzung der Bibliothek \PYTHON{wave} beginnt mit dem Import mittels \PYTHON{import wave}. Danach wird mithilfe von \PYTHON{sound\_wave} eine Sinuswelle erzeugt. Nun wird die Frequenz definiert, die über den linken und den rechten Lautsprecher ausgegeben wird, mit der Funktion \PYTHON{frequency}. Mit \PYTHON{num\_seconds} wird jetzt noch die Dauer in Sekunden für den linken und rechten Lautsprecher festgelegt. In Zeile 17 werden nun die Töne, die durch \PYTHON{sound\_wave(frequency, num\_seconds)} definiert wurden, zusammengefügt, sodass sie durch \PYTHON{with wave.open(„output.wav“, mode=“wb“) as wav\_file:} in eine neu erstellte Wave-Datei mit Namen \FILE{output.wav} geschrieben werden können. \cite{Python:2024Wave}
+
+\subsection{Package \PYTHON{NumPy} Version 1.26}
+
+NumPy ist eine sehr große und umfassende Bibliothek. Die Funktion, die für die erläuterte Aufgabenstellung von Interesse ist, ist die schnelle Verarbeitung von Daten, daher wird auch nur diese Funktion beschrieben.
+
+\begin{verbatim}
+    import sys
+    import numpy as np
+    import pyaudio
+    
+    CHUNK = 1024
+    FORMAT = pyaudio.paInt16
+    CHANNELS = 1 if sys.platform == ´darwin´else 2
+    RATE = 44100
+    RECORD_SECONDS = 5
+    
+    p = pyaudio.PyAudio()
+    
+    stream = p.open(format=FORMAT, channels=CHANNELS,
+    rate=RATE, input=TRUE)
+    
+    data = np.array([])
+    
+    print(´Recording...´)
+    for _ in range(0, RATE // CHUNK * RECORD_SECONDS):
+    in_data = stream.read(CHUNK)
+    in_data = np.frombuffer(in_data,np.int16)
+    data = np.concatenate((data,in_data))
+    print(´Done´)
+    
+    MAX_LENGTH = 1024
+    data = data[0::2]
+    data = data[-data.size//1024*1024:]
+    
+    data = data.reshape(-1,data.size//1024)
+    data = np.mean(data,axis=1)
+    
+    print(data)
+    
+    stream.close()
+    p.terminate()
+\end{verbatim}
+
+Das hier gezeigte Sample wurde inspiriert durch das Sample, das bereits zur Erklärung der Bibliothek \PYTHON{PyAudio} verwendet wurde. Dieses wurde um ein paar Zeilen zur Bibliothek \PYTHON{NumPy} ergänzt, um die hier relevante Funktion der Bibliothek erklären zu können.  
+
+Gestartet wird mit dem Befehl \PYTHON{import numpy as np}. Zudem wird in dieser Zeile der Bibliothek der Alias \PYTHON{np} zugeordnet, wodurch im Folgendem Code die Funktionen von \PYTHON{NumPy} durch die Verwendung des Alias aufgerufen werden können.  
+
+Die Bibliothek \PYTHON{PyAudio} stellt die Audiodaten in binärer Form dar. Da die Daten in dieser Form noch nicht ausgewertet werden können, ist es notwendig diese durch den Befehl \PYTHON{np.frombuffer(in\_data,np.int16)} in einem Array darzustellen. Mit dem Befehl \PYTHON{np.concatenate((data,in\_data))} können nun die gerade erstellten Daten und die ursprünglichen Daten zusammengefügt werden. Von Zeile 24 bis 26 werden alle Daten, die von der rechten Seite ausgegeben werden, herausgefiltert, sodass nur die Daten der linken Seite übrigbleiben. In Zeile 26 wird nun noch die Länge des Arrays auf eine konstante  Ziellänge gebracht. Dabei muss die Ziellänge durch 1024 teilbar sein, was durch \PYTHON{MAX\_LENGTH} definiert wird. Nun wird in der Zeile 28 das Array in ein zweidimensionales Array mit der Ziellänge 1024 umgeformt. Zeile 29 fasst die Arrays der zweiten Dimension in ihr jeweiliges arithmetisches Mittel zusammen. Nun muss das Ganze nur noch mit dem Befehl \PYTHON{print(data)} ausgegeben, und mit \PYTHON{stream.close()} geschlossen werden. \cite{Numpy:2022}
+
+\subsection{Package \PYTHON{Guizero} Version 1.5.0}
+
+\PYTHON{Guizero} ist eine Bibliothek, die auf der in Python enthaltenden Bibliothek Tkinter aufbaut. Die Bibliothek bietet die Möglichkeit, ein Dashboard zu erstellen, und bietet dazu einige Widges und Funktionen, die die Gestaltung des Dashboards erleichtern.  Im Vergleich zu \PYTHON{Tkinter} ermöglicht \PYTHON{Guizero} eine einfachere Bedienung.
+
+\begin{verbatim}
+    from guizero import App, MenuBar
+    def file_function():
+    print("File option")
+    
+    def edit_function():
+    print("Edit option")
+    
+    app = App()
+    menubar = MenuBar(app, 
+    toplevel=["File","Edit"],
+    options=[
+    [["File option 1", file_function], ["File option 2",
+    file_function]], 
+    [["Edit option 1", edit_function], ["Edit option 2",
+    edit_function]]
+    ])
+    app.display()
+    
+\end{verbatim}
+
+Das Sample zeigt die Verwendung der Funktion zur Erstellung einer MenuBar mithilfe der Bibliothek \PYTHON{Guizero}. 
+Zunächst erfolgt wieder das Importieren der gewünschten Klassen \PYTHON{App} und \PYTHON{MenuBar} des Moduls \PYTHON{Guizero} mit dem Befehl \PYTHON{from guizero import App, MenuBar}.
+Als allererstes erstellt die Funktion \PYTHON{App} ein Fenster.
+\PYTHON{MenuBar} kann daraufhin eine Menüleiste erstellen mit den Oberpunkten \PYTHON{File} und \PYTHON{Edit} und den Unterpunkten \PYTHON{File option 1}, \PYTHON{File option 2}, \PYTHON{Edit option 1} und \PYTHON{Edit option 2}.
+Dabei werden den Unterpunkten auch noch Funktionen zugewiesen, hier \PYTHON{file\_function} und \PYTHON{edit\_function}. \cite{Sach:2020}
+
+\subsection{Package \PYTHON{Threading} (Version 3.7)}
+
+\PYTHON{Threading} ist eine Bibliothek, die eine Parallelisierung arbeitsintensiver Aufgaben ermöglicht.
+
+\begin{verbatim}
+    import logging
+    import threading
+    import time
+    
+    def thread_function(name):
+    logging.info("Thread %s: starting", name)
+    
+    if_name_ == "_main":
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO, 
+    datefmt="%H:%M:%S")
+    
+    threads = list()
+    for index in range (3):
+    logging.info("Main   : create and start thread %d.", index)
+    x = threading.Thread(target=thread_function, args=(index,))
+    threads.append(x)
+    x.start()
+    
+    for index, thread in enumerate(threads):
+    logging.info("Main   : before joining thread %d.", index)
+    thread.join()
+    logging.info("Main   : thread %d done", index)
+\end{verbatim}
+
+
+Das Sample dient zur Erläuterung der Bibliothek, bzw. der hier benötigten Funktion. Es beginnt wieder mit dem Importieren der Bibliothek mit \PYTHON{import threading}. Der Code erstellt insgesamt drei parallel laufende Programme. In jedem Programm oder auch Thread genannt wird die Funktion \PYTHON{thread\_function(name)} ausgeführt, dabei wird der Thread zwei Sekunden pausiert durch \PYTHON{time.sleep(2)}. Als Letztes wird nun noch eine weitere for-Schleife gestartet, die auf die Beendigung der Threads wartet, woraufhin die Nachricht \PYTHON{Main : thread \%d done} protokolliert wird. Das \PYTHON{\%d} wird hierbei durch den jeweiligen Namen des Threads ersetzt. \cite{Python:2024Threading}
+
+\subsection{Package \PYTHON{Librosa} Version 0.10.2}
+
+\PYTHON{Librosa} ist eine Bibliothek, die vielzahlige Audiobearbeitungsfunktionen anbietet. Für die erläuterte Aufgabenstellung ist lediglich der Teilbereich librosa.effects von Interesse. 
+
+\begin{verbatim}
+    #Compress to be twice as fast 
+    >>> y, sr = librosa.load(librosa.ex('choice'))
+    >>> y_fast = librosa.effects.time_strech(y, rate=0.2)
+    #Or half the original speed
+    >>> y_slow = librosa.effects.time_strechy(y, rate=0.5)
+\end{verbatim}
+
+Das obige Sample zeigt, wie eine Audiodatei über Librosa geöffnet wird, was in diesem speziellen Fall nicht benötigt wird, da die Audiodatei über einen anderen Weg gewonnen wird, und anschließend die Geschwindigkeit verdoppelt und in einem zweiten Beispiel halbiert wird über die Funktion \PYTHON{time\_stretch}.
+
+\begin{verbatim}
+    #Shift up a major third (four steps if bins_per_octave is 12)
+    >>> y, sr = librosa.load(librosa.ex('choice'))
+    >>> y_third = librosa.effects.time_shift(y, sr=sr, n_steps=4)
+    #Shift down by tritone (six steps if bins_per_octave ist 12)
+    >>> y_tritone = librosa.effects.pitch_shift(y, sr=sr, n_steps=-6)
+    Shift up by 3 quarter-tones
+    >>> y_three_qt = librosa.effects.pitch_shift(y, sr=sr, n_steps=3,
+    ...                                           bins_per_octave=24)
+\end{verbatim}
+
+Das obige Sample zeigt nun eine weitere Funktion des Teilbereichs \PYTHON{librosa.effects}. 
+Im ersten Beispiel wird die Tonhöhe der Tonspur um vier Halbtöne erhöht, im zweiten Beispiel um sechs Halbtöne verringert und im dritten Beispiel um drei Vierteltöne erhöht. \cite{McFee:2023}
+
+
+
+\section{Funktionen}
+
+\subsection{Laden}
+
+\begin{verbatim}
+    import wave
+    dateipfad = "beispiel.wav" #Dateipfad zur Wave-Datei angeben
+    
+    #Wavedatei oeffnen
+    with wave.open(dateipfad, ´r´) as wave_datei:
+    #informationen ueber die Wavedatei ausgeben
+    print("Anzahl der Kanaele:", wave_datei.getnchannels())
+    print("Abtastrate:", wave_datei.getframerate())
+    print("Anzahl der Frames:", wave_datei.getnframes())
+    print("Samplebreite in Bytes:", wave_datei.getsampwidth())
+\end{verbatim}
+
+
+Dieses Sample zeigt, wie eine Wave-Datei geladen werden kann, dabei werden Kennzahlen, wie Anzahl der Kanäle, Abtastrate, Anzahl der Frames und Samplebreite ausgegeben. Voraussetzung für das erfolgreiche Laden ist, dass der Dateipfad entsprechend des Speicherortes der Beispieldatei festgelegt wird. Dieser Pfad muss im Befehl wave.open eingefügt werden.
+
+\subsection{Abspielen}
+
+\begin{verbatim}
+    import wave
+    import pyaudio
+    
+    wf = wave.open('audio.wav', 'rb')# oeffnen der Wave-Datei
+    
+    p = pyaudio.PyAudio()# Initialisierung des PyAudio-Objekts
+    
+    # oeffnen des Audio-Streams
+    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+    channels=wf.getnchannels(),
+    rate=wf.getframerate(),
+    output=True)
+    
+    # Lesen der Daten aus der Wavedatei
+    data = wf.readframes(1024)
+    
+    # Abspielen der Wavedatei
+    while data:
+    stream.write(data)
+    data = wf.readframes(1024)
+    
+    # Beenden des Audio-Streams und des PyAudio-Objekts
+    stream.stop_stream()
+    stream.close()
+    p.terminate()  
+\end{verbatim}
+
+Es gelten für das Sample \glqq Abspielen\grqq~ dieselben Voraussetzungen, wie für das Laden einer Wave-Datei, nämlich dass der Dateipfad für die abzuspielende Datei im Programm definiert werden muss.
+Das Sample öffnet die Datei audio.wav im Lesemodus und initialisiert den Audio-Stream mit den entsprechenden Parametern aus der Wave-Datei. Dafür wird der Befehl \glqq stream\grqq~ aus der Bibliothek PyAudio verwendet. Es wird so lange \glqq Abspielen \grqq~ ausgeführt, bis alle Daten aus der Wave-Datei abgespielt wurden. Zuletzt wird der Audio-Stream beendet mit dem Befehl \glqq stream.stop\_stream\grqq.
+
+\subsection{Speichern}
+
+Voraussetzung des \glqq Speicher\grqq-Vorgangs ist immer, dass eine Wave-Datei bereits geöffnet ist.
+Dieser Schritt ist in den folgenden Samples mit enthalten. 
+Beim erstmaligen Speichern öffnet sich automatisch die \glqq Speichern unter\grqq-Funktion. 
+Hier müssen das Dateiformat und der Zielordner definiert werden. 
+Für das Dateiformat bietet sich der Wave-Typ an, da dieser mit der Anwendung weiter bearbeitet werden kann und es sich um den Standard für nicht komprimierte Audio-Dateien handelt. Im weiteren Verlauf der Bearbeitung kann auch der Befehl \glqq Speichern\grqq~ verwendet werden, unter der Bedingung, dass die zu bearbeitende Audio-Datei bereits einmal gespeichert wurde.
+
+\begin{verbatim}
+    from guizero import App, FileSaveDialog
+    import wave
+    
+    def save_wave_file():
+    # Erstelle eine App-Instanz
+    app = App(visible=False)  # App im unsichtbaren Modus starten
+    
+    # Oeffne den Dateiexplorer, um den Zielordner auszuwaehlen
+    file_path = FileSaveDialog(
+    app, title="Speichern unter", filetypes=[(
+    "Wave files", "*.wav")], initialfilename="*.wav").value
+    
+    if file_path:
+    # oeffne die ausgewählte Datei im Schreibmodus
+    with wave.open(file_path, 'w') as wf:
+    wf.setnchannels(2)  # Zwei Kanaele (Stereo)
+    wf.setsampwidth(2)  # 2 Bytes pro Sample
+    wf.setframerate(44100)  # Abtastrate von 44100 Hz
+    wf.setnframes(0)  # Anfangs keine Frames
+    
+    # Schreibe Daten in die Datei 
+    # (hier müssten die Audiodaten eingefügt werden)
+    # Beispiel: wf.writeframes(b'audiodaten')
+    
+    print(
+    "Die Datei wurde erfolgreich gespeichert unter:", file_path)
+    else:
+    print("Speichern abgebrochen.")
+    
+    # Schliesse die App
+    app.destroy()
+    
+    save_wave_file()
+    
+\end{verbatim}
+
+In diesem Sample wird die Funktion \glqq Speichern\grqq~ unter definiert, die es ermöglicht, eine Wave-Datei zu speichern. Zuerst wird ein Dateiexplorer geöffnet, um den Zielordner auszuwählen und die Audio-Datei kann im festgelegten Dateiformat (Wave) gespeichert werden. Anschließend wird die ausgewählte Wave-Datei im Schreibmodus geöffnet und die Parameter der Wave-Datei (Anzahl der Kanäle, Abtastrate, etc.) festgelegt. Es wird eine Rückmeldung ausgegeben, ob die Datei erfolgreich gespeichert oder der Vorgang abgebrochen wird. Bei diesem Sample ist zu beachten, dass eine Wave-Datei ausgewählt werden muss, was in diesem Code nicht dargestellt wird.
+
+\begin{verbatim}
+    
+    import wave 
+    
+    input_file = 'input.wav'
+    wav_file = wave.open(input_file, 'r')
+    
+    nchannels = wav_file.getnchannels()
+    sample_width = wav_file.getsampwidth()
+    framerate = wav_file.getframerate()
+    nframes = wav_file.getnframes()
+    
+    audio_data = wav_file.readframes(nframes)
+    
+    #erstellen der neuen Wavedatei im Schreibmodus 
+    #setzen der Parameter basierend aus gelesenen Werten
+    output_file = 'output.wav'
+    wav_output = wave.open(output_file, 'w')
+    wav_output.setparams((nchannels, sample_width, framerate, nframes,
+    'NONE', 'not compressed'))
+    
+    #schreiben von gelesenen Audiodaten in die neue Wavedatei
+    wav_output.writeframes(audio_data)
+    
+    #schliessen sowohl die Eingabe- als auch die Ausgabedatei
+    wav_file.close()
+    wav_output.close()
+    
+\end{verbatim}
+
+Im Sample Speichern wird eine vorhandene Wave-Datei überschrieben mit den vom Nutzer festgelegten Parametern. Zunächst wird die Ursprungsdatei eingelesen und anschließend werden neue Parameter gesetzt. Zuletzt wird die Ursprungsdatei mit überschrieben.
+
+
+\subsection{Anzeigen von zwei Audio-Dateien}
+
+Um zwei Audio-Dateien in einem Diagramm mit Matplotlib darzustellen, kann die Wave Bibliothek verwendet werden, um die Audio-Dateien zu laden und mit der Matplotlib geplottet zu werden.
+
+Begonnen wird mit dem Importieren der genutzten Bibliotheken.
+
+Danach werden die Audiodaten aus den beiden Audio-Dateien geladen und mithilfe von der Bibliothek NumPy in Arrays umgewandelt. Anschließend erstellt Matplot ein Diagramm und zeichnet die Audiodaten aus beiden Audio-Dateien in dasselbe Diagramm. Die Label-Parameter in den Plot-Funktionen werden verwendet, um die Legende zu erstellen, sodass sichtbar ist, welche Linie zu welcher Audio-Datei gehört.
+
+Wichtig ist, dass die richtigen Pfade zu den Audio-Dateien angeben sein müssen, wenn die Audio-Dateien nicht im selben Verzeichnis wie das Python-Skript liegen, muss zum Beispiel 'C:/Benutzer/IhrName/Dokumente/audio1.wav' anstelle von 'audio1.wav' verwendet werden.
+
+Wichtig ist, dass die erforderlichen Bibliotheken installiert wurden, bevor dieser Code ausgeführt wird. 
+
+\begin{verbatim}
+    
+    import matplotlib.pyplot as plt
+    import numpy as np
+    import wave
+    
+    # Laden der Audiodateien
+    with wave.open('audio1.wav', 'rb') as wf1:
+    y1 = wf1.readframes(-1)
+    sr1 = wf1.getframerate()
+    
+    with wave.open('inputAudio2.wav', 'rb') as wf2:
+    y2 = wf2.readframes(-1)
+    sr2 = wf2.getframerate()
+    
+    # Umwandeln der Audio Dateien in numpy Arrays
+    y1 = np.frombuffer(y1, dtype=np.int16)
+    y2 = np.frombuffer(y2, dtype=np.int16)
+    
+    # Achsenbestimmung des Diagramms
+    x1 = np.linspace(0, len(y1) / sr1, len(y1))
+    x2 = np.linspace(0, len(y2) / sr2, len(y2))
+    
+    # Plotten der Daten
+    plt.figure(figsize=(10, 4))
+    plt.plot(x1, y1, label='Audio 1')
+    plt.plot(x2, y2, label='Audio 2')
+    plt.xlabel('Time (seconds)')
+    plt.ylabel('Amplitude')
+    plt.title('Audio Waveforms')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+\end{verbatim}
+\begin{figure} [ht]
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/BeispielAnzeigenZweiAudiodatein.png}
+    \caption{Beispiel Anzeige von zwei Audio-Dateien}
+    \label{fig:glättung}
+\end{figure}
+
+\subsection{Glättung von Audio-Dateien}
+
+Zur Glättung der Audio-Datei wird die exponentielle Glättung verwendet. 
+Die exponentielle Glättung ist einer der grundlegenden Algorithmen zur Glättung von Zeitreihen.
+Bei der exponentiellen Glättung wird die Wichtigkeit der vorhergegangenen Daten mit $\alpha$ gewichtet, je kleiner $\alpha$, desto wichtiger sind die vorherigen Werte. 
+Bei starkem Rauschen kann ein niedriger $\alpha$ gewählt werden, soll die Audio-Datei möglichst wenig verändert werden muss der $\alpha$ groß gewählt sein. 
+Der mögliche nutzbare Zahlenbereich ist $ 1 \geq\ \alpha \geq\ 0 $ . 
+Die genutzte Formel für die exponentielle Glättung sieht so aus. 
+
+\begin{itemize}
+    \item[] $ S_{i} = \alpha * data_i + (1- \alpha ) * S_{i-1} $
+    \item[] $ S_{i} =$ geglättet Daten zum Punkt i
+    \item[]$ \alpha = $ alpha 
+    \item[]$  data_i =$ Daten zum Punkt i
+    \item[]$  S_{i-1} =$ geglättet Daten zum punkt i-1 
+\end{itemize}
+Die benötigten Module sind \PYTHON{wave} und \PYTHON{numpy}.
+Für die Verwendung des Programms muss 'inputAudio.wav' durch den Pfad der zu glättenden Wave-Datei ersetzt werden. Der Ausgabebereich kann durch Ändern von \FILE{smoothedAudio.wav} definiert werden.
+
+\begin{verbatim}
+    import wave
+    import numpy as np
+    # Definition von der Variable alpha
+    alpha = 0.01
+    
+    # Definition der Glättungsfunktion
+    def exponential_smoothing(data):
+    smoothed_data = np.zeros_like(data)
+    smoothed_data[0] = data[0]
+    for i in range(1, len(data)):
+    smoothed_data[i] = alpha * data[i] + (1 - alpha) * 
+    smoothed_data[i - 1]
+    return smoothed_data
+    
+    def smooth_wave_file(input_file, output_file):
+    with wave.open(input_file, 'rb') as wav_in:
+    params = wav_in.getparams()
+    data = np.frombuffer(wav_in.readframes(params.nframes), 
+    dtype=np.int16)
+    smoothed_data = exponential_smoothing(data)
+    with wave.open(output_file, 'wb') as wav_out:
+    wav_out.setparams(params)
+    wav_out.writeframes(smoothed_data.tobytes())
+    
+    # Beispielaufruf:
+    input_wave_file = 'input.wav'
+    output_wave_file = 'smoothed_audio.wav'
+    smooth_wave_file(input_wave_file, output_wave_file)
+    
+\end{verbatim}
+
+Der Unterschied einer geglätteten Audio-Datei ist in Abbildung \ref{fig:glättung} gut zu beobachten. Dort wird die Ursprungsaudiodatei (Audio 1) und die Glättung dieser (Audio 2) mit dem $\alpha = 0.01$  dargestellt.
+
+\subsection{Ausschnitt}
+Zum Abspielen eines Abschnittes einer Wave-Datei in Python können die Bibliotheken wave und pyaudio verwendet werden.
+Die wave Bibliothek wird benötigt, damit Python das genutzte wave audio Format überhaupt einlesen kann.
+Pyaudio wird genutzt um die geladenen Audio-Datei anschließend auch noch abspielen zu können.
+Um jetzt das Programm zu nutzen, muss erst die richtige Wave-Datei geöffnet werden, wozu der Pfad zur Audio-Datei angegeben werden muss.
+Danach kann die Startdauer in Sekunden und die Dauer des Ausschnitts ebenfalls in Sekunden, unter Setzen der gewünschten Werte, angegeben werden.
+
+\begin{verbatim}
+    
+    import pyaudio
+    import wave
+    
+    # Setzen der gewuenschten Werte
+    start = 4  # Startzeitpunkt in Sekunden
+    ende = 9   # Endzeitpunkt in Sekunden
+    dauer = ende - start  # Dauer des Ausschnitts in Sekunden
+    
+    # oeffne die WAV-Datei
+    #Durch ändern des Dateipfades anpassen der genutzen Wave Datei
+    wave_datei = wave.open('asdf.wav', 'rb') 
+    # Erstelle ein PyAudio-Objekt
+    p = pyaudio.PyAudio()
+    
+    # oeffne den Stream basierend auf dem Wave-Objekt
+    stream = p.open(
+    format=p.get_format_from_width(wave_datei.getsampwidth()),
+    channels=wave_datei.getnchannels(),
+    rate=wave_datei.getframerate(),
+    output=True)
+    
+    # Lese die Daten (basierend auf der Chunk-Groesse)
+    wave_datei.readframes(start * wave_datei.getframerate())
+    data = wave_datei.readframes(dauer * wave_datei.getframerate())
+    
+    # Spiele den Stream (von Anfang bis zum Ende)
+    stream.write(data)
+    
+    # Speichern in einer neuen Datei
+    #Dateipfad der Auschnitt datei
+    neue_wave_datei = wave.open('ausschnitt.wav', 'wb')
+    neue_wave_datei.setparams(wave_datei.getparams())
+    neue_wave_datei.writeframes(data)
+    neue_wave_datei.close()
+    
+    # Aufraeumen
+    wave_datei.close()
+    stream.close()
+    p.terminate()
+    
+\end{verbatim}
+
+\subsection{Zoomen in einer Matplotlib}
+
+Um innerhalb der von Matplotlib dargestellten Wave-Datei zu zoomen, wird der Zeitbereich angepasst. Dies geschieht durch Änderung der Start- und Endzeit des darzustellenden Graphen in Matplotlib. In diesem Beispiel soll die Wave-Datei von Sekunde 0 bis Sekunde 2 dargestellt werden. Soll nun ein anderer Bereich dargestellt werden, muss der Wert von \PYTHON{start\_time} bzw. \PYTHON{end\_time} geändert werden.
+
+\begin{verbatim}
+    
+    import numpy as np
+    import matplotlib.pyplot as plt
+    import wave
+    
+    # Pfad zur Wave-Datei
+    wave_file_path = 'asdf.wav'
+    
+    # Wave-Datei oeffnen
+    wave_file = wave.open(wave_file_path, 'r')
+    
+    # Abtastrate (Sampling Rate) der Wavedatei
+    fs = wave_file.getframerate()
+    
+    # Anzahl der Frames in der Wave-Datei
+    data_size = wave_file.getnframes()
+    
+    # Daten aus der Wave-Datei lesen
+    wave_data = wave_file.readframes(data_size)
+    signal = np.frombuffer(wave_data, dtype=np.int16)
+    
+    # Einstellen des Zeitbereichs
+    start_time = 0  # Startzeitpunkt (in Sekunden)
+    end_time = 2  # Endzeitpunkt (in Sekunden)
+    
+    # Indizes für den gewuenschten Zeitbereich
+    start_index = int(start_time * fs)
+    end_index = int(end_time * fs)
+    
+    # Zeitvektor zuschneiden
+    cropped_time = np.linspace(start_time, end_time, 
+    end_index - start_index)
+    cropped_signal = signal[start_index:end_index]
+    
+    # Plot erstellen
+    plt.figure(figsize=(10, 6))
+    plt.plot(cropped_time, cropped_signal, 'b')
+    plt.xlabel('Zeit (s)')
+    plt.ylabel('Amplitude')
+    plt.title('Wave-Audiovisualisierung (Ausschnitt)')
+    plt.grid(True)
+    plt.show()
+    
+    # Wave-Datei schliessen
+    wave_file.close()
+    
+\end{verbatim}
+
+Mit \PYTHON{wave\_file.close} kann der Plot anschließend geschlossen werden.
+
+Neben dem Zoomen per Eingabe der Sekunden ist es auch möglich, die Eingabe per Mausrad umzusetzen. Das folgende Sample zeigt dies, anhand eines Sinussignals als Beispieltonspur.
+
+\begin{verbatim}
+    import numpy as np
+    import matplotlib.pyplot as plt
+    from matplotlib.widgets import Slider
+    
+    # Beispieldaten erzeugen (Sinuskurve als Tonspur)
+    sampling_rate = 44100  # Abtastrate
+    duration = 5  # Dauer in Sekunden
+    t = np.linspace(0, duration, int(sampling_rate * duration),
+    endpoint=False)
+    frequency = 440  # Frequenz in Hz (A4-Ton)
+    signal = 0.5 * np.sin(2 * np.pi * frequency * t)
+    
+    # Plot initialisieren
+    fig, ax = plt.subplots()
+    plt.subplots_adjust(bottom=0.25)
+    l, = plt.plot(t, signal, lw=1)
+    ax.set_title('Tonspuranzeige')
+    ax.set_xlabel('Zeit [s]')
+    ax.set_ylabel('Amplitude')
+    
+    # Achsen-Initialwerte
+    axcolor = 'lightgoldenrodyellow'
+    axpos = plt.axes([0.1, 0.1, 0.65, 0.03], facecolor=axcolor)
+    spos = Slider(axpos, 'Pos', 0.0, duration, valinit=0.0)
+    
+    # Zoom- und Scroll-Funktion
+    def zoom(event):
+    cur_xlim = ax.get_xlim()
+    cur_ylim = ax.get_ylim()
+    xdata = event.xdata  # x-position of mouse
+    ydata = event.ydata  # y-position of mouse
+    if event.button == 'up':
+    # Zoom in
+    scale_factor = 1 / 1.5
+    elif event.button == 'down':
+    # Zoom out
+    scale_factor = 1.5
+    else:
+    # Nicht zoomen
+    scale_factor = 1
+    return
+    
+    new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
+    new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
+    relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
+    rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
+    
+    ax.set_xlim([xdata - new_width * (1 - relx), 
+    xdata + new_width * (relx)])
+    ax.set_ylim([ydata - new_height * (1 - rely), 
+    ydata + new_height * (rely)])
+    fig.canvas.draw()
+    
+    def update(val):
+    pos = spos.val
+    ax.set_xlim([pos, pos + (cur_xlim[1] - cur_xlim[0])])
+    fig.canvas.draw_idle()
+    
+    spos.on_changed(update)
+    fig.canvas.mpl_connect('scroll_event', zoom)
+    plt.show()
+\end{verbatim}
+
+Als Plot-Oberfläche wird Matplotlib verwendet. Die Funktion \glqq Zoom\grqq \ behandelt das Zoom-Ergebnis, welches durch das Scrollen mit der Maus ausgelöst wird. Außerdem ermöglicht der Codeabschnitt, der den Befehl \glqq slider\grqq \ enthält, das Verschieben der Ansicht entlang der Zeitachse. Das interaktive Steuern des Zooms wird für diese Funktion durch den letzten Codeblock ermöglicht.
+
+\subsection{Änderung der Tonhöhe und Geschwindigkeit}
+
+
+Bei einer Tonhöhenänderung bzw. Frequenzskalierung wird das digitale Signal im Nachhinein korrigiert, ohne andere Aspekte der Tonfolge wie z.B. die Wiedergabegeschwindigkeit zu beeinflussen. 
+Das Phänomen, bei dem sich durch die Frequenzveränderung auch die Länge der Frequenz bzw. im übertragenen Sinne die Dauer der Audiodatei verändert, wird bei der Funktion umgangen (sog. Pitch-Shifting).
+
+
+Eine ähnliche Situation tritt bei der Geschwindigkeitsveränderung auf. Das bloße Ändern der Wiedergabegeschwindigkeit führt zu Verzerrungen in den Tonhöhen. 
+Das heißt, auch hier ist das Ziel, den Prozess der Komprimierung oder Streckung der Wiedergabedauer zu verändern, ohne den spektralen Inhalt zu beeinträchtigen (sog. Time-Stretching).
+
+Folglich gilt für beide Funktionen:
+Um eine Änderung eines Parameters zu erreichen, muss die Abhängigkeit der Frequenz- und Zeitskalierung unterdrückt werden.
+Dafür wird \glqq librosa.effects.pitch\_shift\grqq \ bzw. \glqq librosa.effects.time\_stretch\grqq \ verwendet.
+
+Das Verfahren basiert auf einem Phase Vocoder unter Anwendung der \glqq Fast-Fourier Transformation\grqq~ (FFT) (siehe Kapitel \ref{Frequenzanalyse}). 
+Im Folgenden wird der Algorithmus hinter dem Phase Vocoder verkürzt und vereinfacht erklärt.
+
+
+Der erste Schritt bei einer Phase-Vocoder-Analyse ist die Windowing-Funktion. Dabei wird das digitale Samplesignal in zahlreiche Zeitblöcke unterteilt und diese Blöcke werden mit einer Hüllkurve multipliziert. Die dadurch entstehende Form der Window-Funktion hat Einfluss auf den bei diesem Prozess neu entstehenden Klang der Audio-Datei. 
+Gängige Formen für einen Phase Vocoder sind meistens glockenförmig.Die Änderung des Signals wird in Abbildung \ref{fig:Window-Funktion} gezeigt.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Microphon/PhaseVocoder.jpg}
+    \caption{Window-Funktion}
+    \label{fig:Window-Funktion}
+\end{figure}
+
+Anschließend wird jedes Fenster einer Spektralanalyse unterzogen, die als STFT (Short-Time Fourier Transformation) bezeichnet wird.
+Der STFT-Algorithmus wendet nacheinander die diskrete Fourier-Transformation  auf die gefensterten Abtastwerte an. Die STFT kann also als eine Folge von DFTs betrachtet werden.
+Eine DFT-Analyse gilt als zeitdiskret und diskret im Frequenzbereich, wodurch isolierte Spektrallinien dargestellt werden.
+
+Jetzt muss die Anzahl der Frequenzbänder angegeben werden. Dies geschieht, indem für jedes positive Frequenzband ein gespiegeltes Frequenzband im 
+negativen (imaginären) Bereich entsteht.
+Dabei sind beide Frequenzbänder Hälften der Amplitude des gemessenen realen Frequenzbands. Unter den verschiedenen Prozessen, die nach dieser Berechnung stattfinden, verwirft der Phasenvocoder die negativen Frequenzen und verdoppelt die Amplitude der positiven.
+
+Das Ergebnis einer einzelnen FFT von fensterbehafteten Samples wird als Frame bezeichnet.
+Ein Frame besteht aus zwei Wertesätzen: den Magnituden (oder Amplituden) aller Frequenzbänder und den Anfangsphasen aller Frequenzbänder.
+Zusätzlich wird der Phasenunterschied zu dem vorherigen Frame bestimmt, was Hinweise darauf liefert, wo sich die Tonhöhe möglicherweise innerhalb des Frequenzbereichs dieses Bands befindet. 
+Die Kombination aus Amplituden-/Phasen-unterschiedsdaten für jedes Band wird als Bin bezeichnet. 
+Diese Paare von 
+
+Amplituden-/Phasendaten für jeden Bin werden als x-, y-Koordinaten ausgegeben.
+Zusätzlich muss noch der Analyseparameter Hop size oder Schrittweise bestimmt werden. Dieser Parameter gibt den Abstand zwischen den Anfangspunkten aufeinanderfolgender Fenster an. Mit ihm einher geht der Überlappungsfaktor, welcher die Menge an Informationen in der Analyse beeinflusst. Ein zu großer Überlappungsfaktor führt zu einem verschwommenen Klang.
+
+Mit den aufgestellten Analysedaten wird jetzt die Resythese des Klanges durchgeführt. Dabei wird durch eine inverse STFT eine laufende Aufzeichnung der Phasendifferenzen von Frame zu Frame in einem Prozess erstellt wird (Phase unwapping).
+
+Die Resynthese ist die Phase, in der sich das Vorgehen für Tonhöhenänderung und Geschwindigkeitsveränderung unterscheidet.
+
+Für die Änderung der Tonhöhe werden in diesem Schritt die Frames in der Geschwindigkeit der Orginalanalysedatei wiedergegeben. 
+Die Frequenzen des gesamten Spektrums können jedoch proportional nach oben oder unten verschoben werden, was zu einer Änderung der Tonhöhe, aber nicht der Geschwindigkeit führt.
+
+Für die Geschwindigkeitsveränderung wird die Rate, mit der die Frames neu erstellt werden, erhöht oder verringert, je nachdem, wie schnell oder langsam der ursprüngliche Ton abgespielt werden soll. 
+Der Phase-Vocoder fügt zwischen den einzelnen Bildern neue Datenpunkte ein, um den Übergang zwischen ihnen sanfter zu gestalten (interpoliert).
+Da der Frequenzinhalt der einzelnen Frames nicht verändert wird, führen Änderungen der Geschwindigkeit nicht zu Änderungen der Tonhöhe. \Mynote{cite}
+
+\bigskip
+
+\textbf{Sample Tonhöhe ändern:}
+\begin{verbatim}
+    import librosa
+    import matplotlib.pyplot as plt
+    import soundfile as sf
+    
+    # Pfad zur WAV-Datei
+    wav_datei = "input.wav"
+    # Einlesen der Datei
+    signal, abtastrate = librosa.load(wav_datei, sr=None, mono=False)
+    #Aendern der Tonhoehe durch Veraenderung des n_steps=(Wertes). 
+    # Veraenderung von 1 entspricht eines Halbtons.
+    höhen_änderung = librosa.effects.pitch_shift(signal, 
+    n_steps=10,
+    sr=abtastrate,
+    bins_per_octave=12)
+    
+    
+    data = hoehen_aenderung
+    
+    
+    # Ausgabe der Wave-Datei
+    
+    sf.write('Höhenänderung.wav', data.T, 
+    abtastrate, subtype='PCM_24', format='WAV')
+    
+\end{verbatim}
+
+
+\textbf{Sample Geschwindigkeit ändern:}
+\begin{verbatim}
+    import librosa
+    import matplotlib.pyplot as plt
+    import soundfile as sf
+    
+    # Pfad zur WAV-Datei
+    wav_datei = "input.wav"
+    # Einlesen der Datei
+    signal, abtastrate = librosa.load(wav_datei, 
+    sr=None, 
+    mono=False)
+    
+    #Beschleunigen der Wave-Datei
+    beschleunigtes_Signal = librosa.effects.time_stretch(
+    signal, rate=1.5)
+    
+    
+    data = beschleunigtes_Signal
+    
+    
+    #Ausgabe der Wave-Datei
+    
+    sf.write('Geschwindigkeitaenderung.wav', data.T, 
+    abtastrate, subtype='PCM_24', format='WAV')
+    
+\end{verbatim}
+
+
+
+
+
+\subsection{Frequenzanalyse}\label{Frequenzanalyse}
+Der Schall kann mit einem Mikrofon aufgezeichnet werden, wodurch die Spannungs-Zeit-Verläufe des Signals wiedergegeben werden.
+Allerdings ist es schwierig, die Signalkomponenten in dieser Form zu erkennen.
+Durch eine Frequenzanalyse können jedoch die Signaleigenschaften ermittelt und wichtige Muster erkannt werden.
+Eine Methode für die Frequenzanalyse ist die Spektralanalyse auf Basis einer Fast-Fourier-Transformation (FFT). 
+FFT ist eine Spektralanalyse in der Audio- und Akustik-Messtechnik.
+Dabei wird ein zeitdiskretes Signal in seine Frequenzanteile zerlegt und dadurch analysiert.
+Eine Spektralanalyse ist ein grundlegendes Werkzeug für die Signalverarbeitung. 
+Sie wird verwendet, um die Frequenzinhalte eines Signals zu untersuchen. 
+Dabei wird ermittelt, welche Frequenzkomponenten im Originalsignal enthalten sind und wie sie verteilt sind. \Mynote{cite}
+
+FFT ist ein Algorithmus zur Berechnung der Fourier-Reihe, die auf diskrete Signale angewandt wird (DFT).
+
+Für die diskrete Fourier Transformation gilt die Fourier Reihendarstellung (siehe Formel \ref{eq: DFT1})\ mit dem diskreten Fourier-Koeffizienten (siehe Formel \ref{eq: DFT2}).
+
+\begin{equation}
+    f_T(t)= \sum_{k=-\infty}^{\infty}\gamma_ke^{ik\omega t} \ \ mit \ \omega=\frac{2\pi}{\tau} \\
+\end{equation}
+\label{eq: DFT1}
+
+
+
+
+\begin{equation}
+    \gamma_k \equiv \gamma_k(f)=\frac{1}{T}\cdot \int_{T/2}^{-T/2} f_T(\tau)e^{-ik\omega \tau} d\tau \ 
+    f"ur \ k= 0,\pm 1,\pm 2,...
+\end{equation}
+\label{eq: DFT2}
+
+\begin{itemize}
+    \item[] Wobei:
+    \item[] $f_T = Zeitkontinuierliches,\ T-periodisches\ Signal$
+    \item[] $e^{-ik\omega \tau} = Grundschwingung$
+    \item[] $\omega=\frac{2\pi}{\tau} = Frequenz$
+    \item[] $\gamma_k = Verst"arkungsfaktor \ der \ Grundschwingung$
+\end{itemize}
+
+
+Die Fourier Reihenformel beschreibt im Allgemeinen die Darstellung periodischer Signale im Frequenzbereich als Summe von Sinus- und Kosinusschwingungen unterschiedlicher Frequenzen.
+Bei der DFT werden aus den kontinuierlichen, periodischen Signale nicht-periodische, diskrete Signale. \Mynote{cite}
+
+
+Dementsprechend muss, um eine solche Rechenoperation durchzuführen, noch folgende Spektralanalyseparameter definiert werden:
+
+\begin{itemize}
+    \item Anzahl der abgetasteten Punkte (NFFT)
+    \item Abtastfrequenz
+\end{itemize}
+Durch diese wird die Frequenzauflösung der Analyse bestimmt.
+
+Für das Sample einer Frequenzanalyse werden die Bibliotheken \PYTHON{matplotlib.pyplot} und \PYTHON{numpy} verwendet. 
+Das Signal wird in dem Sample erzeugt und bezieht sich auf keine Audio-Datei.
+
+\begin{verbatim}
+    #verwendete Bibliotheken
+    import matplotlib.pyplot as plt
+    import numpy as np
+    
+    # Reproduzierbarkeit der Zufallszahlen
+    np.random.seed(19680801)
+    
+    #Erzeugung von Zeit und Signalsample
+    dt = 0.0005
+    t = np.arange(0.0, 20.5, dt)
+    
+    #Generierung von zwei Sinussignalen
+    s1 = np.sin(2 * np.pi * 100 * t)
+    s2 = 2 * np.sin(2 * np.pi * 400 * t)
+    
+    # "chirp"-Signal für Frequenzveränderung üver die Zeit
+    s2[t <= 10] = s2[12 <= t] = 0
+    
+    # Rauschen hinzufügen für realistische Szenarien
+    nse = 0.01 * np.random.random(size=len(t))
+    
+    x = s1 + s2 + nse  # Signal mit Rauschen
+    NFFT = 1024  # Anzahl der abgetasteten Punkte
+    Fs = 1/dt  # the Abtastgeschwindigkeit
+    
+    #Plotten des Signals und Spektrogramms
+    fig, (ax1, ax2) = plt.subplots(nrows=2, sharex=True)
+    ax1.plot(t, x)
+    ax1.set_ylabel('Signal')
+    
+    #Berechnung der Spektogramms
+    Pxx, freqs, bins, im = ax2.specgram(x, NFFT=NFFT, Fs=Fs)
+    # Mit:
+    # - Pxx: Spektralleistung
+    # - freqs: Frequenzvektor
+    # - im: Bild der Spektogrammdaten
+    
+    #Achsenbeschriftung
+    ax2.set_xlabel('Time (s)')
+    ax2.set_ylabel('Frequency (Hz)')
+    ax2.set_xlim(0, 20)
+    
+    #Plot anzeigen
+    plt.show()
+\end{verbatim}
+
+Die Ausgabe des Codes sind zwei Diagramme. Das obere Diagramm zeigt das  Signal und das untere die Frequenzanalyse auf Basis der FFT. (siehe Abbildung \ref{fig: Sampleaugabe Frequenzanalyse})
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.75\linewidth]{Microphon/AusgabeSampleFrequenzanalyse.png}
+    \caption{Ausgabe Sample Frequenzanalyse}
+    \label{fig: Sampleaugabe Frequenzanalyse}
+\end{figure}
+
+\subsection{Overlay}
+
+Das folgende Sample beschränkt sich darauf, dass 3 Wave-Dateien gleichzeitig abgespielt werden.
+
+\begin{verbatim}
+    import wave
+    import pyaudio
+    import threading
+    
+    def play_sound(file):
+    chunk = 1024
+    wf = wave.open(file, 'rb')
+    p = pyaudio.PyAudio()
+    stream = p.open(format=p.get_format_from_width
+    (wf.getsampwidth()),
+    channels=wf.getnchannels(),
+    rate=wf.getframerate(),
+    output=True)
+    data = wf.readframes(chunk)
+    
+    while data:
+    stream.write(data)
+    data = wf.readframes(chunk)
+    
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+    
+    files = ['sound1.wav', 'sound2.wav', 'sound3.wav']
+    
+    threads = []
+    for file in files:
+    thread = threading.Thread(target=play_sound, args=(file,))
+    threads.append(thread)
+    thread.start()
+    
+    for thread in threads:
+    thread.join()
+\end{verbatim}
+
+Für das Sample müssen \FILE{sound1.wav}, \FILE{sound2.wav} und \FILE{sound3.wav} durch  den gewünschten Dateipfad ersetzt werden. Die Gesamtlänge wird durch die Audio-Datei mit der längsten Dauer bestimmt, da der Code erst beendet wird, sobald alle Audio-Dateien komplett abgespielt wurden. Es werden in diesem Code zwei Schleifen verwendet, wobei die erste die Audio-Dateien in der Liste \PYTHON{files} durchläuft. Anschließend wird für jede Datei ein eigener Thread erstellt, welcher das synchrone Abspielen aller Dateien ermöglicht, indem die Funktion \PYTHON{playsound} mit entsprechenden Audio-Dateien als Argument aufgerufen werden. Parallel wartet die zweite Schleife darauf, dass alle Threads beendet sind, bevor das Programm zuletzt beendet wird.
+
+\section{General}
+
+General description
+
+\Mynote{cite books}
+
+
+
+
+\subsection{Decibels}
+
+In electronics one often wants to represent the ratio of two signals on a logarithmic scale. For this we use the decibel, $dB$. If we have two powers $P_1$ and $P_2$
+
+$$dB = 10 \log_{10} \left(\frac{P_2}{P_1}\right)$$
+
+or equivalently -- when comparing two signals with the same kind of waveform --
+
+$$dB = 20 \log_{10} \left(\frac{V_2}{VP_1}\right).$$
+
+
+Note $dB$ is a relative unit of measurement, i.e. \textit{This amplifier has a gain of 10 dB.} dB can be positive or 
+negative. For example, $+10 dB$ corresponds to $P_2$ greater than $P_1$ by a factor of $10$, and $-3 dB$ 
+corresponds to $P_2$ less than $P_1$ by approximately a factor of $2$. 
+
+For an absolute measure on a logarithmic scale there are a variety of other units. A common one is $dBm$.
+
+$$dBm = 10 \log_{10} (P [mW])$$
+
+Zero $dBm$ corresponds to $1 mW$ of power. And in a $50 \Omega$ system $0 dBm$ corresponds to $220 mVrms$.
+\Mynote{cite books}
+
+\subsection{Puls-Dichtemodulation}
+
+Pulsdichtemodulation (PDM) ist eine faszinierende Technik, die im Arduino Nano 33 BLE Sense verwendet wird, um Audiosignale zu digitalisieren. PDM wandelt analoge Audiosignale in digitale Daten um, indem es die Dichte der Impulse misst.
+Statt kontinuierlicher Werte verwendet PDM nur zwei Zustände: 1 (Impuls vorhanden) oder 0 (kein Impuls).  Um das Mikrofon zu verwenden, steht die Bibliothek \FILE{pdm.h} zur Verfügung. PDM arbeitet mit einer hohen Samplingrate, um genaue Audioinformationen zu erfassen. Die Impulse werden als Bitstream übertragen, der später in Audiodaten umgewandelt wird. 
+
+Die Puls-Dichtemodulation (PDM) ist eine interessante Technik, die sowohl Vor- als auch Nachteile aufweist. 
+
+Die Puls-Dichtemodulation (PDM) hat folgende Vorteile:
+
+
+\begin{itemize}
+    \item Einfachheit: PDM ist weniger komplex als einige andere Modulationsverfahren. Die Implementierung von Sendern und Empfängern für PDM ist vergleichsweise unkompliziert.
+    \item Robustheit gegenüber Störungen: PDM ist widerstandsfähig gegenüber Rauschen und Interferenzen.
+    \item Hohe Samplingrate: PDM arbeitet mit einer hohen Abtastrate, um genaue Audioinformationen zu erfassen.
+    \item Geringe Verluste: Im Vergleich zu analogen Steuerungen verursacht PDM weniger Verluste, da es die Versorgungsspannung schnell ein- und ausschaltet.
+\end{itemize}
+
+\bigskip
+
+Die Nachteile der Puls-Dichtemodulation (PDM) sind:
+
+\begin{itemize}
+    \item Große Lasten: Die Steuerung großer Verbraucher erfordert hohe Spannungen und Ströme. Standard-Analogschaltungen und DACs sind hierbei weniger effizient.
+    \item Wärmeentwicklung: Leistungstransistoren, die in PDM-Schaltungen verwendet werden, erzeugen Wärme und Verluste.
+\end{itemize}
+
+Insgesamt ist PDM eine leistungsstarke Technik, die in verschiedenen Anwendungen wie Spracherkennung, Klanganalyse und Datenübertragung eingesetzt wird. Es ist wichtig, die Vor- und Nachteile je nach Kontext zu berücksichtigen
+
+\Mynote{citations}
+
+
+\section{Specific Sensor}
+
+cite board
+
+\section{Specification}
+
+\begin{itemize}
+    \item cite data sheet
+    \item Circuit Diagram
+\end{itemize}
+
+
+
+ Der Sensor hat folgende Spezifikationen:
+ 
+\begin{itemize}
+  \item Signal-Rausch-Verhältnis: 64 dB
+  \item Empfindlichkeit: -26 dBFS $\pm 3$ dB
+  \item Temperaturbereich: -40 bis 85 $1\circ$C
+\end{itemize}
+
+Mikrofone werden in Mobilgeräten, Spracherkennungssystemen und sogar in Gaming- und Virtual-Reality-Eingabegeräten eingesetzt.\Mynote{cite}
+
+Mit dem eingebetteten MP34DT05-Sensor können Sie die Schallwerte Ihrer Umgebung messen und anzeigen.
+
+
+\section{Bibliothek \FILE{pdm.h}}
+
+\subsection{Description}
+
+Die PDM-Bibliothek ermöglicht die einfache Verwendung des integrierten Mikrofons und ist auch über die Bibliothek \PYTHON{ArduinoSound} zugänglich.
+
+\subsection{Installation}
+
+\subsection{Functions}
+
+Die PDM-Bibliothek für den Arduino Nano 33 BLE Sense ermöglicht die Verwendung von Puls-Dichtemodulation (PDM)-Mikrofonen, wie dem integrierten MP34DT05 auf dem Board. Hier sind die wichtigsten Funktionen, die diese Bibliothek bereitstellt:
+
+\begin{description}
+  \item [\PYTHON{begin()}]: Diese Funktion initialisiert die PDM-Schnittstelle. Sie nimmt zwei Parameter entgegen:
+    \begin{description}
+      \item[Parameter \PYTHON{channels}]: Die Anzahl der Kanäle (1 für Mono, 2 für Stereo).
+      \item[Parameter \PYTHON{sampleRate}]: Die gewünschte Abtastrate in Hertz.
+      
+       Beispiel:
+       
+ \begin{Arduino}
+if (!PDM.begin(1, 16000)) {
+    Serial.println("Fehler beim Starten der PDM!");
+    while (1);
+}
+ \end{Arduino}      
+    \end{description}
+
+  \item [\PYTHON{end()}]: Mit dieser Funktion wird die PDM-Schnittstelle deinitialisiert:
+  
+ \begin{Arduino}
+PDM.end();
+ \end{Arduino}      
+
+  \item 
+  
+    \item [\PYTHON{available()}]: Diese Funktion gibt die Anzahl der verfügbaren Bytes im PDM-Empfangspuffer zurück. Das sind bereits eingetroffene Daten, die darauf warten, gelesen zu werden:
+
+ \begin{Arduino}
+int bytesAvailable = PDM.available();
+ \end{Arduino}      
+  
+  \item [\PYTHON{read()}]: Mit dieser Funktion liest man Daten aus dem PDM in einen angegebenen Puffer:
+  
+ \begin{Arduino}
+  short sampleBuffer[256]; // Puffer fuer Samples (16-Bit)
+  int bytesRead = PDM.read(sampleBuffer, bytesAvailable);
+ \end{Arduino}      
+  
+  \item [\PYTHON{onReceive()}]: Diese Funktion setzt die Callback-Funktion, die aufgerufen wird, wenn neue PDM-Daten zum Lesen bereit sind:
+  
+ \begin{Arduino}
+void onPDMdata() {
+      int bytesAvailable = PDM.available();
+      // Weitere Verarbeitung der Daten...
+  }
+  PDM.onReceive(onPDMdata);
+ \end{Arduino}      
+
+    \end{description}
+
+
+\subsection{Example - Manual}
+
+\subsection{Example}
+
+
+Der Code verwendet die folgenden Bibliotheken:
+
+\begin{itemize}
+    \item \FILE{PDM.h}: Diese Bibliothek ermöglicht die Kommunikation mit dem Mikrofon zur Aufnahme von \ac{pdm}-Signalen \cite{ArduinoPDM:2023} 
+\end{itemize}
+
+
+
+\subsection{Example - Code}
+
+{
+    \captionof{code}{Simple sketch to control the built-in LED}\label{Nano:BuiltinLEDTest}
+    \ArduinoExternal{}{../../Code/Nano33BLESense/Test/TestLEDBuiltin.ino}
+}
+
+\subsection{Example - Files}
+
+
+\section{Calibration}
+
+cite method
+
+\section{Simple Code}
+
+
+\section{Simple Application}
+
+\Mynote{Description}
+
+\subsection{Pin-Konfiguration}
+
+Die verwendeten Pins werden zu Beginn des Codes definiert:
+
+\begin{itemize}
+    \item \PYTHON{microphoneDataPin}: Der Datenpin für das Mikrofon
+    \item \PYTHON{microphoneClockPin}: Der Clock-Pin für das Mikrofon
+\end{itemize}
+
+
+\subsection{Initialisierung und Setup}
+
+In der Funktion \PYTHON{setup()} werden die erforderlichen Initialisierungen durchgeführt:
+
+\begin{itemize}
+    \item \PYTHON{PDM.onReceive(onPDMdata)}: Registriert den Empfang des Mikrofonsignals als PDM-Signal
+\end{itemize} 
+
+\subsection{Messungssteuerung}
+
+Die Funktion \PYTHON{onPDMdata()} wird aufgerufen, wenn Daten vom Mikrofon verfügbar sind. Dies liest die Daten in einen Array ein und zählt die Anzahl der gelesenen Samples.
+
+{
+    \captionof{code}{Einlesen der Daten}\label{TestMicrophone:ReadData}
+    \ArduinoExternal{firstline=61,lastline=65}{../../Code/Nano33BLESense/Test/TestMicrophone.ino}
+}
+
+
+
+
+Die Hauptfunktion \PYTHON{loop()} enthält zwei Funktionen für die Messungssteuerung und die Benutzeroberfläche:
+
+
+{
+    \captionof{code}{Messungssteuerung}\label{TestMicrophone:Handle}
+    \ArduinoExternal{firstline=67,lastline=70}{../../Code/Nano33BLESense/Test/TestMicrophone.ino}
+}
+
+
+Die Funktion \PYTHON{HandleInput()} überwacht den Zustand der beiden Taster und steuert somit den Messungsablauf:
+
+{
+    \captionof{code}{Überwachung}\label{TestMicrophone:Ueberwachung}
+    \ArduinoExternal{firstline=72,lastline=110}{../../Code/Nano33BLESense/Test/TestMicrophone.ino}
+}
+
+
+\begin{itemize}
+    \item Wenn der blaue Taster gedrückt wird, wird die Messung gestartet, indem \PYTHON{isMeasuring} auf \PYTHON{true} gesetzt wird und die Funktion \PYTHON{StartSampling()} aufgerufen wird.
+    \item Wenn der rote Taster gedrückt wird, wird die Messung beendet, indem \PYTHON{isMeasuring} auf \PYTHON{false} gesetzt wird und die Funktion \PYTHON{StopSampling()} aufgerufen wird. Je nach vorherigem Zustand des roten Tasters wird entweder der maximale Wert SPL in dB angezeigt (\PYTHON{ShowMaxdBspl()}) oder der durchschnittliche dB SPL-Wert (\PYTHON{ShowAveragedBspl()}).
+    \item \PYTHON{isDelayOver} wird auf \PYTHON{true} gesetzt, wenn die Startverzögerung (definiert durch \PYTHON{measureThresholdMilliseconds}) von 1200ms abgelaufen ist.
+    \item Es gibt eine kurze Verzögerung (\PYTHON{delay(50)}) zwischen den Schleifendurchläufen, um Tastenprellungen zu vermeiden.
+\end{itemize} 
+
+\subsection{Mikrofondatenverarbeitung}
+
+Die Funktion \PYTHON{StartSampling()} initialisiert die Datenverarbeitung:
+
+{
+    \captionof{code}{Initialisierung der Datenverarbeitung}\label{TestMicrophone:Init}
+    \ArduinoExternal{firstline=119,lastline=128}{../../Code/Nano33BLESense/Test/TestMicrophone.ino}
+}
+
+
+\PYTHON{PDM.begin(1, 16000)}: Initialisiert eine Abtastrate von 16.000 Hz.
+Die Funktion \PYTHON{StopSampling()} beendet die Aufnahme von Audiodaten.
+
+
+\subsection{Anzeige der Ergebnisse}
+
+Die Funktionen \PYTHON{ShowResult()} und \PYTHON{ShowMicrophoneValues()} sind für die Anzeige der Messergebnisse auf dem OLED-Display verantwortlich. \PYTHON{ShowResult()} zeigt den aktuellen SPL-Wert in dB auf dem Display an und aktualisiert den maximalen Wert SPL in dB, wenn nach der Startverzögerung ein neuer Höchstwert erreicht wird. \PYTHON{ShowMicrophoneValues()} verarbeitet die vom Mikrofon empfangenen Signale. Der maximale Samplewert wird ermittelt und verwendet, um den Wert SPL in dB zu berechnen. Die Funktion berechnet auch einen Durchschnittswert über eine bestimmte Zeit, \PYTHON{averagingTime = 200ms}, und zeigt das Ergebnis auf dem Display an. Die Funktionen \PYTHON{ShowMaxdBspl()} und \PYTHON{ShowAveragedBspl()} zeigen den maximalen bzw. den durchschnittlichen Wert SPL in dB auf dem Display an.
+
+\subsection{Umrechnung auf den Wert dBSPL}
+
+Die Umrechnung des Mikrofonsignals auf den dBSPL-Wert erfolgt in der Funktion \PYTHON{getDbValueFromPMC()}:
+
+{
+    \captionof{code}{Umrechnung des Mikrofonsignals}\label{TestMicrophone:dBSPL}
+    \ArduinoExternal{firstline=148,lastline=152}{../../Code/Nano33BLESense/Test/TestMicrophone.ino}
+}
+
+\PYTHON{MaxSampleVoltage} wird berechnet, indem der maximale Samplewert \PYTHON{maxSampleValue} mit der Referenzspannung des Mikrocontrollers („Vref = 3,3 V“) multipliziert und durch den maximalen Wert eines 16-Bit-Signed-Integers (32767) dividiert wird. 32767 ist der maximale Wert eines 16-Bit-Signed-Integers, der der maximalen Amplitude des Audiosignals entspricht.
+Der dB SPL-Wert („dBspl“) wird mit der Formel „20 * log10(Voltage / Vrms) + sensitivity“ berechnet [Quelle der Fomel: PDF Decibels Formula https://physicscourses.colorado.edu/phys3330/phys3330\_sp19/resources/Decibels\_Phys\_3330.pdf University of Colorado System], wobei „Voltage“ der berechnete „maxSampleVoltage“ ist, und „sensitivity“ die Empfindlichkeit des Mikrofons in dBV (Dezibel-Volt) ist. „Vrms“ ist die RMS-Spannung (Root Mean Square), die einem Schalldruckpegel von 94 dB SPL entspricht. Dieser Wert wurde experimentell ermittelt.
+
+% https://physicscourses.colorado.edu/phys3330/phys3330\_sp19/resources/Decibels\_Phys\_3330.pdf
+
+\subsection{Benutzeroberfläche}
+Die Funktion \PYTHON{HandleUI()} aktualisiert OLED-Display Anzeige:
+
+
+{
+    \captionof{code}{Aktualisierung des Bildschirms}\label{TestMicrophone:OLED}
+    \ArduinoExternal{firstline=216,lastline=223}{../../Code/Nano33BLESense/Test/TestMicrophone.ino}
+}
+
+
+Wenn eine Messung aktiv ist (\PYTHON{isMeasuring == true}), werden die aktuellen Messwerte auf dem Display angezeigt. Andernfalls wird der Displayinhalt aktualisiert, ohne neue Werte anzuzeigen.
+
+
+
+
+\section{Tests}
+
+
+The embed on-board MP34DT05 sensor in Arduino Nano 33 BLE Sense has the funcnality to sense audio voice from the environment. There is build in Arduino library for this particular sensor, which is PDM as shown in the figure.  \ref{fig:7}
+
+\begin{center}
+    \includegraphics[width=8.5cm]{Nano33BLESense/9}
+    \captionof{figure}{MP34DT05, Digital Microphone}
+    \label{fig:7}
+\end{center}
+
+By following the same steps, for this sensor we can see the output the resulted frequency in the serial plotter instaed of serial monitor as shown in figure.  \ref{fig:8}  It is more convenient to understand if we change the loudness of voice the plotter shows us a different frequency curve. MP34DT05 use to detect different voices or words too, with the help of these funcnality we can easily make the valuable application with Arduino Nano 33 BLE Sense by adding some external devices with GPIO pins with the help of 3.3V relay.
+
+\begin{center}
+    \includegraphics[width=8.5cm]{Nano33BLESense/10}
+    \captionof{figure}{MP34DT05, Serial Plotter}
+    \label{fig:8}
+\end{center}
+
+\subsection{Simple Function Test}
+
+\subsection{Test all Functions}
+
+
+
+
+\section{Further Readings}
+
+
+\Mynote{citations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+

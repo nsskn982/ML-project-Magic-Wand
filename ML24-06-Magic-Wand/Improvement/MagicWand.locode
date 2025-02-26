@@ -1,0 +1,23 @@
+\babel@toc {english}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {3.1}{\ignorespaces Simple example using of the builtin microphone of the Arduino Nano 33 BLE Sense}}{38}{code.caption.43}%
+\contentsline {code}{\numberline {3.2}{\ignorespaces Example of a BLE Battery Monitor using Arduino Nano 33 BLE Sense}}{39}{code.caption.44}%
+\contentsline {code}{\numberline {3.3}{\ignorespaces Example of interfacing MPU6050 with Arduino for motion data}}{45}{code.caption.60}%
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {4.1}{\ignorespaces Sample Code of IMU.readGyroscope()}}{57}{code.caption.75}%
+\contentsline {code}{\numberline {4.2}{\ignorespaces Sample Code of IMU.gyroscopeAvailable()}}{58}{code.caption.76}%
+\contentsline {code}{\numberline {4.3}{\ignorespaces Sample Code of IMU.gyroscopeSampleRate()}}{58}{code.caption.77}%
+\contentsline {code}{\numberline {4.4}{\ignorespaces Example code for reading accelerometer and gyroscope data from the LSM9DS1 IMU}}{60}{code.caption.78}%
+\contentsline {code}{\numberline {4.5}{\ignorespaces Example code for reading magnetometer data}}{64}{code.caption.80}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {code}{\numberline {12.1}{\ignorespaces Example code demonstrating basic NumPy array operations}}{137}{code.caption.109}%
+\addvspace {10\p@ }

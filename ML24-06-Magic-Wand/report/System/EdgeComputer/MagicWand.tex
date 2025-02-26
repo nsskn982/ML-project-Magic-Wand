@@ -1,0 +1,150 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Adhiraj Walse Sudeshna Nanda Srikanth $
+% $Datum: 2025-01-24 14:30:26Z $
+% $Pfad: ML23-06-Magic-Wand-with-an-Arduino-Nano-33-BLE-sense/report/MagicWand.tex  $
+% $Version: 1 $
+%
+% !TeX encoding = utf8
+% !TeX root = NiclaVision
+% !TeX TXS-program:bibliography = txs:///bibtex
+%
+%
+%%%%%%%%%%%%%%%
+
+% ! TeX TXS-SCRIPT = foobar
+% //Trigger = ?load-this-file
+% app.load("/tmp/test/test.tex");
+% app.load("/tmp/test/a.tex");
+% TXS-SCRIPT-END
+%%%
+%
+% Auswahl der Sprache
+% Die nicht gewünschte Sprache muss auskommentiert werden:
+%\def\isGerman{1}
+\def\isEnglish{1}
+%
+%%%%%%%%%%%%%%%
+
+\documentclass[10pt,a4paper,bibliography=totoc]{scrbook}
+
+
+\input{../../General/packages}
+\input{../../General/commands}
+\input{../../General/tikzdefs}
+
+\input{../../General/acronyms}
+\input{../../General/Hyphenations}%
+
+\addbibresource{../../../MLbib/Literature.bib} 
+\addbibresource{../../../MLbib/MyLiterature.bib}
+\addbibresource{../../../MLbib/MyLiterature1.bib}
+
+%\renewcommand{\Ausblenden}[1]{#1}
+
+\begin{document}
+    
+   
+\InputLanguage{Contents/General/}{Titlepage}
+
+%Inhaltsverzeichnis
+\tableofcontents
+\newpage
+
+\listoffigures
+\newpage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Liste der Programme}{List of Listings}}
+%\lstlistoflistings
+\listofcodes
+\cleardoublepage
+
+% Ist in acronyms/Acronymlist aufgegangen
+%\input{../contents/JetsonNano/Symbollist}
+%\newpage
+
+\InputLanguage{Contents/General/}{Acronymlist}
+\newpage
+
+\part{Introduction}
+\input{../../Contents/General//en/Introduction} 
+\input{../../Contents/General//en/DataVersionControl}
+
+\part{Domain Knowledge}  
+\input{../../Contents/General//en/Application}
+\input{../../Contents/General//en/HardwareDescription}
+\input{../../Contents/General/en/SensorActor}
+\input{../../Contents/General/en/DomainSystem}
+
+\part{Methodology}  
+\input{../../Contents/General/en/Methodology}
+\input{../../Contents/General/en/Algorithm}
+
+\part{Development}
+\input{../../Contents/General/en/DevelopmentEnvironment}
+\input{../../Contents/General/en/Development}
+\input{../../Contents/General/en/DocumentationDevelopment}
+\input{../../Contents/General/en/DevtoDeployment}
+\input{../../Contents/General/en/Deployment}
+\input{../../Contents/General/en/ListOfMaterial}
+\input{../../Contents/General/en/SBOM}
+
+\part{Verification - Evaluation - Conclusion}
+\input{../../Contents/General/en/Monitoring}
+\input{../../Contents/General/en/Results}
+
+\part{Packages}
+\input{../../Contents/General/en/Packages}
+=\input{../../Contents/General/en/Numpy}
+\input{../../Contents/General/en/Pandas}
+\input{../../Contents/General/en/Keras}
+\input{../../Contents/General/en/Matplotlib}
+
+%\part{\TRANS{Anhang}{Appendix}}
+
+    
+%\InputLanguage{Contents/General/}{Hints}
+
+\newpage
+%\InputLanguage{Contents/General/}{Bezier}
+
+\newpage
+%\InputLanguage{Contents/General/}{ArcStrategy}
+
+\newpage
+%\InputLanguage{Contents/General/}{MapleFiles}
+
+\newpage
+%\InputLanguage{Contents/General/}{Python}
+
+
+\newpage
+%\InputLanguage{Contents/General/}{FirstChapter}
+
+\cleardoublepage
+\appendix
+%\InputLanguage{Contents/General/}{AppendixTikz}
+
+\cleardoublepage
+%\InputLanguage{Contents/General/}{Appendix}
+
+\cleardoublepage
+%\InputLanguage{Contents/General/}{ModelCard}
+
+
+    
+ 
+
+%\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\printbibliography[
+  heading=bibintoc,
+  title={\TRANS{Literaturverzeichnis}{Literature}}
+]
+
+\newpage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Stichwortverzeichnis}{Index}}
+\printindex
+
+
+\end{document}

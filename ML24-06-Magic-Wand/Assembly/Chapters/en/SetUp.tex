@@ -1,0 +1,91 @@
+%%%%%%%%%%%%
+%
+% $Autor: Sudeshna $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: SetUp.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = manual 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Set Up}
+
+\section{Detailed Description of Assembly}
+
+\subsection{Prepare the Board}
+\begin{enumerate}
+	\item Connect the \textbf{Arduino Nano 33 BLE Sense} to your computer using a \textbf{micro USB cable}.
+	\item Open the \textbf{Arduino IDE} and ensure the board is recognized:
+	\begin{itemize}
+		\item Go to \texttt{Tools} $\to$ \texttt{Board} $\to$ Select \textbf{Arduino Nano 33 BLE Sense}.
+		\item Go to \texttt{Tools} $\to$ \texttt{Port} $\to$ Select the correct COM port.
+	\end{itemize}
+	\item If required, install the board package:
+	\begin{itemize}
+		\item Open \textbf{Boards Manager} in Arduino IDE.
+		\item Search for \texttt{Arduino mbed OS Nano Boards} and install it.
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Upload the Firmware}
+\begin{enumerate}
+	\item Install necessary libraries via the \textbf{Arduino Library Manager}:
+	\begin{itemize}
+		\item \texttt{TensorFlowLite} (for ML model execution)
+		\item \texttt{Arduino\_LSM9DS1} (for IMU sensor integration)
+	\end{itemize}
+	\item Open the firmware source file:
+	\begin{itemize}
+		\item Navigate to \texttt{src/main.cpp}.
+		\item Load the firmware sketch into the Arduino IDE.
+	\end{itemize}
+	\item Verify the code by clicking the \textbf{Checkmark icon}.
+	\item Upload the firmware by clicking the \textbf{Upload (→) icon}.
+	\item Open the \textbf{Serial Monitor} (\texttt{Tools} $\to$ \texttt{Serial Monitor}) and set baud rate to \texttt{115200}.
+\end{enumerate}
+
+\subsection{Integrate the Sensors and Components}
+\begin{itemize}
+	\item \textbf{Onboard IMU (LSM9DS1) Setup}
+	\begin{itemize}
+		\item The \textbf{Inertial Measurement Unit (IMU)} detects motion and gestures.
+		\item No additional wiring is needed as it is built into the board.
+	\end{itemize}
+	\item \textbf{Optional External Components}
+	\begin{itemize}
+		\item \textbf{RGB LEDs} for visual feedback:
+		\begin{itemize}
+			\item Connect Red, Green, and Blue (RGB) pins to digital PWM-capable pins on the Arduino.
+			\item Use a common ground (GND).
+		\end{itemize}
+		\item \textbf{Vibration Motor} for haptic feedback:
+		\begin{itemize}
+			\item Connect the positive terminal to a PWM digital pin.
+			\item Use a transistor and a diode for safe operation.
+			\item Connect the negative terminal to GND.
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsection{Testing the Gesture Recognition}
+\begin{enumerate}
+	\item Open the \textbf{Serial Monitor} to observe real-time sensor data.
+	\item Run the command:
+	\begin{lstlisting}[language=sh]
+		edge-impulse-run-impulse
+	\end{lstlisting}
+	\item Observe classification results and verify correct gesture recognition.
+	\item If necessary, retrain or fine-tune the machine learning model.
+\end{enumerate}
+
+\subsection{Final Assembly}
+\begin{enumerate}
+	\item Carefully place the \textbf{Arduino Nano 33 BLE Sense} inside the wand casing.
+	\item Ensure the \textbf{USB port remains accessible} for firmware updates and charging.
+	\item Securely route any external component wiring inside the casing.
+	\item Seal the casing while allowing necessary access points for LEDs or buttons.
+	\item Perform a final functionality test to confirm all components work as expected.
+\end{enumerate}

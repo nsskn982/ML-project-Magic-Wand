@@ -1,0 +1,283 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-30 07:43:10Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/JetsonNano/Allgemein/packages.tex $
+% $Version: 1786 $
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\usepackage[left=4cm,right=4cm,top=2cm,bottom=2cm,includeheadfoot]{geometry}
+\setlength{\headheight}{1pt}
+
+% Standard Deutsch
+\usepackage{lmodern}
+\usepackage[utf8]{inputenc}
+\ifdefined\isGerman
+  \usepackage[ngerman]{babel}
+\else
+  \ifdefined\isEnglish
+    \usepackage[english]{babel}
+  \else
+    \usepackage[ngerman]{babel}
+  \fi
+\fi
+
+\usepackage[T1]{fontenc}
+
+% Farben
+\usepackage{xcolor}
+\usepackage{alltt}
+% Notwendig für Syntax-Highlighting mit besonderen Farben
+%\usepackage[table, x11names]{xcolor}
+\usepackage{color}
+\usepackage{soul}
+
+% Pakete für Mathe
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+
+% Paket Internetrefferenzen
+\usepackage{hyperref}
+
+%Wird zusätzlich das Paket showidx eingebunden, werden die gesetzten Einträge am Seitenrand dargestellt. 
+\usepackage{imakeidx}
+%\usepackage{showidx}
+%\usepackage[override=false]{seealso}
+\makeindex[intoc,title=Index]
+\ifdefined\isGerman
+  \renewcommand{\indexname}{Stichwortverzeichnis}
+\else
+\ifdefined\isEnglish
+\else
+  \renewcommand{\indexname}{Stichwortverzeichnis}
+\fi
+\fi
+
+
+
+
+% Paktete für Bilder
+\usepackage{graphicx}
+
+\usepackage{listings}
+% Automatische erstellung von Referenzen
+\usepackage[ngerman]{cleveref}
+% Zeilenumbrüche in \texttt
+\usepackage[htt]{hyphenat}
+
+% Automatisches erstellen und referenzieren eines Abkürzungsverzeichnisses
+\usepackage[tooltip]{acro}
+% Ermöglicht Verwendung von 'H' Float modifier
+\usepackage{float}
+
+% Ermöglicht Subfigures und Subcaptions
+\usepackage{subcaption}
+
+
+\usepackage{float}
+\usepackage{array}
+\usepackage{amsopn}
+\usepackage[percent]{overpic}
+\usepackage{colortbl}
+\usepackage{marginnote}
+
+\usepackage{textcomp}
+
+\usepackage[
+backend=bibtex8,%  defernumbers=true,
+autocite=inline,
+labelalpha=true,%  sorting=none,
+firstinits=true,
+uniquename=init,
+uniquelist=false,
+refsegment=section,
+style=alphabetic,
+safeinputenc
+]{biblatex}
+
+%\usepackage[german]{babelbib}
+%\usepackage[square,sort,comma,numbers]{natbib}
+%\DeclareNameAlias{sortname}{last-first}
+%\bibliographystyle{geralpha}
+%\setcitestyle{square,aysep={},yysep={;}}
+%\newcommand*{\multicitedelim}{\addsemicolon\space}
+
+
+% Verwendung:
+%\Ausblenden{.....
+%} %todo Ausblenden
+
+
+
+% Kapitel entfernen
+%\usepackage{titlesec}
+
+\usepackage{tabularx} 
+\usepackage{longtable}
+\usepackage{framed}
+\usepackage{tocbibind}
+
+\usepackage[official]{eurosym}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\usepackage{menukeys}
+% \menu{File > New}
+%\keys{\ctrl + N}
+
+%\usepackage{pythonhighlight}
+
+
+\pagestyle{empty}
+
+
+
+
+% Kopfzeile
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[OL]{\nouppercase{\leftmark}}
+\fancyhead[OR]{\thepage}
+\fancyhead[ER]{\nouppercase{\leftmark}}
+\fancyhead[ER]{\nouppercase{\chaptermark{}}}
+\fancyhead[ER]{\nouppercase{\chaptermark{}}}
+\fancyhead[EL]{\thepage}
+\renewcommand{\headrulewidth}{0.1pt} 
+
+
+
+%\AtBeginDocument{\renewcommand{\chaptername}{}} % muss nach babel stehen! 
+
+
+
+\usepackage{ifthen}
+
+\usepackage{media9}
+\usepackage{animate}
+\newcounter{AnimateAngle}
+\setcounter{AnimateAngle}{0}
+\newcounter{AnimateStepFactor}
+\setcounter{AnimateStepFactor}{1}
+\newcounter{AnimateSteps}
+\setcounter{AnimateSteps}{0}
+
+
+\usepackage{multirow}                  % Tabelle vertikale Zellen verbinden
+\usepackage{rotating}                  % text rotieren \rotatebox{90}{text}
+\usepackage{colortbl}                  % Farbe der Zellen einer Tabelle, z. B. \begin{tabular}{c>{\columncolor{green}}cc}
+
+\usepackage{enumitem}
+\usepackage{spverbatim}
+
+% Korrekte darstellung von SI-Einheiten
+\usepackage[binary-units=true, per-mode=symbol]{siunitx}
+% Erstellen einer ToDo-Liste
+\usepackage[ngerman, colorinlistoftodos]{todonotes}
+% Kommando zum markieren fehlender praktischer Umsetzungen
+\newcommand{\todop}[2][]{\todo[color=red, inline, #1]{#2}}
+\usepackage{makecell}
+% Bera Mono als \ttfamily font
+\usepackage[scaled]{beramono}
+
+\usepackage{menukeys}
+\usepackage{textcomp}
+
+
+% Add section names to todonotes list
+\makeatletter
+\let\ori@chapter\@chapter
+\def\@chapter[#1]#2{\ori@chapter[#1]{#2}%
+    \if@mainmatter\addcontentsline{tdo}{chapter}{\protect\numberline{\thechapter}{#1}}%
+    \else\addcontentsline{tdo}{chapter}{#1}%
+    \fi}
+\makeatother
+
+% Farben für Syntax-Highlighting
+\definecolor{dkgreen}{rgb}{0,.6,0}
+\definecolor{dkblue}{rgb}{0.655,0.113,.364}
+\definecolor{dkyellow}{cmyk}{0,0,.8,.3}
+
+\definecolor{parameterc}{rgb}{.4,0,.6}
+\definecolor{typec}{rgb}{0,0.525,.702}
+\definecolor{stringc}{rgb}{0,.5019,.5019}
+\definecolor{keywordc}{rgb}{.6549, .1137, .3647}
+\definecolor{commentc}{rgb}{.5882, .5960, .5882}
+\definecolor{textc}{rgb}{.2,.2,.2}
+
+\lstdefinestyle{all}{
+    alsoletter={-},
+    frame=single, 	% top,frame=bottom,
+    numbers=none,
+    numberstyle=\tiny\color{textc},
+    basicstyle=\linespread{0.9}\ttfamily\footnotesize\color{textc},
+    tabsize=4,
+    showstringspaces=false,
+    captionpos=t,
+    rulecolor=\color{lightgray!40},
+    keywordstyle=\color{keywordc},
+    stringstyle=\color{stringc},
+    commentstyle=\color{commentc},
+    breaklines=true,
+    escapechar="!",
+    postbreak=\mbox{\textcolor{green}{$\hookrightarrow$}\space},
+}
+
+\lstdefinestyle{bashstyle}{
+    style=all,
+    keywords=[2]{-y, --no-install-recommends, --allow-change-held-packages, --allow-downgrades, --fetch-keys, -n, --version, --params, -c, -i, -O, --upgrade, --no-cache-dir, --extra-index-url, --show, -s, -m},
+    keywordstyle=[2]\color{parameterc},
+    morekeywords = {ln,choco,pip,pip3,apt,apt-key,apt-get,apt-mark,add-apt-repository,wget,mktemp,dpkg,dpkg-query,echo,>>,rm,tegrastats, systemctl},
+    deletekeywords={local,LOCAL},
+}
+
+\lstdefinestyle{pythonstyle}{
+    style=all,
+    morekeywords={as},
+    keywords=[2]{True, False, None},
+    keywordstyle=[2]\color{typec},
+    alsoletter={_},
+    keywords=[3]{max_workspace_size_bytes, precision_mode, maximum_cached_engines, use_calibration, optimizer, loss, input_shape, from_logits, metrics, batch_size, epochs, validation_data, activation, use_calibration, filters, kernel_size, pool_size, units},
+    keywordstyle=[3]\color{parameterc},
+    deletekeywords={compile,COMPILE},
+}
+
+\lstdefinestyle{inlinestyle}{
+    style=all,
+    breaklines        = true,
+    breakatwhitespace = true,
+    breakindent       = 2ex,
+    escapechar        = *,
+    numbers           = left,
+    postbreak=,
+}
+\lstdefinelanguage{MyBash} {
+    language = Bash,
+    style=bashstyle,
+}
+
+\lstdefinelanguage{MyPython} {
+    language = Python,
+    style=pythonstyle,
+}
+
+\usepackage[intoc]{nomencl}
+\renewcommand{\nomname}{Symbolverzeichnis}
+\renewcommand{\nomlabel}[1]{#1 \dotfill}
+\makenomenclature
+
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+
+\usepackage{blindtext}

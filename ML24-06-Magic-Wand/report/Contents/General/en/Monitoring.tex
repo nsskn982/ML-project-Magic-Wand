@@ -1,0 +1,136 @@
+%%%%%%%%%%%%
+%
+% $Autor: Adhiraj, Sudeshna,Srikant $
+% $Datum: 2025-01-14 08:03:15Z $
+% $Pfad: Monitoring $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+% Structure
+\chapter{Monitoring}
+
+\section{Monitoring}
+Monitoring an ML pipeline ensures its continuous performance, reliability, and compliance. This document provides a comprehensive plan covering data acquisition, pipeline updates, testing, privacy, robustness, and end-to-end processes.The "Monitoring" part of the Magic Wand undertaking involves the continuous observation and analysis of sensor data obtained from the Arduino Nano 33 BLE Sense board. This data includes inputs from various onboard sensors, such as the accelerometer, gyroscope, temperature sensor, microphone, and potentially additional external sensors connected to the board.
+
+\section{Plan for Monitoring}
+\subsection{Real-Time Monitoring}
+\begin{itemize}
+    \item \textbf{System Metrics:} Monitor CPU, memory, and latency.
+    \item \textbf{Model Metrics:} Track accuracy, precision, recall, and F1-score.
+    \item \textbf{Data Metrics:} Validate schema, detect missing values, and outliers.
+\end{itemize}
+
+\subsection{Historical Analysis}
+Store logs and metrics to analyze long-term trends.
+
+\subsection{Alerting Mechanisms}
+Integrate alert systems using tools like PagerDuty or Slack to notify when thresholds are breached.
+
+\section{Incorporating New Data}
+\subsection{Data Acquisition}
+Automate data ingestion using APIs or streaming systems like Kafka.
+
+\subsection{Incremental Updates}
+Schedule periodic or event-triggered data updates.
+
+\subsection{Data Storage}
+Use version-controlled repositories such as DVC for reproducibility.
+
+\section{Data Update in ML Pipeline}
+\subsection{Triggering Retraining}
+Retrain based on time schedules or data drift detection.
+
+\subsection{Automation}
+Leverage CI/CD tools (e.g., Kubeflow, MLflow) for automating retraining and deployment.
+
+\subsection{Validation}
+Deploy shadow models to validate performance on live data.
+
+\section{Checks and Tests}
+\subsection{Data Checks}
+\begin{itemize}
+    \item Schema Validation: Ensure correct formats.
+    \item Anomaly Detection: Identify outliers using statistical methods.
+\end{itemize}
+
+\subsection{Model Checks}
+\begin{itemize}
+    \item Unit Tests: Test individual pipeline components.
+    \item Integration Tests: Verify end-to-end functionality.
+\end{itemize}
+
+\subsection{Monitoring Drift}
+Track changes in data distribution and concept drift using tools like \texttt{evidently}.
+
+\section{Code Functions}
+\subsection{Data Drift Detection}
+\begin{lstlisting}[language=Python, caption={Detecting Data Drift Using the Kolmogorov-Smirnov Test}, label={code:data-drift-detection}, style=pythonstyle]
+	from scipy.stats import ks_2samp
+	
+	def detect_data_drift(reference_data, new_data, feature):
+	stat, p_value = ks_2samp(reference_data[feature], new_data[feature])
+	return p_value < 0.05  # True if drift detected
+\end{lstlisting}
+
+
+\subsection{Model Performance Monitoring}
+\begin{lstlisting}[language=Python, caption={Evaluating Model Performance Using Common Metrics}, label={code:model-performance-evaluation}, style=pythonstyle]
+	from sklearn.metrics import accuracy_score, precision_score, recall_score
+	
+	def evaluate_model_performance(model, X_test, y_test):
+	predictions = model.predict(X_test)
+	metrics = {
+		'accuracy': accuracy_score(y_test, predictions),
+		'precision': precision_score(y_test, predictions, average='weighted'),
+		'recall': recall_score(y_test, predictions, average='weighted')
+	}
+	return metrics
+\end{lstlisting}
+
+
+\subsection{Automating Retraining}
+\begin{lstlisting}[language=Python, caption={Retraining a Model Using an External Python Script}, label={code:model-retraining}, style=pythonstyle]
+	import subprocess
+	
+	def retrain_model(script_path):
+	result = subprocess.run(["python", script_path], capture_output=True, text=True)
+	if result.returncode == 0:
+	print("Retraining successful.")
+	else:
+	print(f"Retraining failed: {result.stderr}")
+\end{lstlisting}
+
+
+\section{Privacy Considerations}
+\subsection{Privacy-by-Design}
+\begin{itemize}
+    \item Anonymize sensitive data by removing Personally Identifiable Information (PII).
+    \item Use pseudonymization and encryption.
+\end{itemize}
+
+\subsection{Differential Privacy}
+Use techniques like TensorFlow Privacy to add noise and safeguard individual data.
+
+\section{Robustness Strategies}
+\subsection{Adversarial Testing}
+Simulate edge cases like corrupted data using libraries like \texttt{cleverhans}.
+
+\subsection{Fault Tolerance}
+Implement retry mechanisms and fallbacks for critical pipeline components.
+
+\section{End-to-End Process}
+\subsection{Monitoring Dashboard}
+Develop dashboards using tools like Grafana or Power BI for centralized metric visualization.
+
+\subsection{Logging and Alerts}
+Use logging frameworks (e.g., ELK stack) and define thresholds for automated notifications.
+
+\subsection{Iterative Improvement}
+Analyze logs and metrics to refine pipeline components continuously.
+
+This plan outlines a holistic approach to monitoring ML pipelines, ensuring robustness, reliability, and compliance while enabling adaptability in dynamic environments.

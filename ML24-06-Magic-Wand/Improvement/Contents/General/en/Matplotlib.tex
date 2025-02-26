@@ -1,0 +1,332 @@
+%%%%%%%%%%%%
+%
+% $Autor: Sudeshna $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: TemplateSensor $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = filename 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+
+\chapter{Matplotlib}
+
+
+\section{Introduction}
+
+Matplotlib is a powerful and widely used Python library for creating visualizations and plots. It provides a comprehensive set of tools for generating a wide range of static, animated, and interactive visual representations of data. Matplotlib is highly flexible and customizable, allowing users to create visually appealing and informative plots for various purposes, such as data analysis, scientific research, presentations, and more. It is built on top of NumPy, another popular Python library for numerical computing, which makes it compatible with other scientific computing libraries in the Python ecosystem.
+
+The version of the Matplotlib package used here is 3.5.2.  All these functions of the Matplotlib package are explained in the upcoming sections.
+
+\section{Description}
+
+Matplotlib is a fundamental tool in the data science and visualization toolkit of Python, along with libraries like Pandas and NumPy. With Matplotlib, users can create a wide range of plots, including line plots, scatter plots, bar plots, histograms, pie charts, 3D plots, and more. It provides fine-grained control over plot elements such as axes, labels, colors, markers, and legends. Additionally, Matplotlib integrates seamlessly with Jupyter notebooks, making it a popular choice for interactive data exploration and visualization.
+
+Key features and functions of Matplotlib function:
+
+\begin{enumerate}
+	\item \textbf{Plotting Functions:} Matplotlib provides various plotting functions to create different types of plots, such as line plots, scatter plots, bar plots, histograms, pie charts, box plots, and more. These functions allow users to visualize data in different formats and representations.
+	
+	\item \textbf{Customization Options:} Matplotlib offers extensive customization options to control every aspect of a plot. Users can modify plot elements like axes, labels, titles, colors, markers, line styles, legends, and annotations. This flexibility allows users to tailor the appearance of the plots to their specific requirements.
+	
+	\item \textbf{Multiple Subplots:} Matplotlib enables the creation of multiple subplots within a single figure, allowing users to display and compare different plots side by side. This feature is particularly useful when visualizing multiple datasets or different aspects of a dataset simultaneously.
+	
+	\item \textbf{3D Plotting:} Matplotlib includes capabilities for creating 3D plots and visualizations. Users can generate 3D scatter plots, surface plots, wireframe plots, and other three-dimensional representations of data. These plots are helpful when working with spatial or volumetric data.
+	
+	\item \textbf{Colormaps:} Matplotlib provides a wide range of built-in colormaps for mapping data values to colors. Colormaps allow users to add depth and meaning to their plots, emphasizing patterns or variations in the data. Matplotlib also supports custom colormaps, giving users flexibility in choosing the color scheme that best suits their needs.
+\end{enumerate} 
+
+
+\subsection{Data Suitability}
+
+When it comes to data suitability, Matplotlib is a versatile library that can handle a wide range of data types and formats.
+
+\begin{itemize}
+	\item \textbf{Numerical Data:} Matplotlib is particularly well-suited for visualizing numerical data. Whether it's a simple line plot, scatter plot, histogram, or more complex plots like contour plots or heatmaps, Matplotlib provides the necessary tools to effectively represent and analyze numerical data. It offers customization options to highlight trends, patterns, and relationships within the data.
+	
+	\item \textbf{Categorical Data:} While Matplotlib is primarily designed for numerical data, it also supports visualizations for categorical data. Bar plots, pie charts, and stacked bar plots are useful for representing distributions, proportions, or comparisons among different categories. Matplotlib allows for customization of colors, labels, and other visual elements to enhance the understanding of categorical data.
+	
+	\item \textbf{Time Series Data:} Matplotlib is commonly used to visualize time series data. It provides various plot types suitable for displaying temporal trends, such as line plots, area plots, or candlestick plots. With Matplotlib, users can easily add date and time axes, format tick labels, and annotate events or significant time points. This makes it a valuable tool for analyzing and presenting data that changes over time.
+	
+	\item \textbf{Spatial Data:} Matplotlib also supports the visualization of spatial data. By leveraging its 3D plotting capabilities or using specialized modules like Basemap or Cartopy, Matplotlib can create maps, contour plots, and geospatial visualizations. It allows users to plot points, lines, polygons, and other geometric shapes on maps, making it suitable for analyzing and displaying spatial relationships.
+	
+	\item \textbf{Data Size:} Matplotlib can handle data of varying sizes, from small to large datasets. While it performs well with smaller datasets, it may face limitations in terms of performance and interactivity with extremely large datasets. In such cases, users may need to optimize the code, use data sampling techniques, or explore other specialized libraries for big data visualization.
+	
+	\item \textbf{Data Preprocessing:} Before visualizing data with Matplotlib, it is often necessary to preprocess and format the data appropriately. Matplotlib expects data to be in a suitable format, such as NumPy arrays or Pandas data structures. Therefore, users may need to apply data manipulation techniques using libraries like NumPy and Pandas to transform the data into the desired format before plotting.
+\end{itemize}
+
+
+\section{Installation}
+
+\subsection{Installing an official release}
+
+Matplotlib and its dependencies are available as wheel packages for macOS, Windows and Linux distributions:
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Installing/upgrading pip and matplotlib}, label={code:pip-matplotlib}]
+	python -m pip install -U pip
+	python -m pip install -U matplotlib
+\end{lstlisting}
+
+
+
+\subsection{Installing with Anaconda}
+
+Matplotlib is available both via the anaconda main channel
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Installing matplotlib using conda}, label={code:conda-matplotlib}]
+	conda install matplotlib
+\end{lstlisting}
+
+
+as well as via the conda-forge community channel
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Installing matplotlib from conda-forge}, label={code:conda-forge-matplotlib}]
+	conda install -c conda-forge matplotlib
+\end{lstlisting}
+
+
+\subsection{Required dependencies}
+
+Matplotlib requires the following dependencies:
+
+\begin{table}[htbp]
+	\centering
+	\caption{Python Library Dependencies}
+	\label{tab:dependencies}
+	\begin{tabular}{|l|l|}
+		\hline
+		\textbf{Library} & \textbf{Minimum Version Required} \\
+		\hline
+		Python & $\geq$ 3.6 \\
+		FreeType & $\geq$ 2.3 \\
+		libpng & $\geq$ 1.2 \\
+		NumPy & $\geq$ 1.11 \\
+		setuptools & -- \\
+		cycler & $\geq$ 0.10.0 \\
+		dateutil & $\geq$ 2.1 \\
+		kiwisolver & $\geq$ 1.0.0 \\
+		pyparsing & -- \\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+\section{Example - Manual}
+
+\subsection{General Concepts}
+
+"matplotlib" has an extensive codebase that can be daunting to many new users. However, most of matplotlib can be understood with a fairly simple conceptual framework and knowledge of a few important points.
+
+Plotting requires action on a range of levels, from the most general (e.g., 'contour this 2-D array') to the most specific (e.g., 'color this screen pixel red'). The purpose of a plotting package is to assist you in visualizing your data as easily as possible, with all the necessary control -- that is, by using relatively high-level commands most of the time, and still have the ability to use the low-level commands when needed.
+
+Therefore, everything in matplotlib is organized in a hierarchy. At the top of the hierarchy is the matplotlib "state-machine environment" which is provided by the matplotlib.pyplot module. At this level, simple functions are used to add plot elements (lines, images, text, etc.) to the current axes in the current figure.
+
+The next level down in the hierarchy is the first level of the object-oriented interface, in which pyplot is used only for a few functions such as figure creation, and the user explicitly creates and keeps track of the figure and axes objects. At this level, the user uses pyplot to create figures, and through those figures, one or more axes objects can be created. These axes objects are then used for most plotting actions.
+
+For even more control -- which is essential for things like embedding matplotlib plots in GUI applications -- the pyplot level may be dropped completely, leaving a purely object-oriented approach.
+
+\subsubsection{How to import}
+
+To import functions from the Matplotlib library, you can use the import statement in Python. Here's how you can \textit{import} Matplotlib functions:
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Importing matplotlib for plotting}, label={code:import-matplotlib}]
+	import matplotlib.pyplot as plt
+\end{lstlisting}
+
+
+\subsubsection{Figure}
+
+The whole figure. The figure keeps track of all the child Axes, a smattering of 'special' artists (titles, figure legends, etc), and the canvas. (Don't worry too much about the canvas, it is crucial as it is the object that actually does the drawing to get you your plot, but as the user it is more-or-less invisible to you). A figure can have any number of Axes, but to be useful should have at least one.
+
+The easiest way to create a new figure is with pyplot:
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Creating a figure with matplotlib}, label={code:create-figure}]
+	fig = plt.figure()  # an empty figure with no axes
+	fig.suptitle('No axes on this figure')  # Add a title so we know which it is
+	
+	fig, ax_lst = plt.subplots(2, 2)  # a figure with a 2x2 grid of Axes
+\end{lstlisting}
+
+
+
+\subsubsection{Axes}
+
+This is what you think of as 'a plot', it is the region of the image with the data space. A given figure can contain many Axes, but a given Axes object can only be in one Figure. The Axes contains two (or three in the case of 3D) Axis objects (be aware of the difference between Axes and Axis) which take care of the data limits (the data limits can also be controlled via set via the set\_xlim() and set\_ylim() Axes methods). Each Axes has a title (set via set\_title()), an x-label (set via set\_xlabel()), and a y-label set via set\_ylabel()).
+
+The Axes class and its member functions are the primary entry point to working with the OO interface.
+
+\subsubsection{Axis}
+
+These are the number-line-like objects. They take care of setting the graph limits and generating the ticks (the marks on the axis) and ticklabels (strings labeling the ticks). The location of the ticks is determined by a Locator object and the ticklabel strings are formatted by a Formatter. The combination of the correct Locator and Formatter gives very fine control over the tick locations and labels.
+
+\subsubsection{Artist}
+
+Basically everything you can see on the figure is an artist (even the Figure, Axes, and Axis objects). This includes Text objects, Line2D objects, collection objects, Patch objects ... (you get the idea). When the figure is rendered, all of the artists are drawn to the canvas. Most Artists are tied to an Axes; such an Artist cannot be shared by multiple Axes, or moved from one to another.
+
+\subsection{Types of inputs to plotting functions}
+
+All of plotting functions expect \texttt{np.array} or \texttt{np.ma.masked\_array} as input. Classes that are 'array-like' such as \texttt{pandas} data objects and \texttt{np.matrix} may or may not work as intended. It is best to convert these to \texttt{np.array} objects prior to plotting.
+
+For example, to convert a \texttt{\textbf{pandas.DataFrame}}
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Creating a DataFrame and converting it to a NumPy array}, label={code:dataframe-to-array}]
+	a = pandas.DataFrame(np.random.rand(4,5), columns = list('abcde'))
+	a_asarray = a.values
+\end{lstlisting}
+
+
+and to convert a \texttt{np.matrix}
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Converting a NumPy matrix to an array}, label={code:matrix-to-array}]
+	b = np.matrix([[1,2],[3,4]])
+	b_asarray = np.asarray(b)
+\end{lstlisting}
+
+
+\subsection{Example}
+
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Example of a simple line plot using Matplotlib}, label={code:line-plot}]
+	import matplotlib.pyplot as plt
+	
+	# Sample data
+	x = [1, 2, 3, 4, 5]
+	y = [2, 4, 6, 8, 10]
+	
+	# Create a figure and axis
+	fig, ax = plt.subplots()
+	
+	# Plot the data
+	ax.plot(x, y, marker='o', linestyle='-', color='b', label='Data')
+	
+	# Set labels and title
+	ax.set_xlabel('X-axis')
+	ax.set_ylabel('Y-axis')
+	ax.set_title('Line Plot')
+	
+	# Add gridlines
+	ax.grid(True)
+	
+	# Add legend
+	ax.legend()
+	
+	# Display the plot
+	plt.show()
+\end{lstlisting}
+
+
+\begin{enumerate}
+	\item In this code example, we import the necessary modules from Matplotlib ('pyplot') and create sample data ('x' and 'y').
+	
+	\item Create a figure and axis:
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Creating a subplot with Matplotlib}, label={code:subplot}]
+	fig, ax = plt.subplots()
+\end{lstlisting}
+
+	
+	This creates a figure object ('fig') and an axis object ('ax'). The figure is the overall window or canvas, while the axis is the area within the figure where the plot is drawn.
+	
+	\item Plot the data:
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Plotting data with a line plot}, label={code:plotdata}]
+	ax.plot(x, y, marker='o', linestyle='-', color='b', label='Data')
+\end{lstlisting}
+
+	
+	The 'plot()' function is used to create a line plot. Here, we specify the x and y data, marker style, line style, color, and label for the plot.
+	
+	\item Set labels and title:
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Setting labels and title for the plot}, label={code:setlabels}]
+	ax.set_xlabel('X-axis')
+	ax.set_ylabel('Y-axis')
+	ax.set_title('Line Plot')
+\end{lstlisting}
+
+	
+	The set\_xlabel(), set\_ylabel(), and set\_title() functions are used to set the labels for the x-axis, y-axis, and the plot title, respectively.
+	
+	\item Add legend:
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Adding legend to the plot}, label={code:addlegend}]
+	ax.legend()
+\end{lstlisting}
+
+	
+	The 'legend()' function is used to add a legend to the plot, which shows labels for different elements of the plot.
+	
+	\item Display the plot:
+\begin{lstlisting}[language=Python, style=pythonstyle, caption={Displaying the plot}, label={code:displayplot}]
+	plt.show()
+\end{lstlisting}
+
+	
+	The 'show()' function is used to display the plot.
+	
+\end{enumerate}
+
+
+\subsection{Matplotlib Error Handling}
+
+Error handling in Matplotlib, like in any other Python library, involves using try-except blocks to catch and handle potential errors that may occur during the execution of your code. Here's an example of how one can handle errors in Matplotlib:
+
+\begin{lstlisting}[language=Python, caption={Line Plot Example with Error Handling}, label={code:line-plot-example}, style=pythonstyle]
+	import matplotlib.pyplot as plt
+	
+	# Sample data
+	x = [1, 2, 3, 4]
+	y = [2, 4, 6]
+	
+	try:
+	# Attempt to create a line plot
+	plt.plot(x, y)
+	plt.xlabel('X-axis')
+	plt.ylabel('Y-axis')
+	plt.title('Line Plot')
+	plt.show()
+	
+	except ValueError as ve:
+	# Handle a specific type of error (ValueError in this case)
+	print(f"ValueError: {ve}")
+	# Take appropriate action to handle the error
+	
+	except Exception as e:
+	# Handle any other type of exception
+	print(f"An error occurred: {e}")
+	# Take appropriate action to handle the error
+\end{lstlisting}
+
+
+In this example, a try-except block is used to handle potential errors that may occur during the creation and display of the line plot. Here's how the error handling works:
+
+\begin{enumerate}
+	\item The code within the try block attempts to create a line plot using 'plt.plot()' and adds labels, title, and other plot elements.
+	
+	\item If an error occurs during this process, the corresponding exception will be raised. In this example, we handle two types of exceptions:
+	\begin{enumerate}
+		\item \textbf{'ValueError':} This is a specific type of error that may occur if the input data for the plot is invalid or incompatible. We use the 'ValueError' as an example here, but you can handle other specific exceptions as needed.
+		\item \textbf{'Exception':} This is a generic exception that can handle any other type of exception that may occur during the execution of the code.
+	\end{enumerate}
+	
+	\item Inside each except block, you can define specific actions to be taken when the corresponding exception is encountered. In this example, we print out a customized error message and handle the error appropriately. You can replace the print statements with your desired error handling logic, such as logging the error, displaying a user-friendly message, or taking corrective actions.
+	
+\end{enumerate}
+
+
+\section{Further Reading}
+
+\subsection{Matplotlib Official Documentation}
+The official documentation is an extensive resource that provides comprehensive information about the Matplotlib library. It includes a user guide, API reference, tutorials, and examples. You can access it at: \\
+\texttt{https://matplotlib.org/stable/users/index.html}
+
+\subsection{Mastering matplotlib}
+"Mastering Matplotlib" by \cite{McGreggor:2015} is a comprehensive guide that empowers readers to become proficient in creating professional-grade plots and visualizations using the Matplotlib library in Python. This book covers fundamental concepts, advanced techniques, and practical aspects to enhance data visualization skills. It can be accessed through:
+\texttt{https://www.packtpub.com/product/mastering-matplotlib/9781783987542}
+
+\subsection{Scientific Visualization: Python + Matplotlib}
+"Scientific Visualization: Python + Matplotlib" by \cite{Rougier:2021} is a practical guide that demonstrates the use of Python and Matplotlib for scientific data visualization, catering to scientists, researchers, and data analysts. It offers insights into visualization techniques and customization to effectively present scientific data. It can be accessed through:
+\texttt{https://inria.hal.science/hal-03427242/}
+
+
+\subsection{Python for Data Analysis}
+This book, written by Wes McKinney (the creator of Pandas) \cite{Mckinney:python}, is a valuable resource for learning Pandas. It covers various aspects of data manipulation, analysis, and visualization using Pandas. The book also explores practical examples and real-world use cases. Find it here: \\
+\texttt{https://www.oreilly.com/library/view/python-for-data/9781491957653/}

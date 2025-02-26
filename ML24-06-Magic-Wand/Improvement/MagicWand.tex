@@ -1,0 +1,97 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% $Autor: Adhiraj Walse Sudeshna Nanda Srikanth $
+% $Datum: 2025-01-24 14:30:26Z $
+% $Pfad: ML23-06-Magic-Wand-with-an-Arduino-Nano-33-BLE-sense/report/MagicWand.tex  $
+% $Version: 1 $
+%
+% !TeX encoding = utf8
+% !TeX root = NiclaVision
+% !TeX TXS-program:bibliography = txs:///bibtex
+%
+%
+%%%%%%%%%%%%%%%
+
+% ! TeX TXS-SCRIPT = foobar
+% //Trigger = ?load-this-file
+% app.load("/tmp/test/test.tex");
+% app.load("/tmp/test/a.tex");
+% TXS-SCRIPT-END
+%%%
+%
+% Auswahl der Sprache
+% Die nicht gewünschte Sprache muss auskommentiert werden:
+%\def\isGerman{1}
+\def\isEnglish{1}
+%
+%%%%%%%%%%%%%%%
+
+\documentclass[10pt,a4paper,bibliography=totoc]{scrbook}
+
+
+\input{General/packages}
+\input{General/commands}
+\input{General/tikzdefs}
+
+\input{General/acronyms}
+\input{General/Hyphenations}%
+
+
+
+%\renewcommand{\Ausblenden}[1]{#1}
+
+\begin{document}
+    
+   
+\input{Contents/General/en/TitlePage} 
+
+%Inhaltsverzeichnis
+\tableofcontents
+\newpage
+
+\listoffigures
+\newpage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Liste der Programme}{List of Listings}}
+%\lstlistoflistings
+\listofcodes
+\cleardoublepage
+
+% Ist in acronyms/Acronymlist aufgegangen
+%\input{../contents/JetsonNano/Symbollist}
+%\newpage
+
+\input{Contents/General/en/Acronymlist}
+\newpage
+
+\part{Introduction}
+\input{Contents/General//en/Introduction} 
+
+\part{Domain Knowledge}  
+\input{Contents/General/en/Application}
+\input{Contents/General/en/HardwareDescription}
+\input{Contents/General/en/SensorActor}
+
+
+\part{Development}
+\input{Contents/General/en/Development}
+\input{Contents/General/en/Deployment}
+\input{Contents/General/en/ListOfMaterial}
+
+
+\part{Verification - Evaluation - Conclusion}
+\input{Contents/General/en/Results}
+
+\part{Packages}
+\input{Contents/General/en/Packages}
+\input{Contents/General/en/Numpy}
+\input{Contents/General/en/Matplotlib}
+
+
+\newpage
+
+%\addcontentsline{toc}{chapter}{\TRANS{Stichwortverzeichnis}{Index}}
+\printindex
+
+
+\end{document}

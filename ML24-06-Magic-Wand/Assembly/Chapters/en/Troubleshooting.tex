@@ -1,0 +1,61 @@
+%%%%%%%%%%%%
+%
+% $Autor: Sudeshna $
+% $Datum: 2019-03-05 08:03:15Z $
+% $Pfad: Troubleshooting.tex $
+% $Version: 4250 $
+% !TeX spellcheck = en_GB/de_DE
+% !TeX encoding = utf8
+% !TeX root = manual 
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%%%%%%%
+
+\chapter{Troubleshooting}
+
+\section{Troubleshooting}
+
+If the Magic Wand seems to have a problem, first review this list of possible problems and solutions. If none of these troubleshooting tips apply, please visit www.magic-wand.com and click on Support.
+
+\subsection{The Magic Wand can’t turn on (i.e. Power LED or Orange Programmable LED are not working)}
+
+\textbf{Common Issues}
+\begin{itemize}
+	\item Ensure you have \textbf{FULLY} inserted the USB cables.
+	\item Check you have a \textbf{COMMON GROUND} where required.
+	\item Where possible use USB 2.0 ports or a USB 2.0 \textbf{POWERED HUB} to rule out USB 3.0 issues.
+	\item Try other computers where possible.
+	\item Try other USB leads where possible.
+	\item You may not have the correct driver installed. \texttt{CH340/341 12}, \texttt{CP2102 9}, or \texttt{FT232 VCP Drivers- FTDI 11}.
+	\item There may be a problem with the board, check or remove your wiring first.
+	\item Remove any items connected to pins 0 and 1.
+\end{itemize}
+
+\textbf{Computer Related}
+\begin{itemize}
+	\item Close any other serial programs before opening the IDE. Ensure you turn off any additional security/antivirus just to test.
+	\item There may be a problem with the PC, try \textbf{RESTARTING} it.
+	\item You may have selected the wrong COM port.
+	\item Avoid cloud/network-based installations where possible OR ensure your Network/Cloud software is \textbf{RUNNING}.
+	\item Clear your browser's \textbf{CACHE}.
+	\item Close the IDE before using any other serial programs. Preferably install IDE’s as \textbf{ADMINISTRATOR} or your OS equivalent.
+\end{itemize}
+
+\subsection{I am not getting the gesture which I waved}
+\begin{itemize}
+	\item \textbf{Review Technique}: Revisit the gesture instructions to confirm you are performing the movements correctly.
+	\item \textbf{Clear Space}: Make sure you have ample space around you, free from obstructions that could interfere with gesture detection.
+	\item \textbf{Re-hold}: Hold the wand in a manner properly. If the gesture still cannot be detected, please contact the authorized dealers or service centers for further assistance.
+\end{itemize}
+
+\subsection{Is it wireless, Can I connect it with Bluetooth?}
+It can be connected with Bluetooth, but as there is no inbuilt battery, it should be powered by connecting it with the Micro-B USB cable to the computer.
+
+\subsection{How to turn on/turn off the magic wand?}
+The board is powered via USB connector. Once turned on, the Power green LED lights up. Removing the cable from the USB port can turn off the Magic Wand.
+
+
+
+
+
+

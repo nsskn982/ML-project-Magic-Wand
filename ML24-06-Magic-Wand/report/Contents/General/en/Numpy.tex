@@ -1,0 +1,473 @@
+%%%
+%
+% $Autor: Adhiraj Walse $
+% $Datum: 2024-12-24 $
+% $Dateiname: 
+% $Version: 4620 $
+%
+% !TeX spellcheck = GB
+% !TeX program = pdflatex
+% !TeX encoding = utf8
+%
+%%%
+\chapter{Numpy}
+
+\section{Introduction}
+
+NumPy extends Python's functionality by adding support for large, multidimensional arrays and matrix operations. This library enables the creation and manipulation of complex structures such as masked arrays and matrices, while offering a comprehensive set of mathematical functions for efficient array processing. These functions support various operations, including algebraic and logical computations, array reshaping, sorting, selection, input/output handling, discrete Fourier transforms, basic linear algebra, statistical functions, and random number generation. \cite{Harris:2023}
+
+Developed by Travis Oliphant in 2005, NumPy (short for Numerical Python) is an essential open-source library that plays a significant role in scientific computing and data analysis. Its primary feature, the ndarray (N-dimensional array), simplifies the management and processing of large, homogeneous datasets. Additionally, NumPy provides vital tools for linear algebra, Fourier transforms, and matrix operations, making it an integral component of many scientific computing frameworks and applications. \cite{NumPy:2024}
+
+\section{Description}
+
+As a prominent library in the Python ecosystem, NumPy delivers strong support for large-scale, multidimensional arrays and matrices. It enhances Python by enabling efficient element-wise operations through broadcasting and offers a wide array of functions for essential mathematical tasks like linear algebra. Additionally, NumPy provides interfaces that allow code written in languages such as C, C++, and Fortran to be integrated, which is critical for performance-sensitive computing applications. \cite{Harris:2023}
+
+The power of NumPy lies in its optimized management of numerical data and its ability to execute various mathematical operations. The library excels in linear algebra and integrates smoothly with other computational libraries, offering substantial performance gains when processing large datasets. These features make NumPy an essential tool for scientific computing, data analysis, and machine learning projects.
+
+\textbf{Key Capabilities of NumPy:}
+
+\begin{enumerate}
+	\item \textbf{ndarray}  
+	NumPy overcomes the limitations of Python lists with its ndarray object, which improves data storage efficiency. While lists can store multiple data types, ndarrays ensure that each column contains a single data type, which enhances computational performance \cite{NumPy:2024}.
+	
+	\item \textbf{Array Creation and Manipulation}  
+	NumPy provides users with the ability to create arrays of varying dimensions and predefined values using utility functions such as numpy.zeros(), numpy.ones(), and numpy.random. It also supports a wide range of array manipulation techniques, including slicing, indexing, merging, and segmentation, making complex data operations easier \cite{GeeksforGeeks:2017}.
+	
+	\item \textbf{Mathematical Functions and Operations}  
+	The library includes an extensive set of mathematical functions optimized for array operations. These functions cover essential arithmetic, trigonometric, exponential, and logarithmic operations, enabling efficient calculations across arrays without needing to use loops \cite{GeeksforGeeks:2017}.
+	
+	\item \textbf{Linear Algebra}  
+	A key feature of NumPy is its robust support for linear algebra, offering operations for vectors and matrices, including matrix multiplication (numpy.dot()), inversion (numpy.linalg.inv()), eigenvalue calculation (numpy.linalg.eig()), and singular value decomposition (numpy.linalg.svd) \cite{GeeksforGeeks:2017}.
+	
+	\item \textbf{Random Number Generation}  
+	The numpy.random module provides advanced functionality for generating random numbers and arrays that follow specific probability distributions, which is essential for statistical modeling and simulations \cite{GeeksforGeeks:2017}.
+	
+	\item \textbf{Integration with Other Libraries}  
+	NumPy acts as the core component for many other scientific computing libraries, such as SciPy, Matplotlib, pandas, and scikit-learn, facilitating seamless data interoperability and supporting efficient analysis and visualization workflows \cite{Raj:2019}.
+	
+\end{enumerate}
+
+
+
+\section{Manual}
+
+\subsection{Installation Instructions}
+
+NumPy is compatible with both Python 2 and Python 3 versions, though support varies by version.
+
+\begin{itemize}
+	\item For Python 2, it is advisable to use NumPy versions up to 1.16.5 as these versions maintain compatibility with this Python version.
+	\item For Python 3, specifically versions 3.5 and later, users should employ NumPy 1.17.0 or newer versions to ensure full compatibility and access to the latest features.
+	\item To verify the installation of Python on your machine, you can execute the following command in your terminal or command prompt:
+	
+\begin{lstlisting}[caption={Example command to check Python version}, label={code:python-version}, style=pythonstyle]
+	# Check the Python version
+	python --version
+\end{lstlisting}
+
+\end{itemize}
+
+\textbf{Installing NumPy via pip}
+
+NumPy can be installed using pip, the Python package manager, which is included by default with most Python installations. To install NumPy, run the following command:
+
+\begin{lstlisting}[caption={Example command to install NumPy using pip}, label={code:install-numpy}, style=pythonstyle]
+	# Install NumPy using pip
+	pip install numpy
+\end{lstlisting}
+
+This command retrieves the latest version of NumPy from the Python Package Index (PyPI) and installs it.
+
+\vspace{1em}
+
+\textbf{Installing NumPy via Conda}
+
+If you are using the Conda package manager, it is recommended to install NumPy within a separate environment to avoid conflicts with other packages. You can follow these steps:
+
+\begin{lstlisting}[caption={Example commands to create a Conda environment and install NumPy}, label={code:conda-numpy-install}, style=pythonstyle]
+	# Creating a new environment named 'my-env'
+	conda create -n my-env
+	
+	# Activating the environment (use the appropriate command based on your operating system)
+	conda activate my-env  # Windows
+	source activate my-env # Linux and macOS
+	
+	# Optionally add Conda-forge as a channel
+	conda config --env --add channels conda-forge
+	
+	# Install NumPy in the active environment
+	conda install numpy
+\end{lstlisting}
+
+
+\subsection{Verifying Installation: Import NumPy}
+
+To confirm that NumPy has been installed properly, open a Python interpreter or create a new Python script and input the following commands. This will import NumPy and display the installed version, verifying that it is ready for use:
+
+\begin{lstlisting}[caption={Example code to print the installed NumPy version}, label={code:numpy-version}, style=pythonstyle]
+	import numpy as np
+	print("NumPy version:", np.__version__)
+\end{lstlisting}
+
+
+This script checks the version of NumPy currently installed on your system, such as \textbf{numpy - 1.24.1}, and displays it.
+
+\subsection{Key Attributes of NumPy}
+
+NumPy's utility is defined by several core attributes that facilitate efficient data management and operations \cite{NumPy:2024}:
+
+\begin{itemize}
+	\item \textbf{shape}: This attribute provides the dimensions of an array, indicating the size along each axis as a tuple.
+	\item \textbf{dtype}: This describes the data type of the array's elements, supporting types like integers, floats, or booleans, which aids in the consistent handling of data.
+	\item \textbf{ndim}: This denotes the number of dimensions or axes of the array.
+	\item \textbf{size}: It reflects the total count of elements in the array, computed as the product of the array's dimensions.
+	\item \textbf{itemsize}: This shows the memory size in bytes for each element in the array, illustrating the storage efficiency.
+	\item \textbf{nbytes}: This calculates the total amount of memory (in bytes) the array uses, which is the product of the size and the itemsize.
+	\item \textbf{data}: Represents a buffer containing the actual data of the array, allowing direct access to the array's raw data.
+\end{itemize}
+
+\subsection{Practical Examples of Attributes}
+\begin{lstlisting}[caption={Example code demonstrating NumPy array operations}, label={code:numpy-array-operations}, style=pythonstyle]
+	import numpy as np
+	
+	# Defining data types for structured data
+	dtypes = {'store_nbr': np.dtype('int64'),
+		'item_nbr': np.dtype('int64'),
+		'unit_sales': np.dtype('float64'),
+		'onpromotion': np.dtype('O')}
+	
+	# Check for unique data
+	unique_data = np.unique(data['variable'], return_counts=True)
+	
+	# Reshape and manage data
+	data_array = np.arange(15).reshape(3, 5)
+	reshaped_array = data_array.reshape(data_array.shape[0], -1)
+	
+	# General array creation
+	array_example = np.array([[0, 1, 2, 3, 4],
+	[5, 6, 7, 8, 9],
+	[10, 11, 12, 13, 14]])
+	
+	# Accessing array attributes
+	print("Shape:", data_array.shape)
+	print("Number of dimensions:", data_array.ndim)
+	print("Data type:", data_array.dtype.name)
+	print("Size of each element:", data_array.itemsize)
+	print("Total size of array:", data_array.size)
+	
+	# Example of array operation
+	unique_values, counts = np.unique(data_array, return_counts=True)
+	print("Unique values and counts:", np.array((unique_values, counts)))
+\end{lstlisting}
+
+
+\section{Examples}
+
+\subsection{Linear Algebra Fundamentals}
+NumPy is equipped with a vast selection of functions designed for high-level linear algebra operations. The following example illustrates how to solve a system of linear equations represented by Ax = B:
+
+\begin{lstlisting}[caption={Example code to solve a system of linear equations using NumPy}, label={code:numpy-linalg-solve}, style=pythonstyle]
+	import numpy as np
+	
+	# Defining coefficients matrix A and constant vector B
+	A = np.array([[3, 1, -2], [1, -1, 4], [2, 0, 3]])
+	B = np.array([5, 6, 4])
+	
+	# Computing solution vector x
+	x = np.linalg.solve(A, B)
+	
+	print("Solution vector x:", x)
+\end{lstlisting}
+
+
+\subsection{Advanced Array Operations}
+NumPy excels in performing vectorized operations across arrays efficiently and swiftly, surpassing traditional Python techniques.
+
+\subsubsection{Element-wise Operations}
+Operations such as addition and multiplication can be applied element-wise between arrays of identical shapes by using (a + b and a * b) formula, which is critical for mathematical and scientific computations.
+
+\subsubsection{Scalar Operations}
+NumPy enables operations between arrays and scalars seamlessly for example (5 * a). This functionality is integral for modifying data scales and normalizations efficiently.
+
+
+\subsubsection{Boolean Operations}
+NumPy facilitates direct array comparisons, producing boolean arrays ideal for conditional filtering. For example, a>5 checks if elements in array a are greater than 5. 
+
+\subsubsection{Summation Functions}
+The library provides methods like np.sum() to perform summations across arrays rapidly, an essential tool in data analysis.
+
+\begin{code}
+	\begin{Python}
+		# Setup two example NumPy arrays
+		a = np.array([1, 2, 3, 4])
+		b = np.array([10, 20, 30, 40])
+		
+		# Demonstrating various operations
+		print("Element-wise addition:", a + b)
+		print("Element-wise multiplication:", a * b)
+		print("Scalar multiplication:", 5 * a)
+		print("Elements greater than 5:", a > 5)
+		print("Sum of elements in a:", np.sum(a))
+	\end{Python}
+	\caption{Example code demonstrating basic NumPy array operations}\label{code:numpy-array-operations}
+\end{code}
+
+\subsection{Advanced Broadcasting Techniques}
+NumPy's broadcasting feature is pivotal for performing operations on arrays of different sizes, by extending the smaller array across the larger one to align their shapes. This capability is essential for efficiently applying scalar operations across entire arrays or combining arrays of differing dimensions without the explicit replication of data.
+
+\begin{lstlisting}[caption={Example code demonstrating broadcasting in NumPy}, label={code:numpy-broadcasting}, style=pythonstyle]
+	import numpy as np
+	
+	# Example with a scalar and an array
+	a = np.array([1, 2, 3])
+	b = 2
+	print("Broadcasting with scalar addition:", a + b)
+	
+	# Example with 2D and 1D arrays
+	A = np.array([[1, 2, 3], [4, 5, 6]])
+	b = np.array([1, 0, 1])
+	print("Complex broadcasting with 2D and 1D arrays:\n", A + b)
+\end{lstlisting}
+
+\subsection{Reshaping and Flattening}
+Manipulating the structure of arrays is a common task in data processing, especially in contexts like machine learning where data shape directly impacts model behavior. NumPy offers several functions to reshape and flatten arrays, facilitating the reorganization of data structures.
+
+\subsubsection{Reshaping Arrays}
+Changing the shape of an array to fit specific requirements without altering the data is performed with the reshape method.
+
+\subsubsection{Flattening Arrays}
+Converting a multi-dimensional array into a 1D array is frequently necessary for processes that require a linear sequence of elements.
+
+\begin{lstlisting}[caption={Example code demonstrating array reshaping and flattening in NumPy}, label={code:numpy-reshape-flatten}, style=pythonstyle]
+	import numpy as np
+	
+	# Reshaping an array into a 3x3 matrix
+	a = np.arange(9).reshape(3, 3)
+	print("Reshaped to 3x3 array:\n", a)
+	
+	# Flattening the array
+	flat_a = a.flatten()
+	print("Flattened array:", flat_a)
+	
+	# Reshaping to 1x9 for a different view
+	reshaped_a = a.reshape(1, 9)
+	print("Reshaped to 1x9 array:\n", reshaped_a)
+\end{lstlisting}
+
+\subsection{Stacking and Splitting Arrays}
+NumPy simplifies the process of combining multiple arrays into one and dividing a single array into multiple parts, crucial for data preparation and segmentation tasks.
+
+\subsubsection{Stacking Arrays}
+Both vertical and horizontal stacking are common operations that combine different datasets into a single array.
+
+\subsubsection{Splitting Arrays}
+Dividing data into manageable or required portions is often necessary in cross-validation workflows or during data analysis.
+
+\begin{lstlisting}[caption={Example code demonstrating array stacking and splitting in NumPy}, label={code:numpy-stack-split}, style=pythonstyle]
+	import numpy as np
+	
+	# Vertical and horizontal stacking examples
+	a = np.array([1, 2, 3])
+	b = np.array([4, 5, 6])
+	v_stack = np.vstack((a, b))
+	h_stack = np.hstack((a, b))
+	print("Vertically stacked:\n", v_stack)
+	print("Horizontally stacked:", h_stack)
+	
+	# Splitting an array into three parts
+	c = np.arange(9)
+	split_c = np.split(c, 3)
+	print("Equally split array:", split_c)
+\end{lstlisting}
+
+\subsection{Managing NumPy Versions}
+Understanding the compatibility between NumPy and Python versions is crucial for maintaining stable applications. Here's an overview of how NumPy aligns with different Python environments:
+
+\begin{itemize}
+	\item For Python 2 users, it's recommended to use NumPy versions up to 1.16.5, as these are the last releases to support Python 2.
+	\item For Python 3, especially versions 3.5 and later, NumPy 1.17.0 or newer should be used to ensure full functionality and support.
+	\item To verify the Python version on your machine, execute the following in your command prompt or terminal:
+\end{itemize}
+
+\begin{lstlisting}[caption={Command to check the installed Python version}, label={code:python-version}, style=pythonstyle]
+	python --version
+\end{lstlisting}
+
+
+To keep NumPy up-to-date or to install a specific version, use the package manager that was originally used for installation, typically pip for Python installations or conda for Anaconda distributions:
+
+\subsection{Upgrading NumPy}
+
+Utilize pip, Python's package installer, to update NumPy to the most recent version available from the Python Package Index (PyPI) or to install a specific version as needed.
+
+\begin{lstlisting}[caption={Commands to upgrade or install a specific version of NumPy using pip}, label={code:pip-install-numpy}, style=pythonstyle]
+	pip install --upgrade numpy
+	pip install numpy==1.21.0
+\end{lstlisting}
+
+\textbf{Upgrading NumPy with conda}
+
+If you are using Anaconda, manage your NumPy installation using the conda command line. This approach is beneficial for handling dependencies more effectively than pip.
+
+\begin{lstlisting}[caption={Commands to update or install a specific version of NumPy using conda}, label={code:conda-install-numpy}, style=pythonstyle]
+	conda update numpy
+	conda install numpy=1.21.0
+\end{lstlisting}
+
+Maintaining compatibility with your project's dependencies during upgrades is vital. Consider the following:
+
+\begin{itemize}
+	\item \textbf{Maintaining a Requirements File}
+	
+	Keep a `requirements.txt` file updated to manage package versions within your project environment. After any upgrades, generate a new requirements file and thoroughly test your project to ensure all components function as expected without conflicts or deprecated issues.
+\end{itemize}	
+
+\begin{lstlisting}[caption={Command to export installed packages to a requirements.txt file}, label={code:pip-freeze-requirements}, style=pythonstyle]
+		pip freeze > requirements.txt
+\end{lstlisting}
+	
+	
+\subsection{File Interaction with NumPy}
+NumPy offers robust functionality for file operations, allowing arrays to be saved to and loaded from the disk efficiently.
+
+\textbf{Storing and Retrieving Arrays}
+
+NumPy utilizes ".npy" as the standard file format for saving single arrays, which optimizes space and preserves data integrity. When dealing with multiple arrays, the ".npz" format is preferable as it encapsulates several arrays into one file without loss of information.
+
+\begin{lstlisting}[caption={Example code to save and load arrays in .npy and .npz formats}, label={code:numpy-save-load-arrays}, style=pythonstyle]
+	# Saving a single array to a .npy file
+	import numpy as np
+	a = np.array([1, 2, 3, 4, 5])
+	np.save('my_array.npy', a)
+	
+	# Loading the array from a .npy file
+	b = np.load('my_array.npy')
+	print("Loaded array:", b)
+	
+	# Saving multiple arrays into a .npz file
+	a = np.array([[1, 2, 3], [4, 5, 6]])
+	b = np.array([7, 8, 9])
+	np.savez('my_arrays.npz', array1=a, array2=b)
+	
+	# Retrieving arrays from a .npz file
+	data = np.load('my_arrays.npz')
+	print("First array:", data['array1'])
+	print("Second array:", data['array2'])
+\end{lstlisting}
+
+\textbf{Handling Custom File Formats}
+
+NumPy's `genfromtxt` function provides a versatile solution for importing data from structured text files, like CSVs. This function is especially useful for data that may contain missing values, requiring conversion between different data types or extraction based on specific criteria.
+
+\begin{lstlisting}[caption={Example code to import and export data using NumPy with CSV files}, label={code:numpy-csv-import-export}, style=pythonstyle]
+	# Importing data from a CSV file
+	import numpy as np
+	data = np.genfromtxt('my_data.csv', delimiter=',')
+	
+	# Exporting an array to a CSV file
+	np.savetxt('array.csv', data, delimiter=',')
+\end{lstlisting}
+
+\subsection{Error Handling in NumPy}
+
+NumPy provides robust tools for managing errors and exceptions that arise during numerical computations, particularly with floating-point operations. Here's how NumPy handles some common numerical errors:
+
+\subsection{Handling Floating-Point Errors}
+
+\textbf{Overflow Error in Exponential Functions}
+
+Calculating the exponential of a large value with `np.exp(1000)` triggers an overflow error because the result exceeds the range that can be represented by the floating-point type in NumPy.
+
+\textbf{Invalid Operation Error}
+
+An invalid operation error occurs with `np.sqrt(-1)`, as taking the square root of a negative number is not valid in the realm of real numbers, thus raising a FloatingPointError.
+
+\textbf{Division by Zero Error}
+
+Attempting to divide by zero using `np.divide()` where the denominator is zero leads to a divide by zero error, which NumPy handles by raising a FloatingPointError.
+
+\textbf{Managing Runtime Warnings}
+
+When configured to 'raise' errors for invalid operations, such as division by zero, NumPy will elevate these issues to FloatingPointError exceptions. This is crucial for debugging and ensuring that numerical calculations adhere to expected standards of accuracy and reliability.
+
+\begin{lstlisting}[caption={Example code demonstrating handling floating-point errors in NumPy}, label={code:numpy-error-handling}, style=pythonstyle]
+		import numpy as np
+		np.seterr(all='raise')  # Set to raise exceptions for all types of floating-point errors
+		
+		try:
+		# Attempting an operation that might cause an error
+		np.divide(1, 0)
+		except FloatingPointError as e:
+		print("Caught an exception:", e)
+\end{lstlisting}
+
+
+
+\section{Example - files}
+NumPy can interact with files primarily through loading and saving arrays to and from disk.
+
+\textbf{Saving and Loading Array}
+
+The standard file formats that can save array using the ".npy" format to store the array. If we would like to save multiple arrays in one file, ".npz" will be used instead of ".npy".
+For a single array, we can use the "save" function to store the data.
+For multiple arrays, we use the "savez" function to store the multiple data.
+
+\begin{lstlisting}[caption={Example code for saving and loading NumPy arrays in .npy and .npz formats}, label={code:numpy-save-load}, style=pythonstyle]
+	# For single array, ".npy" format would be applied
+	# Example 1:
+	import numpy as np
+	a = np.array([1, 2, 3, 4, 5])
+	np.save('my_array.npy', a)
+	
+	# Loading an array from a ".npy" file:
+	b = np.load('my_array.npy')
+	print(b)
+	
+	# Example 2:
+	# Saving multiple arrays into a single file in NumPy .npz format:
+	a = np.array([[1, 2, 3], [4, 5, 6]])
+	b = np.array([7, 8, 9])
+	np.savez('my_arrays.npz', array1=a, array2=b)
+	
+	# Loading multiple arrays from a .npz file:
+	data = np.load('my_arrays.npz')
+	print(data['array1'])
+	print(data['array2'])
+\end{lstlisting}
+
+
+\textbf{Saving and Loading for custom file formats}
+
+NumPy's genfromtxt function is a flexible and powerful way to import data from text files, like CSV, into NumPy arrays. It allows for handling missing values, converting data types, and selecting specific columns.
+
+\begin{lstlisting}[caption={Example code for loading and saving data using NumPy}, label={code:numpy-load-save}, style=pythonstyle]
+	import numpy as np
+	# Basic usage to load data from a CSV file
+	data = np.genfromtxt('my_data.csv', delimiter=',')
+	
+	# Save an array to a text file, such as CSV
+	np.savetxt('array.csv', data, delimiter=',')
+\end{lstlisting}
+
+
+\section{Further Reading}
+
+Diving deeper into NumPy and enhancing your numerical computing skills can be significantly aided by engaging with diverse educational materials. The following resources have been carefully selected to provide comprehensive learning opportunities:
+
+\subsection{Neural Network for Beginners: Build Deep Neural Networks and Develop Strong Fundamentals using Python’s NumPy, and Matplotlib}
+Authored by Sebastian Klaas, this introductory guide focuses on the foundational principles and hands-on experience necessary for building neural networks. Utilizing NumPy for computations and Matplotlib for visualization, it provides a clear path to understanding the mathematical foundations of neural networks, including key concepts like forward propagation, backpropagation, and optimization\cite{Sewak:2018}.
+
+\subsection{Effective Computation in Physics: Field Guide to Research with Python}
+Targeted not just at physicists but any researchers using computational methods, this book provides a robust introduction to scientific computing with Python. Covering key libraries such as NumPy, SciPy, and Matplotlib, it extends into areas like parallel computing and database management. The practical, example-driven approach makes it an excellent resource for applying Python to solve real-world scientific problems \cite{McKinney:2012}.
+
+\subsection{Python for Data Analysis}
+Written by Wes McKinney, the creator of pandas, this book is invaluable for those looking to understand how NumPy fits into the larger picture of data analysis with Python. Covering everything from data preparation to complex analyses, it provides a solid foundation in using NumPy and pandas together to handle, process, and analyze data effectively.
+
+\subsection{NumPy Official Website}
+As the primary resource for all things NumPy, the official documentation offers exhaustive material suitable for learners at all levels. From beginner tutorials to advanced feature guides and release notes, it's the definitive source for up-to-date and accurate information on how to utilize NumPy to its fullest potential \cite{NumPy:2024}.
+
+\subsection{NumPy Beginner's Guide - Third Edition}
+Ideal for newcomers to NumPy or scientific computing in general, Ivan Idris’s guide is updated with the latest features of NumPy and offers a hands-on learning approach. Through detailed examples and exercises, readers can explore basic to advanced array operations, learn efficient data manipulation techniques, and apply NumPy in practical scenarios such as image processing and financial modeling \cite{NumPy:2024}.
+
+Each of these resources provides unique insights and practical knowledge that can help both novices and seasoned users of NumPy expand their skills and understanding of numerical computing with Python.
+

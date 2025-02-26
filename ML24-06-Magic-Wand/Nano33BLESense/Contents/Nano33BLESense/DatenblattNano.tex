@@ -1,0 +1,55 @@
+%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-18 11:15:45Z $
+% $Pfad: WuSt/Skript/Produktspezifikation/powerpoint/ImageProcessing.tex $
+% $Version: 4620 $
+%
+%%%%%%
+
+
+\chapter{Datenblätter}
+
+\section{Datenübersicht}
+
+\newcounter{mycounter}
+
+\setcounter{mycounter}{1}
+
+\whiledo {\value{mycounter} < 4}
+{
+	\includegraphics[width=1\textwidth,page=\themycounter]{../../MLbib/Arduino/Nano33BLESense/ABX00031_ENG_TDS.pdf}
+	\stepcounter{mycounter}
+	\newpage
+}
+
+
+
+\setcounter{mycounter}{1}
+
+\whiledo {\value{mycounter} < 2}
+{
+  \includegraphics[width=1\textwidth,page=\themycounter]{../../MLbib/Arduino/Nano33BLESense/Pinout-NANOsense_latest.pdf}
+  \stepcounter{mycounter}
+  \newpage
+}
+
+\setcounter{mycounter}{1}
+
+\whiledo {\value{mycounter} < 2}
+{
+	\includegraphics[width=1\textwidth,page=\themycounter]{../../MLbib/Arduino/Nano33BLESense/NANO33BLE_V2.0_sch.pdf}
+	\stepcounter{mycounter}
+	\newpage
+}
+%
+%\setcounter{mycounter}{1}
+%
+%\whiledo {\value{mycounter} < 12}
+%{
+%	\includegraphics[width=1\textwidth,page=\themycounter]{../../MLbib/Arduino/Portenta_H7_Web.pdf}
+%	\stepcounter{mycounter}
+%	\newpage
+%}
+%
+%

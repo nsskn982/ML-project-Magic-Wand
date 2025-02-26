@@ -1,0 +1,82 @@
+% !TeX document-id = {9ccc6fb7-c5f4-4308-9c17-4c226ad62230}
+%%%%%%
+%
+% $Autor: Alpizar, Kumari, JK $
+% $Datum: 2023-01-31 11:59:00Z $
+% $Version: 1.0.0 $
+%
+%
+% !TeX encoding = utf8
+% !TeX root = Rename
+% !TeX TXS-program:bibliography = txs:///biber
+%
+%%%%%%
+
+
+
+\chapter{Development}
+
+In order for KDD methodology to be implemented into a feasible project, there are a set of sub process to understand and define before any real implementation, which will be specific for each project purpose. The first section will be covered in the following chapter; its intention is mainly to get deeper comprehension on the data surroundings for the project. Therefor, Database will be the fundamental aspect for discussion.
+
+The idea of this chapter is to introduce and describe for ESP32 Counter Detection, what are the Development stages that will be held during the project. Additionally, the steps of the KDD process with respect to the project will be explained in this section. \cite{Mueller:2020,Mueller:2021}
+
+This chapter intention is to talks about how the KDD process is implemented and the steps followed
+for each of the KDD Processes starting with the database description.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Database Description}
+
+The database for this project will be two folders consisting of images of different digits. Folder "pictures\_original" consists of raw images, whereas folder "pictures\_resize" consists of resized images. The images were copied from an \href{https://github.com/jomjol/ctmake-KI-ESP32-Teil2}{existing github project}. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Description }
+\begin{itemize}
+	\item Before data transformation:\\
+	Image size : 703 bytes - 8KB\\
+	Image dimensions : 32X59 - 37X67\\
+	Color space : RGB
+\end{itemize}
+
+\begin{itemize}
+	\item After data transformation:\\
+	Image size : 795 bytes - 923 bytes\\
+	Image dimensions : 20X32\\
+	Color space : RGB
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Selection}
+The data from this particular project is selected because it has images of all digits from 0-9 alongwith different versions of each image. This would be higly uselful during the training of the model.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Preparation}
+
+The data preparation includes creating various versions of the same image through data augmentation. Data augmentation is the process of generating images with different brightness, height, width, rotation, and zoom parameters from the same original image. To achieve data augmentation ImageDataGenerator method is loaded from the TensorFlow library \cite{Mueller:2021Part1}. Concerning this project, the data preparation step simply involves placing the data in the correct folder structure.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Transformation}
+Data transformation will be required to ensure that correct data, and appropriate quality data are ingested into the model. This is important because it would impact the processing of images and the performance of the overall model. For instance, in this task resizing is required to ensure uniform input size. Ideally, it is believed that the smaller the image size faster the training and recognition process. However, if the image size is too small then the information will be lost \cite{Mueller:2021Part1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Mining}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Model Description}
+The model is created based on \ac{cnn}. Once the network is created it needs to be loaded into variable called model. This could be easily acheived by using Keras from TensorFlow library \cite{Mueller:2022Part2}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Model Training}
+Model training can be done by using a simple command with the function model.fit(). This function takes the training, evaluation data and the number of epochs to be trained to this function. One epoch is exactly one revolution over all the trining data. This step can take a lot of time depending on the computational power and number of images \cite{Mueller:2022Part2}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+(This section will be updated once the model's development is finalized)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+

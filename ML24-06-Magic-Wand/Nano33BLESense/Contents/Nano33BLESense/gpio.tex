@@ -1,0 +1,259 @@
+%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-29 07:55:27Z $
+% $Pfad: komponenten/Bilderkennung/Produktspezifikation/Nano33BLESense/gpio.tex $
+% $Version: 1785 $
+%
+% !TeX encoding = utf8
+% !TeX root = Nano33BLESense
+% !TeX TXS-program:bibliography = txs:///bibtex
+%
+%
+%%%%%%%%%%%%%%%
+
+
+%todo GitLab\ToDo\TinyML
+% TinyML Seite 101
+
+\chapter{Arduino}
+
+Es gibt eine große Auswahl an Arduino-Boards, alle mit unterschiedlichen Fähigkeiten. Nicht auf allen läuft TensorFlow Lite für Mikrocontroller. Das Board, das nun verwendet wird, ist das Arduino Nano 33 BLE Sense. Es ist nicht nur mit TensorFlow Lite kompatibel, sondern enthält auch ein Mikrofon und einen Beschleunigungssensor. Wir empfehlen, die Version des Boards mit Headern zu kaufen, die es einfacher macht, andere Komponenten ohne Löten anzuschließen Die meisten Arduino-Boards haben eine eingebaute LED, und diese werden wir verwenden, um unsere Sinuswerte visuell auszugeben. Abbildung \ref{fig:NanoLED} zeigt ein Arduino Nano 33 BLE Sense-Board mit hervorgehobener LED.
+
+\begin{figure}
+  \centering
+  \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0602}
+  
+  \caption{ Arduino Nano 33 BLE Sense-Board mit hervorgehobener LED}\label{fig:NanoLED}
+\end{figure}
+
+
+ \section{Handhabung der Ausgabe am Arduino}
+ 
+ Da wir nur mit einer LED arbeiten können, müssen wir kreativ denken. Eine Möglichkeit ist, die Helligkeit der LED basierend auf dem zuletzt vorhergesagten Sinuswert zu variieren.  Da der Wert von -1 bis 1 reicht, könnten wir 0 mit einer vollständig ausgeschalteten LED, -1 und 1 mit einer vollständig leuchtenden LED und alle Zwischenwerte mit einer teilweise gedimmten LED darstellen. Während das Programm in einer Schleife Schlussfolgerungen ausführt, wird die LED wiederholt ein- und ausgeblendet.
+
+Mit der Konstante \PYTHON{kInferencesPerCycle} kann die Anzahl der Inferenzen, die über einen vollen Sinuszyklus durchgeführt werden, variiert werden. Da eine Inferenz eine bestimmte Zeit in Anspruch nimmt, kann durch die Einstellung der Konstante \PYTHON{kInferencesPerCycle}, die in \FILE{constants.cc} definiert ist, eingestellt werden, wie schnell die LED ausgeblendet wird.
+ 
+Es gibt eine Arduino-spezifische Version dieser Datei in \FILE{hello\_world/arduino/constants.cc}. Die Datei hat den gleichen Namen wie \FILE{hello\_world/constants.cc}, so dass sie anstelle der ursprünglichen Implementierung verwendet wird, wenn die Anwendung für Arduino erstellt wird.
+Um unsere eingebaute LED zu dimmen, können wir eine Technik namens Pulsweitenmodulation (PWM) verwenden. Wenn wir einen Ausgangspin extrem schnell ein- und ausschalten, wird die Ausgangsspannung des Pins zu einem Faktor des Verhältnisses zwischen der Zeit, die im Aus- und Ein-Zustand verbracht wird. Wenn der Pin 50 \% der Zeit in jedem Zustand verbringt, wird seine Ausgangsspannung 50 \% seines Maximums betragen. Wenn er 75 \% im Ein-Zustand und 25 \% im Aus-Zustand verbringt, wird seine Spannung 75 \% seines Maximums betragen.
+
+PWM ist nur an bestimmten Pins bestimmter Arduino-Geräte verfügbar, aber es ist sehr einfach zu verwenden: Wir rufen einfach eine Funktion auf, die unseren gewünschten Ausgangspegel für den Pin festlegt.
+ 
+ 
+     
+ Der Code, der die Ausgabebehandlung für Arduino implementiert, befindet sich in \FILE{hello\_world/arduino/output\_handler.cc}, die anstelle der Originaldatei   \FILE{hello\_world/output\_handler.cc}.
+ 
+ Gehen wir den Quellcode durch:
+ 
+\begin{lstlisting}
+ #include "tensorflow/lite/micro/examples/hello_world/output_handler.h"
+ #include "Arduino.h"
+ #include "tensorflow/lite/micro/examples/hello_world/constants.h"
+\end{lstlisting} 
+
+
+ Zunächst binden wir einige Header-Dateien ein. Unsere \FILE{output\_handler.h} spezifiziert die Schnittstelle für diese Datei. \FILE{Arduino.h} stellt die Schnittstelle für die Arduino-Plattform bereit; wir verwenden diese, um Steuerung des Boards. Da wir Zugriff auf \PYTHON{kInferencesPerCycle} benötigen, binden wir auch \FILE{constants.h}.
+ 
+Als nächstes definieren wir die Funktion und weisen sie an, was sie bei der ersten Ausführung tun soll:
+
+\begin{lstlisting}
+ // Adjusts brightness of an LED to represent the current y value
+ void HandleOutput(tflite::ErrorReporter* error_reporter, float x_value,
+ float y_value) {
+ 	// Track whether the function has run at least once
+ 	static bool is_initialized = false;
+ 	// Do this only once
+ 	if (!is_initialized) {
+ 		// Set the LED pin to output
+ 		pinMode(LED_BUILTIN, OUTPUT);
+ 		is_initialized = true;
+ 	}
+\end{lstlisting} 
+ 
+ 
+In $C++$ behält eine Variable, die innerhalb einer Funktion als statisch deklariert ist, ihren Wert über mehrere Durchläufe der Funktion hinweg. Hier verwenden wir die Variable \PYTHON{is\_initialized}, um zu verfolgen, ob der Code in dem  folgenden Block \PYTHON{if (!is\_initialized)} jemals zuvor ausgeführt wurde.
+     
+Der Initialisierungsblock ruft die Funktion \PYTHON{pinMode()} von Arduino auf, die dem Mikrocontroller anzeigt, ob ein bestimmter Pin im Eingangs- oder Ausgangsmodus sein soll. Dies ist notwendig, bevor ein Pin verwendet wird. Die Funktion wird mit zwei von der Arduino-Plattform definierten Konstanten aufgerufen:  \PYTHON{LED\_BUILTIN} und \PYTHON{OUTPUT}.  \PYTHON{LED\_BUILTIN} steht für den Pin, der mit der eingebauten LED des Boards verbunden ist, und \PYTHON{OUTPUT} steht für den Ausgangsmodus.
+     
+Nachdem Sie den Pin der eingebauten LED auf den Ausgabemodus konfiguriert haben, setzen Sie \PYTHON{is\_initialized} auf \PYTHON{true}, damit dieser Blockcode nicht mehr ausgeführt wird.
+
+Als Nächstes berechnen wir die gewünschte Helligkeit der LED:
+     
+     
+\begin{lstlisting}
+    // Calculate the brightness of the LED such that y=-1 is fully off
+ 	// and y=1 is fully on. The LED's brightness can range from 0-255.
+ 	int brightness = (int)(127.5f * (y_value + 1));
+\end{lstlisting} 
+
+Der Arduino erlaubt uns, den Pegel eines PWM-Ausgangs als Zahl von 0 bis 255 einzustellen, wobei 0 ganz aus und 255 ganz an bedeutet. Unser \PYTHON{y\_value} ist eine Zahl zwischen -1 und 1. Der vorhergehende Code ordnet \PYTHON{y\_value} dem Bereich 0 bis 255 zu, so dass bei y = -1 die LED ganz aus ist, bei y = 0 die LED halb leuchtet und bei y = 1 die LED ganz leuchtet.
+
+Der nächste Schritt besteht darin, die Helligkeit der LED tatsächlich einzustellen:
+
+\begin{lstlisting}
+    // Set the brightness of the LED. If the specified pin does not support PWM,
+ 	// this will result in the LED being on when y > 127, off otherwise.
+ 	analogWrite(LED_BUILTIN, brightness);
+\end{lstlisting} 
+
+Die Funktion \PYTHON{analogWrite()} der Arduino-Plattform nimmt eine Pin-Nummer (wir geben \PYTHON{LED\_BUILTIN} an) und einen Wert zwischen 0 und 255. Wir geben unsere Helligkeit an, die in der vorherigen Zeile berechnet wurde. Wenn diese Funktion aufgerufen wird, leuchtet die LED mit dieser Helligkeit.
+
+
+Leider ist bei einigen Modellen von Arduino-Boards der Pin, an dem die eingebaute LED angeschlossen ist, nicht PWM-fähig. Das bedeutet, dass unsere Aufrufe von \PYTHON{analogWrite()} seine Helligkeit nicht verändern werden. Stattdessen wird die LED eingeschaltet, wenn der in \PYTHON{analogWrite()} übergebene Wert über 127 liegt, und ausgeschaltet, wenn er 126 oder weniger beträgt.
+     
+Das bedeutet, dass die LED blinkt und ausschaltet, anstatt zu verblassen. Nicht ganz so cool, aber es demonstriert immer noch unsere Sinuswellenvorhersage.
+
+Schließlich verwenden wir die \PYTHON{ErrorReporter}-Instanz, um den Helligkeitswert zu protokollieren:
+     
+\begin{lstlisting}
+    // Log the current brightness value for display in the Arduino plotter
+ 	error_reporter->Report("%d\n", brightness);
+\end{lstlisting}      
+     
+Auf der Arduino-Plattform ist der \PYTHON{ErrorReporter} so eingerichtet, dass er Daten über eine serielle Schnittstelle protokolliert. 	Die serielle Schnittstelle ist eine sehr verbreitete Art der Kommunikation zwischen Mikrocontrollern und Host-Computern und wird häufig für die Fehlersuche verwendet. Es ist ein Kommunikationsprotokoll, bei dem Daten bitweise durch Ein- und Ausschalten eines Ausgangspins übertragen werden. Wir können es verwenden, um alles zu senden und zu empfangen, von binären Rohdaten bis hin zu Text und Zahlen.
+     
+Die Arduino-IDE enthält Werkzeuge zum Erfassen und Anzeigen von Daten, die über eine serielle Schnittstelle empfangen werden. Eines der Werkzeuge, der Serial Plotter, kann ein Diagramm der Werte anzeigen, die er über die serielle Schnittstelle empfängt. Indem wir einen Strom von Helligkeitswerten aus unserem Code ausgeben, können wir sie grafisch darstellen. Abbildung \ref{fig:SerialPlotter} zeigt dies in Aktion.
+ 
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0603}
+    
+    \caption{Der serielle Plotter der Arduino-IDE}\label{fig:SerialPlotter}
+\end{figure}
+ 	
+ 	
+Eine Anleitung zur Verwendung des seriellen Plotters finden Sie weiter unten in diesem Abschnitt.
+     
+     
+Sie fragen sich vielleicht, wie der \PYTHON{ErrorReporter} in der Lage ist, Daten über die serielle Schnittstelle des Arduino auszugeben. Sie finden die Code-Implementierung in \FILE{micro/arduino/debug\_log.cc}. Sie ersetzt die ursprüngliche Implementierung in \FILE{micro/debug\_log.cc}.
+
+Genauso wie \FILE{output\_handler.cc} überschrieben wird, können wir plattformspezifische Implementierungen von jeder Quelldatei in TensorFlow Lite für Mikrocontroller bereitstellen, indem wir sie in ein Verzeichnis mit dem Namen der Plattform hinzufügen.
+
+     
+\section{Ausführen des Beispiels}
+     
+Unsere nächste Aufgabe besteht darin, das Projekt für Arduino zu erstellen und es auf einem Gerät einzusetzen. 	Es besteht immer die Möglichkeit, dass sich der Erstellungsprozess geändert hat, seit dieses Buch geschrieben wurde, daher sollten Sie in \href{https://oreil.ly/s2mj1}{README.md} nach den neuesten Anweisungen suchen.
+     
+Hier ist alles, was wir brauchen werden:
+
+\begin{itemize}
+    \item Ein unterstütztes Arduino-Board (wir empfehlen das Arduino Nano 33 BLE Sense)
+    \item Das passende USB-Kabel 
+    \item Die Arduino IDE (Sie müssen diese herunterladen und installieren, bevor Sie fortfahren)
+\end{itemize}
+     
+ Die Projekte in diesem Buch sind als Beispielcode in der TensorFlow Lite Arduino-Bibliothek verfügbar, die Sie einfach über die Arduino-IDE und die Auswahl von Manage Libraries aus dem Tools-Menü installieren können. Suchen Sie im erscheinenden Fenster nach der Bibliothek mit dem Namen \PYTHON{Arduino\_TensorFlowLite} und installieren Sie sie. Sie sollten in der Lage sein, die neueste Version zu verwenden, aber wenn Sie auf Probleme stoßen, ist die Version, die mit diesem Buch getestet wurde, 1.14-ALPHA.
+     
+Sie können die Bibliothek auch aus einer .zip-Datei installieren, die Sie entweder vom TensorFlow Lite Team \href{https://oreil.ly/blgB8}{download} oder mit dem TensorFlow Lite for Microcontrollers Makefile selbst erzeugen können. Wenn Sie dies bevorzugen, lesen Sie bitte Anhang A.
+
+Nachdem Sie die Bibliothek installiert haben, wird das Beispiel im Menü File unter \FILE{Examples$\rightarrow$\_Arduino\_TensorFlowLite\_} angezeigt, wie in Abbildung \ref{fig:ArduIDE} gezeigt.	
+
+\begin{figure}
+    \centering
+    \GRAPHICS{0.5}{1.0}{Nano33BLESense/timl_0604}
+    
+    \caption{Der serielle Plotter der Arduino-IDE}\label{fig:ArduIDE}
+\end{figure}
+ 	
+Klicken Sie auf ``hello\_world'', um das Beispiel zu laden. Es wird als neues Fenster mit einer Registerkarte für jede der Quelldateien angezeigt. Die Datei in der ersten Registerkarte, \FILE{hello\_world}, entspricht der \FILE{main\_functions.cc}, die wir vorhin durchgegangen sind.
+ 
+\section{Differences in the Arduino Example Code}
+     
+Wenn die Arduino-Bibliothek generiert wird, werden einige kleinere Änderungen am Code vorgenommen, damit er gut mit der Arduino-IDE funktioniert. Das bedeutet, dass es einige subtile Unterschiede zwischen dem Code in unserem Arduino-Beispiel und im TensorFlow GitHub Repository gibt. Zum Beispiel werden in der Datei \FILE{hello\_world} die Funktionen \PYTHON{setup()} und \PYTHON{loop()} automatisch von der Arduino Umgebung aufgerufen, so dass die Datei \FILE{main.cc} und ihre Funktion \PYTHON{main()} nicht benötigt werden.
+
+Die Arduino-IDE erwartet außerdem, dass die Quelldateien die Erweiterung .cpp anstelle von .cc haben. Da die Arduino-IDE keine Unterordner unterstützt, wird außerdem jedem Dateinamen im Arduino-Beispiel der ursprüngliche Name des Unterordners vorangestellt. Zum Beispiel entspricht \FILE{arduino\_constants.cpp} der ursprünglich benannten Datei \FILE{arduino/constants.cc}.
+
+Abgesehen von ein paar kleinen Unterschieden bleibt der Code jedoch weitgehend unverändert.
+ 
+Um das Beispiel auszuführen, schließen Sie Ihr Arduino-Gerät über USB an. Stellen Sie sicher, dass der richtige Gerätetyp in der Dropdown-Liste ``Board'' im Menü ``Tools'' ausgewählt ist, wie in Abbildung \ref{fig:ArduSelectBoard} gezeigt. 	
+ 	
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0605}
+    
+    \caption{Die Dropdown-Liste Board}\label{fig:ArduSelectBoard}
+\end{figure}     
+     
+Wenn der Name Ihres Geräts nicht in der Liste erscheint, müssen Sie sein Support-Paket installieren. Klicken Sie dazu auf Boards Manager. Suchen Sie in dem daraufhin angezeigten Fenster nach Ihrem Gerät und installieren Sie die neueste Version des entsprechenden Support-Pakets.
+
+Stellen Sie anschließend sicher, dass der Anschluss des Geräts in der Dropdown-Liste ``Anschluss'' ausgewählt ist, die sich ebenfalls im Menü ``Tools'' befindet (siehe Abbildung  \ref{fig:ArduSelectPort}).
+
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0606}
+    
+    \caption{Die Dropdown-Liste Port}\label{fig:ArduSelectPort}
+\end{figure} 
+
+
+Klicken Sie schließlich im Arduino-Fenster auf die Schaltfläche Upload (in Abbildung \ref{fig:ArduUpload} weiß hervorgehoben), um den Code zu kompilieren und auf Ihr Arduino-Gerät hochzuladen.
+
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0607}
+    
+    \caption{Die Upload-Schaltfläche, ein nach rechts gerichteter Pfeil}\label{fig:ArduUpload}
+\end{figure} 
+
+
+Nachdem der Upload erfolgreich abgeschlossen wurde, sollten Sie sehen, dass die LED auf Ihrem Arduino-Board beginnt, entweder ein- und auszublenden oder ein- und auszublinken, je nachdem, ob der Pin, an den sie angeschlossen ist, PWM unterstützt.
+
+\medskip
+
+Glückwunsch: Sie führen ML auf dem Gerät aus!
+
+\medskip
+
+
+Verschiedene Modelle von Arduino-Boards haben unterschiedliche Hardware und führen die Inferenz mit unterschiedlichen Geschwindigkeiten aus. Wenn Ihre LED entweder flackert oder komplett an bleibt, müssen Sie möglicherweise die Anzahl der Inferenzen pro Zyklus erhöhen. Sie können dies über die Konstante \PYTHON{kInferencesPerCycle} in \FILE{arduino\_constants.cpp} tun.
+
+
+
+ 	"Eigene Änderungen vornehmen" auf Seite 111 zeigt Ihnen, wie Sie den Code des Beispiels bearbeiten können.
+
+
+Sie können den Helligkeitswert auch in einem Diagramm darstellen. Öffnen Sie dazu den seriellen Plotter der Arduino-IDE, indem Sie ihn im Menü "Tools" auswählen, wie in Abbildung \ref{fig:ArduSerial} gezeigt.
+
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0608}
+    
+    \caption{Der Menüpunkt Serieller Plotter}\label{fig:ArduSerial}
+\end{figure} 
+
+
+Der Plotter zeigt den Wert an, wie er sich über die Zeit ändert, wie in Abbildung \ref{fig:ArduSerialGraph} gezeigt. 
+
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0603}
+    
+    \caption{Der Serienplotter, der den Wert grafisch darstellt}\label{fig:ArduSerialGraph}
+\end{figure} 
+
+
+
+Um die Rohdaten zu betrachten, die von der seriellen Schnittstelle des Arduinos empfangen werden, öffnen Sie den Serial Monitor aus dem Menü Tools. Sie sehen dann einen Strom von Zahlen vorbeifliegen, wie in Abbildung \ref{fig:ArduSerialRaw}.
+
+\begin{figure}
+    \centering
+    \GRAPHICS{1.0}{1.0}{Nano33BLESense/timl_0610}
+    
+    \caption{Der Serial Monitor zeigt Rohdaten an}\label{fig:ArduSerialRaw}
+\end{figure} 
+	
+ 	
+\section{Eigene Änderungen vornehmen}
+
+Jetzt, wo Sie die Anwendung bereitgestellt haben, macht es vielleicht Spaß, herumzuspielen und einige Änderungen am Code vorzunehmen. Sie können die Quelldateien in der Arduino-IDE bearbeiten. Wenn Sie speichern, werden Sie aufgefordert, das Beispiel an einem neuen Ort zu speichern. Wenn Sie mit den Änderungen fertig sind, können Sie in der Arduino-IDE auf die Schaltfläche ``Hochladen'' klicken, um das Beispiel zu erstellen und bereitzustellen.
+
+Um mit dem Vornehmen von Änderungen zu beginnen, können Sie einige Experimente durchführen:
+
+\begin{itemize}
+  \item Lassen Sie die LED langsamer oder schneller blinken, indem Sie die Anzahl der Inferenzen pro Zyklus anpassen.
+  \item  Ändern Sie \FILE{output\_handler.cc}, um eine textbasierte Animation an der seriellen Schnittstelle zu protokollieren.
+  \item  Verwenden Sie die Sinuswelle, um andere Komponenten zu steuern, z. B. zusätzliche LEDs oder Tongeneratoren.
+\end{itemize}
+ 	
+ 	
+ 	

@@ -1,0 +1,24 @@
+\begin{tikzpicture}
+\pgfmathsetmacro{\PHI}{-15}
+% Now use \PHI anywhere you want -15 to appear,
+% can also be used in calculations like 2*\PHI
+\def\x{10};
+
+\draw[red] (0,4) -- (1-\PHI*0.5,4);
+\draw[green] (0,2) -- (1+1/\x,2);
+\draw[blue] (0,0) -- ({1+3*(\x/5+1)},0);
+\end{tikzpicture}
+
+\bigskip
+
+%\usetikzlibrary{math} %needed tikz library
+
+\begin{tikzpicture}
+  \pgfmathsetmacro{\drehpunktx}{11.63815573}
+  %Variables must be declared in a tikzmath environment but
+  % can be used outside
+  \tikzmath{\x1 = 1; \y1 =1; 
+  %computations are also possible
+  \x2 = \x1 + 1; \y2 =\y1 +3; } 
+  \draw[->] (\x1, \y1)--(\x2, \y2);
+\end{tikzpicture}

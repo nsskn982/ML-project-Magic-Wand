@@ -1,0 +1,80 @@
+%%%%%%%%%%%%%%%
+%
+% $Autor: Wings $
+% $Datum: 2020-01-29 07:55:27Z $
+% $Pfad: General/ButtonGrove.tex
+% $Version: 1785 $
+%
+%
+%%%%%%%%%%%%%%%
+
+	
+\chapter{Zwei Taster mit Grove-Anschluss von M5 Stack}
+
+\subsection{Pin-Konfiguration}
+
+Die verwendeten Pins werden zu Beginn des Codes definiert:
+
+\begin{itemize}
+    \item \PYTHON{buttonPin}: Der Pin, an dem der Taster angeschlossen ist, der zur Messungssteuerung verwendet wird
+    \item \PYTHON{blueButtonPin}: Der Pin für den blauen Taster, der zur Startsteuerung der Messung verwendet wird
+    \item \PYTHON{redButtonPin}: Der Pin für den roten Taster, der zur Beendigung der Messung und Anzeige der Ergebnisse verwendet wird
+\end{itemize}
+
+
+\subsection{Initialisierung und Setup}
+In der Funktion \PYTHON{setup()} werden die erforderlichen Initialisierungen durchgeführt:
+
+\begin{itemize}
+    \item \PYTHON{pinMode(buttonPin, INPUT\_PULLUP)}: Konfiguriert den Taster-Pin als Eingang mit Pull-Up-Widerstand
+\end{itemize} 
+
+
+\begin{itemize}
+    \item Zunächst wird der Zustand der beiden Taster überprüft und die Abfrage nach einem gedrückten Button ist aktiv (\PYTHON{blueButtonIsPressed}, \PYTHON{redButtonIsPressed}).
+    \item Wenn der blaue Taster gedrückt wird, wird die Messung gestartet, indem \PYTHON{isMeasuring} auf \PYTHON{true} gesetzt wird und die Funktion \PYTHON{StartSampling()} aufgerufen wird.
+    \item Wenn der rote Taster gedrückt wird, wird die Messung beendet, indem \PYTHON{isMeasuring} auf \PYTHON{false} gesetzt wird und die Funktion \PYTHON{StopSampling()} aufgerufen wird. Je nach vorherigem Zustand des roten Tasters wird entweder der maximale Wert SPL in dB angezeigt (\PYTHON{ShowMaxdBspl()}) oder der durchschnittliche dB SPL-Wert (\PYTHON{ShowAveragedBspl()}).
+    \item \PYTHON{isDelayOver} wird auf \PYTHON{true} gesetzt, wenn die Startverzögerung (definiert durch \PYTHON{measureThresholdMilliseconds}) von 1200ms abgelaufen ist.
+    \item Es gibt eine kurze Verzögerung (\PYTHON{delay(50)}) zwischen den Schleifendurchläufen, um Tastenprellungen zu vermeiden.
+\end{itemize} 
+
+
+\PYTHON{PDM.begin(1, 16000)}: Initialisiert eine Abtastrate von 16.000 Hz.
+Die Funktion \PYTHON{StopSampling()} beendet die Aufnahme von Audiodaten.
+
+
+
+\section{2.Beschreibung}
+
+Wenn per Taster ein Signal erzeugt werden soll, ist dies bei einem Schaltkreis, der nur aus Stromquelle und \ac{LED} besteht, kein Problem. Bei gedrücktem Taster fließt Strom und die \ac{LED} leuchtet. In unserem Anwendungsfall soll ein Tasterdruck digital ausgewertet werden, also soll der Zustand 0 oder 1 überprüft werden. In der Praxis entstehen beim Drücken sogenannte Floating Pins, der Arduino kann nicht erkennen welches Signal anliegt. Dieses Problem wird durch Pull-up- oder Pull-down-Widerstände gelöst. Der Dual-Button hat für jeden Taster eine Pull-down Schaltung. Dabei wird die Spannung der Signalleitung über einen hochohmigen Widerstand zu GND geführt und liefert ein klares Null-Signal. Bei Betätigung des Tasters fließt Strom zur Signalleitung und erzeugt ein Eins-Signal. Dieses kann nun vom Arduino deutlich ausgewertet und weiterverwendet werden.
+
+
+
+\begin{figure}
+    
+    \begin{center}
+        \includegraphics[width=6cm]{Images/Pulldown.png} 
+        \caption{Prinzipieller Aufbau Pull-down Schaltung (Eigene Darstellung)} 
+    \end{center}
+    
+\end{figure}
+
+
+Ein großer Vorteil der Dual Button Unit ist, dass keine Lötarbeiten anfallen. Per Grove Anschluss kann der Button direkt an das Shield angeschlossen werden. Außerdem sind die Taster farblich gekennzeichnet, was die Anwendung für den Endbenutzer stark vereinfacht. Erwähnenswert ist noch, dass das Gehäuse aus Klemmbausteinen gebaut werden könnte, da zwei passende Aufnahmen vorhanden sind. Dadurch kann ein Prototyp leicht gebaut werden, falls kein 3D Drucker zur Verfügung steht. Der blaue Taster ist mit dem weißen Kabel verbunden und der rote Taster mit dem gelben. \cite{DualButton} \\
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=5cm]{Images/DualButtonOben.png}
+        \caption{Dual Button oben \cite{DualButton}}
+    \end{center}
+\end{figure}
+
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=4cm]{Images/DualButtonUnten.png}
+        \caption{Dual Button unten \cite{DualButton}}
+    \end{center}
+\end{figure}
+
+
